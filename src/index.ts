@@ -1,4 +1,4 @@
-import { config } from "./config.ts";
+import { config } from "./config";
 import express from 'express';
 import type { Request, Response } from 'express';
 

@@ -151,3 +151,19 @@ Sauf qu'on nous a interdit d'utiliser process.env donc on doit utiliser un `SqlD
 Donc, tous les avis disent que pour prisma 7 c'est mieux d'utiliser dotenv
 Du coup je galère depuis des heures parce qu'on m'a dit hier pendant la mise en place de ne pas utiliser dotenv.
 Donc je vais prendre une pause et ensuite j'installerai dotenv
+
+
+### reprise au calme (soir)
+
+Il y a de gros problèmes entre les types .ts, les fichiers .js les imports etc etc...
+Bref entre express, ts, prisma v7 c'est le bazar, parce qu'au lieu de réfléchir on s'est précipités à mettre en place le dépot comme des sagouins.
+Conclusion: 
+- ne pas faire à deux, on ne prends pas le temps de se poser les questions et on fait n'importe quoi
+- comprendre comprendre comprendre et ne pas accepter de se faire PL, mieux vaut rester bloquer tant que c'est pas compris
+
+- installation des types d'express `pnpm install -D @types/express` > problème d'importation de express résolu
+- prisma a le bon gout lors de sa génération de créer un fichier `/prisma.config.ts` qui a le même nom que `/prisma/prisma.config.ts` qui servait à intialiser le client > client renommé en `prisma.client.ts`
+- le fichier `tsconfig.json` permet (ou bloque) les importations/exportations des fichiers en .ts (avec ou sans extension)
+- quand je veux importer `import { PrismaClient } from "./generated/prisma/client.ts";` il me met un fichier en .js alors que ça n'existe pas (il y a un fichier en .ts à cet emplacement)
+
+A priori la combinaison de Node ESM + TS natif + Prisma généré fait des plantages

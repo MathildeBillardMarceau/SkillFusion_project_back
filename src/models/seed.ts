@@ -1,6 +1,6 @@
 //import { prisma } from "../../prisma/prisma.config.ts"
 // j'importe mon client prisma
-import { prisma } from "../../prisma/prisma.config.js";
+import { prisma } from "../../prisma/prisma.client.js";
 
 // je fais une fonction pour ajouter 2 users
 async function seedUsers(){
