@@ -21,3 +21,17 @@
 - vérifier en se connectant: psql -U skillfusion -h localhost
 
 ** ensuite mettre les infos dans le .env et le .env.example **
+- ajouter les infos dans le .env
+- dans le config.ts penser à rajouter chaque variable
+- vérification dans le boot via un console log
+
+### Prisma initialisation
+
+- pnpm add -D prisma        ajouter prisma en dev
+- pnpm add @prisma/client   (ici pas nécéssaire on avait déjà installé le client)
+- pnpm install prisma @types/node @types/pg --save-dev        install des types node et pg pour TS
+- pnpm install @prisma/adapter-pg (et @prisma client si manquant)     install les éléments de connection à ba DB
+- on utilise pas dotenv dans notre projet mais config.ts
+
+* oubli de mettre les valeurs de .env dans config.ts *
+

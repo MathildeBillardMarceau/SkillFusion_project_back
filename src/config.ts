@@ -1,5 +1,10 @@
 export const config = {
-  port: Number.parseInt(process.env.PORT || "3000"),
+  port: Number.parseInt(getEnv(process.env.PORT, "PORT") || "3333"),
+  pguser: getEnv(process.env.PGUSER, "PGUSER"),
+  pgpassword: getEnv(process.env.PGPASSWORD, "PGPASSWORD"),
+  pgdatabase: getEnv(process.env.PGDATABASE, "PGDATABASE"),
+  pghost: getEnv(process.env.PGHOST, "PGHOST"),
+  pgport: Number.parseInt(getEnv(process.env.PGPORT, "PGPORT") || "5555"),
 };
 
 
