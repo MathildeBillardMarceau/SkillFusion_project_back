@@ -4,11 +4,87 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+
+// configuration globale de l'ORM
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider = "prisma-client"                  // fait auto
+  output   = "../src/generated/prisma"        // fait auto
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "postgresql"                     // fait auto
+  url = env("DATABASE_URL")             // lecture de la variable d'environnement
+}
+
+
+// configuration des modeles (tables)
+  // @id précise que c'est la clef primaire
+
+  // @default(uuid()) @db.Uuid
+    // le @db.Uuid sert à préciser à prisma que si on a un string coté prisma, le type coté DB est un UUID
+  // @unique précise un champ unique
+  // String? précise qu'un champ n'est pas not null
+
+  // @@map ("model")      permet de faire correspondre un Model (prisma) avec une table (PostGRE)
+
+  // enmums
+    // on crée le enum en-dessous et on ajoute le enum en Type (avec une Majuscule donc)
+
+
+model Course {
+  id          String     @id   @default(uuid()) @db.Uuid
+    
+  title       String    @unique
+  slug        String    @unique
+  excerpt     String?
+  image       String?
+  level       Level
+  duration    String
+  cost        String
+  material    String
+
+  user_id     UUID7
+
+  published_at  DateTime  @default(now())
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @default(now()) @updatedAt // @updatedAt permet d'automatiquement modifier le updated_at lorsque l'enregistrement est modifié
+
+
+
+  @@map("course") // Correspondant entre le model Course et le table course (min) en DB 
+}
+
+enum Level {
+  1
+  2
+  3
+}
+
+
+model User {
+  id          String     @id   @default(uuid()) @db.Uuid
+
+  email       String    @unique
+  password    String
+  firstname   String
+  lastname    String
+  role        Role      @default(APPRENTICE)
+  status      Status    @default(APPROVED)
+
+  created_at    DateTime  @default(now())
+  updated_at    DateTime  @default(now()) @updatedAt
+
+  @@map("our_user") // (pour éviter d'avoir une table user en DB qui est spécifique à PG)
+}
+
+enum Role {
+  ADMIN
+  INSTRUCTOR
+  APPRENTICE
+}
+
+enum Status {
+  PENDING
+  APPROVED
+  BANNED
 }

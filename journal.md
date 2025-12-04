@@ -35,4 +35,32 @@
 
 * oubli de mettre les valeurs de .env dans config.ts *
 
-- pnpm prisma initi          crée la base de prisma
+- pnpm prisma init          crée la base de prisma
+`Error: EACCES: permission denied, mkdir '/home/student/.local/share/prisma-dev-nodejs'`
+  -> se donner la propriété du fichier
+
+- pnpm prisma init
+`Failed to load config file "/var/www/html/SkillFusion/projet-skillfusion-back" as a TypeScript/JavaScript module. Error: PrismaConfigEnvError: Missing required environment variable: DATABASE_URL`
+
+Rajouter dans le .env les données de DB lisibles par Prisma:
+
+`DATABASE_URL=postgres://skillfusion:skillfusion@localhost:5432/skillfusion`
+
+
+Suite à ceci on aura un dossier prisma et dedans un schemas.prisma
+
+### schema.prisma
+
+Configuration globale de l'ORM
+```
+generator client {
+  provider = "prisma-client"                  // fait auto
+  output   = "../src/generated/prisma"        // fait auto
+}
+
+datasource db {
+  provider = "postgresql"                     // fait auto
+  url = env("DATABASE_URL")             // lecture de la variable d'environnement
+}
+```
+
