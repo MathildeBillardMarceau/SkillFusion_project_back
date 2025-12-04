@@ -17,4 +17,4 @@ pnpm i --save-dev @types/node       "types": ["node"],
 mkdir src
 touch index.ts
 
-scripts lancement
+scripts lancement "dev": "node --env-file=.env ./src/index.ts --watch"
