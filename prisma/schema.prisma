@@ -8,7 +8,9 @@
 // configuration globale de l'ORM
 generator client {
   provider = "prisma-client"                  // fait auto
-  output   = "../src/generated/prisma"        // fait auto
+  output   = "./generated/prisma"      // modification à la main pour ne pas l'avoir dans src
+  // cette ligne force la création d'un client prisma dans le dossier spécifié
+  // elle se fait automatiquement, une preuve de plus qu'un truc auto faut jamais lui faire confiance
 }
 
 datasource db {

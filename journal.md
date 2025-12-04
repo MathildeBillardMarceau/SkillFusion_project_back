@@ -68,7 +68,10 @@ Voir le schemas.prisma pour les explications sur le code
 
 1- mise en place des modèles Course et User
 2- ajout de la relation User one-to-many Course
-3- lancement de la migration prisma `pnpm prisma migrate dev --name init`
+
+
+### Création des tables dans la DB
+lancement de la migration prisma `pnpm prisma migrate dev --name init`
   - erreur au lancement du script car nous sommes passés en prisma 7, il n'est plus possible d'utiliser datasource dans schemas.prisma
   - création d'un fichier prisma.config.ts
 ```ts
@@ -79,3 +82,72 @@ Voir le schemas.prisma pour les explications sur le code
   })
 ```
   - lancement de la migration ok
+
+### seeding dans la DB
+
+- ajout script package.json `"db:seed" : "ts-node prisma/seed.ts"`
+- ajout dép ts-node `pnpm add -D ts-node typescript` (permet de ne pas compiler le TS en JS avant chaque exécution)
+  - PNPM a voulu changer le store (sans doute quand j'ai du donner à prisma des droits pour accéder au dossier local)
+- ensuite prisma a beaucoup compliqué sa config depuis le 6 qu'on a vu en cours
+  - il faut un fichier prisma.config.ts dans prisma, qui sera notre client
+  - on peut (ou pas) lui préciser un adapter (déprécié) ou rien
+  - ensuite il faut importer ce client dans le seed.ts
+  - et comme on a modifié des choses il faut regénérer le client `pnpm prisma generate`
+
+### on reprend prisma
+
+dans /prisma/schema.prisma
+Il faut préciser qu'on génère le fichier prisma
+
+```js
+generator client {
+  provider = "prisma-client"                 
+  output   = "./generated/prisma"            
+}
+```
+
+Il faut lancer la commande `pnpm prisma generate`
+
+Par défaut il va générer un dossier "generated" à l'endroit de l'output
+Donc je trouve plus cohérent de le mettre dans le dossier prisma
+Ce dossier contient notamment **le client prisma** qui contient:
+- les classes PrismaClient
+- les types typescript
+- le code pour interragir avec la DB
+(auparavant tout ça était dans les node_modules)
+
+
+Le code TS qui veut accéder à la DB doit  **importer** notre client prisma 
+Par exemple dans prisma.config.ts on va remplacer
+
+```js
+import { PrismaClient } from "@prisma/client/extension";
+export const prisma = new PrismaClient();
+```
+
+par 
+
+```js
+import { PrismaClient } from "./generated/prisma/client.js";
+export const prisma = new PrismaClient();
+```
+
+**prisma.config.ts** sert a générer une instance du client Prisma qu'on va pouvoir réutiliser, au lieu de créer une instance à chaque fois qu'on appelle le client
+On pourra l'importer avec
+```js
+import { prisma } from "../prisma/index.ts";
+```
+
+Ensuite, pour exporter l'instance du client prisma, on ne peut plus faire
+```js
+export const prisma = new PrismaClient();
+```
+Il demande un argument. Cet argument c'est l'adapter.
+On peut soit mettre dans l'adapter le contenu de DATABASE_URL avec process.env
+Sauf qu'on nous a interdit d'utiliser process.env donc on doit utiliser un `SqlDriverAdapterFactory`
+
+### On reprend dotenv
+
+Donc, tous les avis disent que pour prisma 7 c'est mieux d'utiliser dotenv
+Du coup je galère depuis des heures parce qu'on m'a dit hier pendant la mise en place de ne pas utiliser dotenv.
+Donc je vais prendre une pause et ensuite j'installerai dotenv
