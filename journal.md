@@ -64,3 +64,18 @@ datasource db {
 }
 ```
 
+Voir le schemas.prisma pour les explications sur le code
+
+1- mise en place des modèles Course et User
+2- ajout de la relation User one-to-many Course
+3- lancement de la migration prisma `pnpm prisma migrate dev --name init`
+  - erreur au lancement du script car nous sommes passés en prisma 7, il n'est plus possible d'utiliser datasource dans schemas.prisma
+  - création d'un fichier prisma.config.ts
+```ts
+  import { PrismaClient } from "@prisma/client/extension";
+
+  export const prisma = new PrismaClient({
+    adapter: process.env.DATABASE_URL,
+  })
+```
+  - lancement de la migration ok
