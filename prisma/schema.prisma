@@ -30,6 +30,27 @@ datasource db {
   // enmums
     // on crée le enum en-dessous et on ajoute le enum en Type (avec une Majuscule donc)
 
+  // les relations dans prisma
+
+    // one-to-one (1..1) 
+
+  
+
+  
+    // one-to-many (1..N) - Un cours est écrit par 1 et 1 seul user - un user peut écrire 0 à N cours
+      // Dans Course:
+        // user_id     String    @db.Uuid
+            // user_id: c'est la valeur du champ qui sera entré dans la colonne user_id table course de la DB
+        // user        User      @relation(fields:[user_id], references: [id])
+          // user: c'est le champ du modèle
+          // On explique qu'on va chercher dans le model User sa clef id et qu'on va la mettre dans le champ user_id de course
+
+      // Dans User:
+        // course      Course[]
+          // grace à la relation dans Course, pas besoin de préciser de ce coté que course est lié à user (d'ailleurs dans le SQL il n'y a pas de table de liaison entre course et user)
+          // on va avoir les infos sous forme de tableau du model Course, qui peut être vide, donc pas besoin de préciser le NOT NULL avec un ?
+
+    // many-to-many (N..N)
 
 model Course {
   id          String     @id   @default(uuid()) @db.Uuid
@@ -43,7 +64,8 @@ model Course {
   cost        String
   material    String
 
-  user_id     UUID7
+  user_id     String    @db.Uuid
+  user        User      @relation(fields:[user_id], references: [id])
 
   published_at  DateTime  @default(now())
   created_at    DateTime  @default(now())
@@ -55,9 +77,10 @@ model Course {
 }
 
 enum Level {
-  1
-  2
-  3
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  // pas possible de mettre des chiffres dans un enum
 }
 
 
@@ -73,6 +96,8 @@ model User {
 
   created_at    DateTime  @default(now())
   updated_at    DateTime  @default(now()) @updatedAt
+
+  course      Course[]
 
   @@map("our_user") // (pour éviter d'avoir une table user en DB qui est spécifique à PG)
 }
