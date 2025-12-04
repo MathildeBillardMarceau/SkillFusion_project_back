@@ -35,3 +35,4 @@
 
 * oubli de mettre les valeurs de .env dans config.ts *
 
+- pnpm prisma initi          crée la base de prisma
