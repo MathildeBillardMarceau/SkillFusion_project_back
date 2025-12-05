@@ -602,10 +602,10 @@ export const CourseScalarFieldEnum = {
   duration: 'duration',
   cost: 'cost',
   material: 'material',
-  user_id: 'user_id',
-  published_at: 'published_at',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
+  publishedAt: 'publishedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId'
 } as const
 
 export type CourseScalarFieldEnum = (typeof CourseScalarFieldEnum)[keyof typeof CourseScalarFieldEnum]
@@ -615,12 +615,12 @@ export const UserScalarFieldEnum = {
   id: 'id',
   email: 'email',
   password: 'password',
-  firstname: 'firstname',
-  lastname: 'lastname',
+  firstName: 'firstName',
+  lastName: 'lastName',
   role: 'role',
   status: 'status',
-  created_at: 'created_at',
-  updated_at: 'updated_at'
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]

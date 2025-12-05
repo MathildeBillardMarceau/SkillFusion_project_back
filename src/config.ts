@@ -1,10 +1,10 @@
 export const config = {
-  port: Number.parseInt(getEnv(process.env.PORT, "PORT") || "3333"),
-  pguser: getEnv(process.env.PGUSER, "PGUSER"),
-  pgpassword: getEnv(process.env.PGPASSWORD, "PGPASSWORD"),
-  pgdatabase: getEnv(process.env.PGDATABASE, "PGDATABASE"),
-  pghost: getEnv(process.env.PGHOST, "PGHOST"),
-  pgport: Number.parseInt(getEnv(process.env.PGPORT, "PGPORT") || "5555"),
+  PORT: Number.parseInt(getEnv(process.env.PORT, "PORT") || "3333"),
+  PGUSER: getEnv(process.env.PGUSER, "PGUSER"),
+  PGPASSWORD: getEnv(process.env.PGPASSWORD, "PGPASSWORD"),
+  PGDATABASE: getEnv(process.env.PGDATABASE, "PGDATABASE"),
+  PGHOST: getEnv(process.env.PGHOST, "PGHOST"),
+  PGPORT: Number.parseInt(getEnv(process.env.PGPORT, "PGPORT") || "5555"),
   DATABASE_URL: `"postgresql://${getEnv(process.env.PGUSER, "PGUSER")}:${getEnv(process.env.PGPASSWORD, "PGPASSWORD")}@${getEnv(process.env.PGHOST, "PGHOST")}:${Number.parseInt(getEnv(process.env.PGPORT, "PGPORT") || "5432")}/${getEnv(process.env.PGDATABASE, "PGDATABASE")}"`
 };
 
