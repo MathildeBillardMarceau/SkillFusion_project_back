@@ -1,0 +1,42 @@
+## Installation
+```bash
+pnpm i
+```
+
+## Mise en place de la BDD de dev
+Se connecter à Postgres
+```bash
+psql -U postgres
+``` 
+Créer un utilisateur
+```bash
+CREATE ROLE skillfusion WITH LOGIN CREATEDB PASSWORD 'skillfusion_pw';
+\du # lister les utilisateurs
+``` 
+Créer la BDD
+```bash
+CREATE DATABASE skillfusion_db WITH OWNER skillfusion;
+\l # lister les BDD
+\q
+```
+Créer un `.env`
+```ini
+GRAPHQL_PORT=4000
+DATABASE_URL="postgresql://skillfusion:skillfusion_pw@127.0.0.1:5432/skillfusion_db"
+```
+Créer les tables à partir des models prisma
+```bash
+pnpm db:init
+```
+
+
+## Lancement du projet
+```bash
+pnpm dev
+```
+
+
+- sudo -i -u postgres psql
+- CREATE USER skillfusion WITH LOGIN PASSWORD 'skillfusion';
+- CREATE DATABASE skillfusion WITH OWNER skillfusion;
+- ALTER USER skillfusion CREATEDB;
