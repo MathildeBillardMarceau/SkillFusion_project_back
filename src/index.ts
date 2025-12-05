@@ -1,23 +1,28 @@
-import { config } from "./config.ts";
-import express from 'express';
-import type { Request, Response } from 'express';
+import type { Request, Response } from "express";
+import express from "express";
 import { prisma } from "../prisma/prismaClient.ts";
+import { config } from "./config.ts";
 
-export const app = express();
+async function init() {
+	const app = express();
 
-console.log("config:", config);
+	app.get("/", (req: Request, res: Response) =>
+		res.send("Hello Skillfusion back"),
+	);
 
-const PORT = config.port;
+	console.log("config:", config);
+	const { PORT } = config;
 
-app.get("/", (req: Request, res: Response) => res.send ("Hello Skillfusion back"));
-
-app.listen(PORT, () => {
-  console.log(`🚀 Server ready: http://localhost:${PORT}`);
-});
-
-async function testPrisma(){
-  // await prisma.$queryRaw`SELECT NOW()`
-  const users = await prisma.user.findMany()
-  console.log("Prisma ok", users)
+	app.listen(PORT, () => {
+		console.log(`🚀 Server ready: http://localhost:${PORT}`);
+	});
 }
-testPrisma()
+
+await init();
+
+async function testPrisma() {
+	// await prisma.$queryRaw`SELECT NOW()`
+	const users = await prisma.user.findMany();
+	console.log("Prisma ok", users);
+}
+testPrisma();
