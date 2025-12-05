@@ -167,3 +167,8 @@ Conclusion:
 - quand je veux importer `import { PrismaClient } from "./generated/prisma/client.ts";` il me met un fichier en .js alors que ça n'existe pas (il y a un fichier en .ts à cet emplacement)
 
 A priori la combinaison de Node ESM + TS natif + Prisma généré fait des plantages
+
+
+pnpm prisma generate
+pnpm prisma migrate dev
+pnpm run db:seed

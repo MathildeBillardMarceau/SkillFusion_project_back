@@ -12,15 +12,15 @@
  */
 
 import * as runtime from "@prisma/client/runtime/client"
-import type * as Prisma from "./prismaNamespace.js"
+import type * as Prisma from "./prismaNamespace.ts"
 
 
 const config: runtime.GetPrismaClientConfig = {
   "previewFeatures": [],
-  "clientVersion": "7.0.1",
-  "engineVersion": "f09f2815f091dbba658cdcd2264306d88bb5bda6",
+  "clientVersion": "7.1.0",
+  "engineVersion": "ab635e6b9d606fa5c8fb8b1a7f909c3c3c1c98ba",
   "activeProvider": "postgresql",
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\n// configuration globale de l'ORM\ngenerator client {\n  provider = \"prisma-client\" // fait auto\n  output   = \"./generated/prisma\" // modification à la main pour ne pas l'avoir dans src\n  // cette ligne force la création d'un client prisma dans le dossier spécifié\n  // elle se fait automatiquement, une preuve de plus qu'un truc auto faut jamais lui faire confiance\n}\n\ndatasource db {\n  provider = \"postgresql\" // fait auto\n  // supprimé à cause de la migration en prisma v8\n  //url = env(\"DATABASE_URL\")             // lecture de la variable d'environnement\n}\n\n// configuration des modeles (tables)\n// @id précise que c'est la clef primaire\n\n// @default(uuid()) @db.Uuid\n// le @db.Uuid sert à préciser à prisma que si on a un string coté prisma, le type coté DB est un UUID\n// @unique précise un champ unique\n// String? précise qu'un champ n'est pas not null\n\n// @@map (\"model\")      permet de faire correspondre un Model (prisma) avec une table (PostGRE)\n\n// enmums\n// on crée le enum en-dessous et on ajoute le enum en Type (avec une Majuscule donc)\n// impossible d'utiliser les chiffres dans les ENUMS\n\n// les relations dans prisma\n\n// one-to-one (1..1) \n\n// one-to-many (1..N) - Un cours est écrit par 1 et 1 seul user - un user peut écrire 0 à N cours\n// Dans Course:\n// user_id     String    @db.Uuid\n// user_id: c'est la valeur du champ qui sera entré dans la colonne user_id table course de la DB\n// user        User      @relation(fields:[user_id], references: [id])\n// user: c'est le champ du modèle\n// On explique qu'on va chercher dans le model User sa clef id et qu'on va la mettre dans le champ user_id de course\n\n// Dans User:\n// course      Course[]\n// grace à la relation dans Course, pas besoin de préciser de ce coté que course est lié à user (d'ailleurs dans le SQL il n'y a pas de table de liaison entre course et user)\n// on va avoir les infos sous forme de tableau du model Course, qui peut être vide, donc pas besoin de préciser le NOT NULL avec un ?\n\n// many-to-many (N..N)\n\nmodel Course {\n  id String @id @default(uuid()) @db.Uuid\n\n  title    String  @unique\n  slug     String  @unique\n  excerpt  String?\n  image    String?\n  level    Level?\n  duration String\n  cost     String\n  material String\n\n  user_id String @db.Uuid\n  user    User   @relation(fields: [user_id], references: [id])\n\n  published_at DateTime @default(now())\n  created_at   DateTime @default(now())\n  updated_at   DateTime @default(now()) @updatedAt // @updatedAt permet d'automatiquement modifier le updated_at lorsque l'enregistrement est modifié\n\n  @@map(\"course\") // Correspondant entre le model Course et le table course (min) en DB \n}\n\nenum Level {\n  BEGINNER\n  INTERMEDIATE\n  ADVANCED\n  // pas possible de mettre des chiffres dans un enum comme prévu dans la DB, donc il faudra soit \n}\n\nmodel User {\n  id String @id @default(uuid()) @db.Uuid\n\n  email     String @unique\n  password  String\n  firstname String\n  lastname  String\n  role      Role   @default(APPRENTICE)\n  status    Status @default(APPROVED)\n\n  created_at DateTime @default(now())\n  updated_at DateTime @default(now()) @updatedAt\n\n  course Course[]\n\n  @@map(\"our_user\") // (pour éviter d'avoir une table user en DB qui est spécifique à PG)\n}\n\nenum Role {\n  ADMIN\n  INSTRUCTOR\n  APPRENTICE\n}\n\nenum Status {\n  PENDING\n  APPROVED\n  BANNED\n}\n",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"./generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Course {\n  id String @id @default(uuid()) @db.Uuid\n\n  title    String  @unique\n  slug     String  @unique\n  excerpt  String?\n  image    String?\n  level    Level?\n  duration String\n  cost     String\n  material String\n\n  user_id String @db.Uuid\n  user    User   @relation(fields: [user_id], references: [id])\n\n  published_at DateTime @default(now())\n  created_at   DateTime @default(now())\n  updated_at   DateTime @default(now()) @updatedAt // @updatedAt permet d'automatiquement modifier le updated_at lorsque l'enregistrement est modifié\n\n  @@map(\"course\") // Correspondant entre le model Course et le table course (min) en DB \n}\n\nenum Level {\n  BEGINNER\n  INTERMEDIATE\n  ADVANCED\n  // pas possible de mettre des chiffres dans un enum comme prévu dans la DB, donc il faudra soit \n}\n\nmodel User {\n  id String @id @default(uuid()) @db.Uuid\n\n  email     String @unique\n  password  String\n  firstname String\n  lastname  String\n  role      Role   @default(APPRENTICE)\n  status    Status @default(APPROVED)\n\n  created_at DateTime @default(now())\n  updated_at DateTime @default(now()) @updatedAt\n\n  course Course[]\n\n  @@map(\"our_user\") // (pour éviter d'avoir une table user en DB qui est spécifique à PG)\n}\n\nenum Role {\n  ADMIN\n  INSTRUCTOR\n  APPRENTICE\n}\n\nenum Status {\n  PENDING\n  APPROVED\n  BANNED\n}\n\n// configuration des modeles (tables)\n// @id précise que c'est la clef primaire\n\n// @default(uuid()) @db.Uuid\n// le @db.Uuid sert à préciser à prisma que si on a un string coté prisma, le type coté DB est un UUID\n// @unique précise un champ unique\n// String? précise qu'un champ n'est pas not null\n\n// @@map (\"model\")      permet de faire correspondre un Model (prisma) avec une table (PostGRE)\n\n// enmums\n// on crée le enum en-dessous et on ajoute le enum en Type (avec une Majuscule donc)\n// impossible d'utiliser les chiffres dans les ENUMS\n\n// les relations dans prisma\n\n// one-to-one (1..1) \n\n// one-to-many (1..N) - Un cours est écrit par 1 et 1 seul user - un user peut écrire 0 à N cours\n// Dans Course:\n// user_id     String    @db.Uuid\n// user_id: c'est la valeur du champ qui sera entré dans la colonne user_id table course de la DB\n// user        User      @relation(fields:[user_id], references: [id])\n// user: c'est le champ du modèle\n// On explique qu'on va chercher dans le model User sa clef id et qu'on va la mettre dans le champ user_id de course\n\n// Dans User:\n// course      Course[]\n// grace à la relation dans Course, pas besoin de préciser de ce coté que course est lié à user (d'ailleurs dans le SQL il n'y a pas de table de liaison entre course et user)\n// on va avoir les infos sous forme de tableau du model Course, qui peut être vide, donc pas besoin de préciser le NOT NULL avec un ?\n\n// many-to-many (N..N)\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -62,7 +62,7 @@ export interface PrismaClientConstructor {
    * const courses = await prisma.course.findMany()
    * ```
    * 
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
+   * Read more in our [docs](https://pris.ly/d/client).
    */
 
   new <
@@ -84,7 +84,7 @@ export interface PrismaClientConstructor {
  * const courses = await prisma.course.findMany()
  * ```
  * 
- * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
+ * Read more in our [docs](https://pris.ly/d/client).
  */
 
 export interface PrismaClient<
@@ -113,7 +113,7 @@ export interface PrismaClient<
    * const result = await prisma.$executeRaw`UPDATE User SET cool = ${true} WHERE email = ${'user@email.com'};`
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $executeRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<number>;
 
@@ -125,7 +125,7 @@ export interface PrismaClient<
    * const result = await prisma.$executeRawUnsafe('UPDATE User SET cool = $1 WHERE email = $2 ;', true, 'user@email.com')
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $executeRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<number>;
 
@@ -136,7 +136,7 @@ export interface PrismaClient<
    * const result = await prisma.$queryRaw`SELECT * FROM User WHERE id = ${1} OR email = ${'user@email.com'};`
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $queryRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<T>;
 
@@ -148,7 +148,7 @@ export interface PrismaClient<
    * const result = await prisma.$queryRawUnsafe('SELECT * FROM User WHERE id = $1 OR email = $2;', 1, 'user@email.com')
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $queryRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<T>;
 

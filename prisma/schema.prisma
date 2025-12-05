@@ -4,22 +4,14 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
-
-// configuration globale de l'ORM
 generator client {
-  provider = "prisma-client"                  // fait auto
-  output   = "./generated/prisma"             // modification à la main pour ne pas l'avoir dans src
-  // cette ligne force la création des composants du client prisma dans le dossier spécifié // elle est mise pas défaut quand on initie le client
-  // elle se fait automatiquement, une preuve de plus qu'un truc auto faut jamais lui faire confiance
+  provider = "prisma-client"
+  output   = "./generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"                     // fait auto
-  // supprimé à cause de la migration en prisma v7
-  //url = env("DATABASE_URL")             // lecture de la variable d'environnement
+  provider = "postgresql"
 }
-
-// guide config des modèles en bas du fichier
 
 model Course {
   id          String     @id   @default(uuid()) @db.Uuid
