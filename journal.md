@@ -29,13 +29,16 @@
 
 - pnpm add -D prisma        ajouter prisma en dev
 - pnpm add @prisma/client   (ici pas nécéssaire on avait déjà installé le client)
-- pnpm install prisma @types/node @types/pg --save-dev        install des types node et pg pour TS
-- pnpm install @prisma/adapter-pg (et @prisma client si manquant)     install les éléments de connection à ba DB
+- pnpm i @types/node @types/pg --save-dev        install des types node et pg pour TS
+- pnpm i @prisma/adapter-pg (et @prisma client si manquant)     install les éléments de connection à ba DB
 - on utilise pas dotenv dans notre projet mais config.ts
 
 * oubli de mettre les valeurs de .env dans config.ts *
 
-- pnpm prisma init          crée la base de prisma
+```bash
+pnpm prisma init          #crée la base de prisma
+```
+
 `Error: EACCES: permission denied, mkdir '/home/student/.local/share/prisma-dev-nodejs'`
   -> se donner la propriété du fichier
 
@@ -172,3 +175,51 @@ A priori la combinaison de Node ESM + TS natif + Prisma généré fait des plant
 pnpm prisma generate
 pnpm prisma migrate dev
 pnpm run db:seed
+
+
+## Vendredi
+
+### réparation de prisma
+
+- suppression du dossier prisma (on a gardé le schemas par contre)
+- mise à jour de prisma (on avait des versions 7.1, 7.0.1 et autres dans le package.json)
+- mise à part du tsconfig.json (en disabled)
+- initialisation de prisma :
+  - `pnpx prisma init --datasource-provider postgresql`
+- Modifier `prisma/schema.prisma` :
+  - output     = "./generated/prisma"
+  - ajouter les models
+- `pnpx prisma generate`
+> le schema.prisma a été regénéré correctement (on a juste rajouté les models)
+> le prismaClient.ts a été regénéré par prisma dans generated avec les bonnes infos 
+
+- créer notre prismaClient.ts
+```ts
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "./generated/prisma/client.ts";
+
+export const prisma = new PrismaClient({
+  adapter: new PrismaPg({connectionString : `${process.env.DATABASE_URL}`}),
+});
+
+export * from "./generated/prisma/client.ts";
+```
+- `pnpx prisma migrate reset`
+- ` pnpx prisma migrate dev --name init`
+
+- Fonction de test de prisma dans index.ts
+```js
+async function testPrisma(){
+  // await prisma.$queryRaw`SELECT NOW()`
+  const users = await prisma.user.findMany()
+  console.log("Prisma ok", users)
+}
+```
+- modification du script dans package.json `"db:seed": "node --env-file=.env ./src/models/seed.ts"`
+
+### mise à jour de biome
+-`pnpm remove biome`
+- `pnpm i -D @biomejs/biome`
+- `pnpm exec biome init`
+- .vscode et settings.json -> nécéssaire pour faire marcher biome
+- 

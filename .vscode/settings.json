@@ -1,0 +1,20 @@
+{
+	// Utiliser Biome pour le formatage
+	"editor.defaultFormatter": "biomejs.biome",
+	"editor.formatOnSave": true,
+
+	// Tri automatique des imports à la sauvegarde
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": "explicit"
+	},
+
+	// Indentation et style
+	"editor.tabSize": 2,
+	"editor.insertSpaces": true,
+
+	// Fichiers à ignorer
+	"files.exclude": {
+		"**/node_modules": true,
+		"**/dist": true
+	}
+}
