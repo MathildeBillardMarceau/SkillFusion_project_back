@@ -1,10 +1,32 @@
+import { ApolloServer } from "@apollo/server";
+import { expressMiddleware } from "@as-integrations/express5";
 import type { Request, Response } from "express";
 import express from "express";
+// import { expressMiddleware } from "@apollo/server/express5";
 import { prisma } from "../prisma/prismaClient.ts";
 import { config } from "./config.ts";
+import { resolvers } from "./graphql/resolvers/index.ts";
+import { typeDefs } from "./graphql/typeDefs/index.ts";
 
 async function init() {
 	const app = express();
+
+	// Apollo Server
+	const server = new ApolloServer({
+		typeDefs,
+		resolvers,
+	});
+
+	await server.start();
+
+	app.use(
+		"/graphql",
+		// cors,
+		express.json(),
+		expressMiddleware(server, {
+			context: async ({ req }) => ({ prisma }),
+		}),
+	);
 
 	app.get("/", (req: Request, res: Response) =>
 		res.send("Hello Skillfusion back"),
@@ -14,7 +36,7 @@ async function init() {
 	const { PORT } = config;
 
 	app.listen(PORT, () => {
-		console.log(`🚀 Server ready: http://localhost:${PORT}`);
+		console.log(`🚀 Server ready: http://localhost:${PORT}/graphql`);
 	});
 }
 
