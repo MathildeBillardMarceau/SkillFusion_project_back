@@ -1,4 +1,5 @@
 import { courseTypeDefs } from "./course.typeDefs.ts";
+import { scalarTypeDefs } from "./scalar.typeDefs.ts";
 import { userTypeDefs } from "./user.typeDefs.ts";
 
-export const typeDefs = [courseTypeDefs, userTypeDefs];
+export const typeDefs = [scalarTypeDefs, courseTypeDefs, userTypeDefs];

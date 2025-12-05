@@ -42,9 +42,9 @@ async function init() {
 
 await init();
 
-async function testPrisma() {
-	// await prisma.$queryRaw`SELECT NOW()`
-	const users = await prisma.user.findMany();
-	console.log("Prisma ok", users);
-}
-testPrisma();
+// async function testPrisma() {
+// 	// await prisma.$queryRaw`SELECT NOW()`
+// 	const users = await prisma.user.findMany();
+// 	console.log("Prisma ok", users);
+// }
+// testPrisma();

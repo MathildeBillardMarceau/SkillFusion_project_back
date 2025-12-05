@@ -41,8 +41,4 @@ pnpm db:init
 pnpm dev
 ```
 
-
-- sudo -i -u postgres psql
-- CREATE USER skillfusion WITH LOGIN PASSWORD 'skillfusion';
-- CREATE DATABASE skillfusion WITH OWNER skillfusion;
-- ALTER USER skillfusion CREATEDB;
+Accès à [Apollo Server](http://localhost:4000/graphql)

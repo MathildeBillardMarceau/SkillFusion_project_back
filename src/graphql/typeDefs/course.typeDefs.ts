@@ -1,12 +1,42 @@
 export const courseTypeDefs = `#graphql
-  type Course {
-    id:           Int! # on peut définir des champs non-nuls
-    title:        String!
-    createdAt:    String!
+
+  # ===========================
+  # ENUMS
+  # ===========================
+  enum Level {
+    BEGINNER
+    INTERMEDIATE
+    ADVANCED
   }
 
+  # ===========================
+  # Course
+  # ===========================
+  type Course {
+    id:          UUID! 
+    title:       String!
+    slug:        String!
+    
+    excerpt:     String  
+    image:       String  
+    level:       Level     
+    duration:    String  
+    cost:        String  
+    material:    String  
+    publishedAt: String
+
+    user:        User
+
+    createdAt:   DateTime!
+    updatedAt:   DateTime!
+  }
+
+  # ===========================
+  # Queries
+  # ===========================
   type Query {
-    courses: [Course!]! # en typescrit on aurait fait Course[]
-    course(id: Int!): Course!
+    courses: [Course!]!
+    courseById(id: UUID!): Course!
+    courseBySlug(slug: String!): Course!
   }
 `;

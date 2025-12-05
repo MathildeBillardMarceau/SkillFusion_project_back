@@ -54,7 +54,7 @@ model Course {
   // @Nicolas Mais il faut soit utiliser @updatedAt, soit @default(now())
 
   // FK
-  userId      String    
+  userId      String    @map("user_id")
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("course") // Correspondant entre le model Course et le table course (min) en DB 
