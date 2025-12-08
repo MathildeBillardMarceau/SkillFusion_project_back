@@ -1,15 +1,16 @@
+import { hash } from "argon2";
 import { prisma } from "../../prisma/prismaClient.ts";
 
 // Création des utilisateurs
 await prisma.user.createMany({ data: [
-    { firstName: "John2", lastName: "Carpenter2", email: "2john@carpenter.io", password: "Azerty123!" },
-    { firstName: "Sarah2", lastName: "Connor2", email: "2sarah@connor.io", password: "Azerty123!" },
-    { firstName: "Sarah2", lastName: "Connor2", email: "2sarah+admin@connor.io", password: "Azerty123!", role: "ADMIN" },
-    { firstName: "Al2", lastName: "Beback2", email: "2al@illbeback.io", password: "Azerty123!" },
-    { firstName: "Olive2", lastName: "Yew2", email: "2olive@you.io", password: "Azerty123!" },
-    { firstName: "Justin2", lastName: "Time2", email: "2justin@ontime.io", password: "Azerty123!" },
-    { firstName: "alice", lastName: "fusion", email: "alice@mail.com", password: "Alice123!" },
-    { firstName: "Bob", lastName: "fusion", email: "bob@mail.com", password: "Bob123!" },
+    { firstName: "John2", lastName: "Carpenter2", email: "2john@carpenter.io", password: await hash("Azerty123!") },
+    { firstName: "Sarah2", lastName: "Connor2", email: "2sarah@connor.io", password: await hash("Azerty123!") },
+    { firstName: "Sarah2", lastName: "Connor2", email: "2sarah+admin@connor.io", password: await hash("Azerty123!"), role: "ADMIN" },
+    { firstName: "Al2", lastName: "Beback2", email: "2al@illbeback.io", password: await hash("Azerty123!") },
+    { firstName: "Olive2", lastName: "Yew2", email: "2olive@you.io", password: await hash("Azerty123!") },
+    { firstName: "Justin2", lastName: "Time2", email: "2justin@ontime.io", password: await hash("Azerty123!") },
+    { firstName: "alice", lastName: "fusion", email: "alice@mail.com", password: await hash("Alice123!") },
+    { firstName: "Bob", lastName: "fusion", email: "bob@mail.com", password: await hash("Bob123!") },
 ], skipDuplicates: true, }) // { count: 6 }
 
 // Création des cours

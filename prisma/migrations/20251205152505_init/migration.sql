@@ -9,36 +9,36 @@ CREATE TYPE "Status" AS ENUM ('PENDING', 'APPROVED', 'BANNED');
 
 -- CreateTable
 CREATE TABLE "course" (
-    "id" UUID NOT NULL,
+    "id" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
     "excerpt" TEXT,
     "image" TEXT,
     "level" "Level",
-    "duration" TEXT NOT NULL,
-    "cost" TEXT NOT NULL,
-    "material" TEXT NOT NULL,
-    "user_id" UUID NOT NULL,
-    "published_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "duration" TEXT,
+    "cost" TEXT,
+    "material" TEXT,
+    "published_at" TIMESTAMP(3),
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "user_id" TEXT NOT NULL,
 
     CONSTRAINT "course_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "our_user" (
-    "id" UUID NOT NULL,
+CREATE TABLE "user" (
+    "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
-    "firstname" TEXT NOT NULL,
-    "lastname" TEXT NOT NULL,
+    "first_name" TEXT NOT NULL,
+    "last_name" TEXT NOT NULL,
     "role" "Role" NOT NULL DEFAULT 'APPRENTICE',
     "status" "Status" NOT NULL DEFAULT 'APPROVED',
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "our_user_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -48,7 +48,7 @@ CREATE UNIQUE INDEX "course_title_key" ON "course"("title");
 CREATE UNIQUE INDEX "course_slug_key" ON "course"("slug");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "our_user_email_key" ON "our_user"("email");
+CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
 -- AddForeignKey
-ALTER TABLE "course" ADD CONSTRAINT "course_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "our_user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "course" ADD CONSTRAINT "course_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "user"("id") ON DELETE CASCADE ON UPDATE CASCADE;
