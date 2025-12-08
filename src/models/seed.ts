@@ -71,21 +71,21 @@ await prisma.course.createMany({
 			slug: "title-1",
 			userId: (await getUser("2sarah+admin@connor.io"))!.id,
 			level: "BEGINNER",
-			image: "https://placehold.co/400x300/png?text=Bricolage",
+			image: "/images/carrelage.jpg",
 		},
 		{
 			title: "Title n°2",
 			slug: "title-2",
 			userId: (await getUser("2john@carpenter.io"))!.id,
 			level: "INTERMEDIATE",
-			image: "https://placehold.co/400x300/png?text=Peinture",
+			image: "/images/mur_beton.jpg",
 		},
 		{
 			title: "Title n°3",
 			slug: "title-3",
 			userId: (await getUser("2sarah@connor.io"))!.id,
 			level: "ADVANCED",
-			image: "https://placehold.co/400x300/png?text=Plomberie",
+			image: "/images/plomberie.jpg",
 			description: loremIpsum,
 			duration: "2h30",
 			cost: "~100€",
@@ -95,7 +95,7 @@ await prisma.course.createMany({
 			title: "Title n°4",
 			slug: "title-4",
 			userId: (await getUser("2sarah@connor.io"))!.id,
-			image: "https://placehold.co/600x400/png?text=Cours%20n%C2%B04",
+			image: "/images/niveau-a-bulle.jpg",
 		},
 		{
 			title: "Title n°5",
@@ -106,7 +106,9 @@ await prisma.course.createMany({
 		{
 			title: "Title n°6",
 			slug: "title-6",
+			description: loremIpsum,
 			userId: (await getUser("2john@carpenter.io"))!.id,
+			image: "/images/tableau_electrique.jpg"
 		},
 		{
 			title: "Title n°7",

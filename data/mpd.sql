@@ -50,7 +50,7 @@ CREATE TABLE "user" (
 -- ===========================
 CREATE TABLE "course" (
     "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    "title" TEXT UNIQUE NOT NULL,
+    "title" TEXT NOT NULL,
     "slug" TEXT UNIQUE NOT NULL,
     "description" TEXT,
     "image" TEXT,
@@ -69,7 +69,7 @@ CREATE TABLE "course" (
 -- ===========================
 CREATE TABLE "chapter" (
     "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    "title" TEXT UNIQUE NOT NULL,
+    "title" TEXT NOT NULL,
     "description" TEXT,
     "order" INT NOT NULL,
     "text" TEXT,
