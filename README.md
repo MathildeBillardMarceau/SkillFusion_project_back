@@ -21,14 +21,14 @@ CREATE DATABASE skillfusion_db WITH OWNER skillfusion;
 ```
 Créer un `.env`
 ```ini
-PORT=3000
+PORT=4000
 PGUSER=skillfusion
 PGPASSWORD=skillfusion_pw
 PGDATABASE=skillfusion_db
 PGHOST=127.0.0.1
 PGPORT=5432
 
-# DATABASE_URL="postgresql://skillfusion:skillfusion_pw@127.0.0.1:5432/skillfusion_db"
+DATABASE_URL="postgresql://skillfusion:skillfusion_pw@127.0.0.1:5432/skillfusion_db"
 ```
 Créer les tables à partir des models prisma
 ```bash
