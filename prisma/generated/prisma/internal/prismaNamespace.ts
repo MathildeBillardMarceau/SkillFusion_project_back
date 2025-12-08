@@ -386,7 +386,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   Course: 'Course',
   User: 'User',
-  CoursesCard: 'CoursesCard'
+  Category: 'Category',
+  CourseHasCategory: 'CourseHasCategory'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -402,7 +403,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "course" | "user" | "coursesCard"
+    modelProps: "course" | "user" | "category" | "courseHasCategory"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -554,77 +555,151 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    CoursesCard: {
-      payload: Prisma.$CoursesCardPayload<ExtArgs>
-      fields: Prisma.CoursesCardFieldRefs
+    Category: {
+      payload: Prisma.$CategoryPayload<ExtArgs>
+      fields: Prisma.CategoryFieldRefs
       operations: {
         findUnique: {
-          args: Prisma.CoursesCardFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload> | null
+          args: Prisma.CategoryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload> | null
         }
         findUniqueOrThrow: {
-          args: Prisma.CoursesCardFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload>
+          args: Prisma.CategoryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>
         }
         findFirst: {
-          args: Prisma.CoursesCardFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload> | null
+          args: Prisma.CategoryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload> | null
         }
         findFirstOrThrow: {
-          args: Prisma.CoursesCardFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload>
+          args: Prisma.CategoryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>
         }
         findMany: {
-          args: Prisma.CoursesCardFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload>[]
+          args: Prisma.CategoryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>[]
         }
         create: {
-          args: Prisma.CoursesCardCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload>
+          args: Prisma.CategoryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>
         }
         createMany: {
-          args: Prisma.CoursesCardCreateManyArgs<ExtArgs>
+          args: Prisma.CategoryCreateManyArgs<ExtArgs>
           result: BatchPayload
         }
         createManyAndReturn: {
-          args: Prisma.CoursesCardCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload>[]
+          args: Prisma.CategoryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>[]
         }
         delete: {
-          args: Prisma.CoursesCardDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload>
+          args: Prisma.CategoryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>
         }
         update: {
-          args: Prisma.CoursesCardUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload>
+          args: Prisma.CategoryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>
         }
         deleteMany: {
-          args: Prisma.CoursesCardDeleteManyArgs<ExtArgs>
+          args: Prisma.CategoryDeleteManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateMany: {
-          args: Prisma.CoursesCardUpdateManyArgs<ExtArgs>
+          args: Prisma.CategoryUpdateManyArgs<ExtArgs>
           result: BatchPayload
         }
         updateManyAndReturn: {
-          args: Prisma.CoursesCardUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload>[]
+          args: Prisma.CategoryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>[]
         }
         upsert: {
-          args: Prisma.CoursesCardUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload>
+          args: Prisma.CategoryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CategoryPayload>
         }
         aggregate: {
-          args: Prisma.CoursesCardAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateCoursesCard>
+          args: Prisma.CategoryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCategory>
         }
         groupBy: {
-          args: Prisma.CoursesCardGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.CoursesCardGroupByOutputType>[]
+          args: Prisma.CategoryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CategoryGroupByOutputType>[]
         }
         count: {
-          args: Prisma.CoursesCardCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.CoursesCardCountAggregateOutputType> | number
+          args: Prisma.CategoryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CategoryCountAggregateOutputType> | number
+        }
+      }
+    }
+    CourseHasCategory: {
+      payload: Prisma.$CourseHasCategoryPayload<ExtArgs>
+      fields: Prisma.CourseHasCategoryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CourseHasCategoryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasCategoryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CourseHasCategoryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasCategoryPayload>
+        }
+        findFirst: {
+          args: Prisma.CourseHasCategoryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasCategoryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CourseHasCategoryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasCategoryPayload>
+        }
+        findMany: {
+          args: Prisma.CourseHasCategoryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasCategoryPayload>[]
+        }
+        create: {
+          args: Prisma.CourseHasCategoryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasCategoryPayload>
+        }
+        createMany: {
+          args: Prisma.CourseHasCategoryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CourseHasCategoryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasCategoryPayload>[]
+        }
+        delete: {
+          args: Prisma.CourseHasCategoryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasCategoryPayload>
+        }
+        update: {
+          args: Prisma.CourseHasCategoryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasCategoryPayload>
+        }
+        deleteMany: {
+          args: Prisma.CourseHasCategoryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CourseHasCategoryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CourseHasCategoryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasCategoryPayload>[]
+        }
+        upsert: {
+          args: Prisma.CourseHasCategoryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasCategoryPayload>
+        }
+        aggregate: {
+          args: Prisma.CourseHasCategoryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCourseHasCategory>
+        }
+        groupBy: {
+          args: Prisma.CourseHasCategoryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CourseHasCategoryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CourseHasCategoryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CourseHasCategoryCountAggregateOutputType> | number
         }
       }
     }
@@ -671,7 +746,7 @@ export const CourseScalarFieldEnum = {
   id: 'id',
   title: 'title',
   slug: 'slug',
-  excerpt: 'excerpt',
+  description: 'description',
   image: 'image',
   level: 'level',
   duration: 'duration',
@@ -701,16 +776,25 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const CoursesCardScalarFieldEnum = {
+export const CategoryScalarFieldEnum = {
   id: 'id',
-  courseId: 'courseId',
-  image: 'image',
+  name: 'name',
   description: 'description',
-  date: 'date',
-  category: 'category'
+  icon: 'icon',
+  color: 'color',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
-export type CoursesCardScalarFieldEnum = (typeof CoursesCardScalarFieldEnum)[keyof typeof CoursesCardScalarFieldEnum]
+export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
+
+
+export const CourseHasCategoryScalarFieldEnum = {
+  courseId: 'courseId',
+  categoryId: 'categoryId'
+} as const
+
+export type CourseHasCategoryScalarFieldEnum = (typeof CourseHasCategoryScalarFieldEnum)[keyof typeof CourseHasCategoryScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -810,20 +894,6 @@ export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
  * Reference to a field of type 'Status[]'
  */
 export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status[]'>
-    
-
-
-/**
- * Reference to a field of type 'Category'
- */
-export type EnumCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Category'>
-    
-
-
-/**
- * Reference to a field of type 'Category[]'
- */
-export type ListEnumCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Category[]'>
     
 
 
@@ -937,7 +1007,8 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   course?: Prisma.CourseOmit
   user?: Prisma.UserOmit
-  coursesCard?: Prisma.CoursesCardOmit
+  category?: Prisma.CategoryOmit
+  courseHasCategory?: Prisma.CourseHasCategoryOmit
 }
 
 /* Types for Logging */

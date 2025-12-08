@@ -17,7 +17,7 @@ export const courseTypeDefs = `#graphql
     title:       String!
     slug:        String!
     
-    excerpt:     String  
+    description: String  
     image:       String  
     level:       Level     
     duration:    String  
@@ -27,9 +27,26 @@ export const courseTypeDefs = `#graphql
 
     user:        User
 
+    categories:  [Category!]
+
     createdAt:   DateTime!
     updatedAt:   DateTime!
   }
+
+  # ===========================
+  # Category
+  # ===========================
+  type Category {
+    id:          UUID! 
+    name:        String!
+    description: String
+    icon:        String
+    color:       String
+
+    createdAt:   DateTime!
+    updatedAt:   DateTime!
+  }
+
 
   # ===========================
   # Queries
@@ -38,5 +55,7 @@ export const courseTypeDefs = `#graphql
     courses: [Course!]!
     courseById(id: UUID!): Course!
     courseBySlug(slug: String!): Course!
+
+    categories: [Category!]!
   }
 `;

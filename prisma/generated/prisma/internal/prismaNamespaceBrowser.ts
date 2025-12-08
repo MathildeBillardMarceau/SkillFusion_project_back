@@ -53,7 +53,8 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   Course: 'Course',
   User: 'User',
-  CoursesCard: 'CoursesCard'
+  Category: 'Category',
+  CourseHasCategory: 'CourseHasCategory'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -76,7 +77,7 @@ export const CourseScalarFieldEnum = {
   id: 'id',
   title: 'title',
   slug: 'slug',
-  excerpt: 'excerpt',
+  description: 'description',
   image: 'image',
   level: 'level',
   duration: 'duration',
@@ -106,16 +107,25 @@ export const UserScalarFieldEnum = {
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
-export const CoursesCardScalarFieldEnum = {
+export const CategoryScalarFieldEnum = {
   id: 'id',
-  courseId: 'courseId',
-  image: 'image',
+  name: 'name',
   description: 'description',
-  date: 'date',
-  category: 'category'
+  icon: 'icon',
+  color: 'color',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
-export type CoursesCardScalarFieldEnum = (typeof CoursesCardScalarFieldEnum)[keyof typeof CoursesCardScalarFieldEnum]
+export type CategoryScalarFieldEnum = (typeof CategoryScalarFieldEnum)[keyof typeof CategoryScalarFieldEnum]
+
+
+export const CourseHasCategoryScalarFieldEnum = {
+  courseId: 'courseId',
+  categoryId: 'categoryId'
+} as const
+
+export type CourseHasCategoryScalarFieldEnum = (typeof CourseHasCategoryScalarFieldEnum)[keyof typeof CourseHasCategoryScalarFieldEnum]
 
 
 export const SortOrder = {

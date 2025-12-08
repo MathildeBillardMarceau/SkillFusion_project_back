@@ -50,7 +50,12 @@ export type Course = Prisma.CourseModel
  */
 export type User = Prisma.UserModel
 /**
- * Model CoursesCard
+ * Model Category
  * 
  */
-export type CoursesCard = Prisma.CoursesCardModel
+export type Category = Prisma.CategoryModel
+/**
+ * Model CourseHasCategory
+ * 
+ */
+export type CourseHasCategory = Prisma.CourseHasCategoryModel
