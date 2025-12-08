@@ -385,7 +385,8 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   Course: 'Course',
-  User: 'User'
+  User: 'User',
+  CoursesCard: 'CoursesCard'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -401,7 +402,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "course" | "user"
+    modelProps: "course" | "user" | "coursesCard"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -553,6 +554,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CoursesCard: {
+      payload: Prisma.$CoursesCardPayload<ExtArgs>
+      fields: Prisma.CoursesCardFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CoursesCardFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CoursesCardFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload>
+        }
+        findFirst: {
+          args: Prisma.CoursesCardFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CoursesCardFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload>
+        }
+        findMany: {
+          args: Prisma.CoursesCardFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload>[]
+        }
+        create: {
+          args: Prisma.CoursesCardCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload>
+        }
+        createMany: {
+          args: Prisma.CoursesCardCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CoursesCardCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload>[]
+        }
+        delete: {
+          args: Prisma.CoursesCardDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload>
+        }
+        update: {
+          args: Prisma.CoursesCardUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload>
+        }
+        deleteMany: {
+          args: Prisma.CoursesCardDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CoursesCardUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CoursesCardUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload>[]
+        }
+        upsert: {
+          args: Prisma.CoursesCardUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursesCardPayload>
+        }
+        aggregate: {
+          args: Prisma.CoursesCardAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCoursesCard>
+        }
+        groupBy: {
+          args: Prisma.CoursesCardGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CoursesCardGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CoursesCardCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CoursesCardCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -624,6 +699,18 @@ export const UserScalarFieldEnum = {
 } as const
 
 export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const CoursesCardScalarFieldEnum = {
+  id: 'id',
+  courseId: 'courseId',
+  image: 'image',
+  description: 'description',
+  date: 'date',
+  category: 'category'
+} as const
+
+export type CoursesCardScalarFieldEnum = (typeof CoursesCardScalarFieldEnum)[keyof typeof CoursesCardScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -723,6 +810,20 @@ export type EnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaMod
  * Reference to a field of type 'Status[]'
  */
 export type ListEnumStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Status[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Category'
+ */
+export type EnumCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Category'>
+    
+
+
+/**
+ * Reference to a field of type 'Category[]'
+ */
+export type ListEnumCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Category[]'>
     
 
 
@@ -836,6 +937,7 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   course?: Prisma.CourseOmit
   user?: Prisma.UserOmit
+  coursesCard?: Prisma.CoursesCardOmit
 }
 
 /* Types for Logging */

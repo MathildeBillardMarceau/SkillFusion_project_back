@@ -27,3 +27,8 @@ export type Course = Prisma.CourseModel
  * 
  */
 export type User = Prisma.UserModel
+/**
+ * Model CoursesCard
+ * 
+ */
+export type CoursesCard = Prisma.CoursesCardModel

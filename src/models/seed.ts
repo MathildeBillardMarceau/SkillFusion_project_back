@@ -30,5 +30,46 @@ await prisma.course.createMany({ data: [
 	{ title: "Title n°8", slug: "title-8", userId: (await getUser("2john@carpenter.io"))!.id },
 ] })
 
-console.log("✅ Données d'échantillonnage correctement ajoutées dans la BDD");
 
+const courses = await prisma.course.findMany();
+
+await prisma.coursesCard.createMany({
+  data: [
+    {
+      courseId: courses[0].id,
+      image: "https://placehold.co/400x300/png?text=Bricolage",
+      description: "Apprenez les bases du bricolage facilement et en toute sécurité.",
+      date: new Date("2025-12-15T10:00:00Z"),
+      category: "AUTRE",
+    },
+    {
+      courseId: courses[1].id,
+      image: "https://placehold.co/400x300/png?text=Peinture",
+      description: "Techniques de peinture pour débutants et avancés.",
+      date: new Date("2025-12-18T14:00:00Z"),
+      category: "PEINTURE",
+    },
+    {
+      courseId: courses[2].id,
+      image: "https://placehold.co/400x300/png?text=Plomberie",
+      description: "Réparer et entretenir vos installations sanitaires.",
+      date: new Date("2025-12-20T09:30:00Z"),
+      category: "PLOMBERIE",
+    },
+    {
+      courseId: courses[3].id,
+      image: "https://placehold.co/400x300/png?text=Électricité",
+      description: "Apprenez les bases de l'électricité pour sécuriser vos installations.",
+      date: new Date("2025-12-22T11:00:00Z"),
+      category: "ELECTRICITE",
+    },
+    {
+      courseId: courses[4].id,
+      image: "https://placehold.co/400x300/png?text=Menuiserie",
+      description: "Initiez-vous à la menuiserie et réalisez vos premiers meubles.",
+      date: new Date("2025-12-25T15:00:00Z"),
+      category: "MENUISERIE",
+    },
+  ],
+  skipDuplicates: true,
+});

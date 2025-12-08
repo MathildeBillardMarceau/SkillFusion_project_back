@@ -10,4 +10,5 @@
  */
 export type * from './models/Course.ts'
 export type * from './models/User.ts'
+export type * from './models/CoursesCard.ts'
 export type * from './commonInputTypes.ts'

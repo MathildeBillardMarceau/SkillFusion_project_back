@@ -34,3 +34,14 @@ export const Status = {
 } as const
 
 export type Status = (typeof Status)[keyof typeof Status]
+
+
+export const Category = {
+  AUTRE: 'AUTRE',
+  PEINTURE: 'PEINTURE',
+  PLOMBERIE: 'PLOMBERIE',
+  ELECTRICITE: 'ELECTRICITE',
+  MENUISERIE: 'MENUISERIE'
+} as const
+
+export type Category = (typeof Category)[keyof typeof Category]
