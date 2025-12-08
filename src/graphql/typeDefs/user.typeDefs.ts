@@ -20,7 +20,7 @@ export const userTypeDefs = `#graphql
   type User {
     id:          UUID! 
     email:       String!
-    password:    String!
+    # password:    String!
     
     firstName:   String!
     lastName:    String!
@@ -33,6 +33,10 @@ export const userTypeDefs = `#graphql
     createdAt:   DateTime!
     updatedAt:   DateTime!
   }
+  type AuthPayload {
+    user: User!
+    # accessToken: String!
+  }
 
   # ===========================
   # Queries
@@ -41,4 +45,68 @@ export const userTypeDefs = `#graphql
     users: [User!]!
     userById(id: UUID!): User!
   }
+
+  # ===========================
+  # Inputs
+  # ===========================
+  input CreateUserInput {
+    email:      EmailAddress!
+    password:   String!
+    firstName:  String!
+    lastName:   String!
+  }
+  input LoginUserInput {
+    email:      EmailAddress!
+    password:   String!
+  }
+  input UpdateUserInput {
+    email:      EmailAddress
+    password:   String
+    firstName:  String
+    lastName:   String
+    role:       Role
+  }
+
+  # ===========================
+  # Mutations
+  # ===========================
+  type Mutation{
+    registerUser(input: CreateUserInput): User!
+    loginUser(input: LoginUserInput): AuthPayload!
+    updateUser(id: UUID!, input: UpdateUserInput): User!
+    deleteUser(id: UUID!): Boolean!
+  }
 `;
+
+/* 
+# ===========================
+  # Inputs
+  # ===========================
+  input CreateUserInput {
+    email:      EmailAddress!
+    password:   String!
+    firstName:  String!
+    lastName:   String!
+  }
+  input LoginUserInput {
+    email:      EmailAddress!
+    password:   String!
+  }
+  input UpdateUserInput {
+    email:      EmailAddress
+    password:   String
+    firstName:  String
+    lastName:   String
+    role:       Role
+  }
+
+  # ===========================
+  # Mutations
+  # ===========================
+  type Mutation{
+    registerUser(input: CreateUserInput): User!
+    loginUser(input: LoginUserInput): AuthPayload!
+    updateUser(id: UUID!, input: UpdateUserInput): User!
+    deleteUser(id: UUID!): Boolean!
+  }
+*/

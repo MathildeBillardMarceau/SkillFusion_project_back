@@ -1,5 +1,6 @@
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@as-integrations/express5";
+import cors from "cors";
 import type { Request, Response } from "express";
 import express from "express";
 // import { expressMiddleware } from "@apollo/server/express5";
@@ -21,7 +22,10 @@ async function init() {
 
 	app.use(
 		"/graphql",
-		// cors,
+		cors({
+			origin: "http://localhost:3000", // pour le front
+			// credentials: true, // cookies/JWT
+		}),
 		express.json(),
 		expressMiddleware(server, {
 			context: async ({ req }) => ({ prisma }),

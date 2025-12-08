@@ -1,20 +1,11 @@
 import { GraphQLError } from "graphql";
-import type { PrismaClient } from "../../../prisma/prismaClient";
 
 export const courseResolvers = {
 	Query: {
-		courses: async (
-			_parent: null,
-			_args: null,
-			{ prisma }: { prisma: PrismaClient },
-		) => {
+		courses: async (_parent, _args, { prisma }) => {
 			return await prisma.course.findMany();
 		},
-		courseById: async (
-			_parent: null,
-			{ id }: { id: string },
-			{ prisma }: { prisma: PrismaClient },
-		) => {
+		courseById: async (_parent, { id }, { prisma }) => {
 			const course = await prisma.course.findUnique({ where: { id } });
 			if (!course) {
 				throw new GraphQLError("le 'course' n'existe pas", {
@@ -26,11 +17,7 @@ export const courseResolvers = {
 			}
 			return course;
 		},
-		courseBySlug: async (
-			_parent: null,
-			{ slug }: { slug: string },
-			{ prisma }: { prisma: PrismaClient },
-		) => {
+		courseBySlug: async (_parent, { slug }, { prisma }) => {
 			const course = await prisma.course.findUnique({ where: { slug } });
 			if (!course) {
 				throw new GraphQLError("le 'course' n'existe pas", {
@@ -41,6 +28,13 @@ export const courseResolvers = {
 				});
 			}
 			return course;
+		},
+	},
+	Course: {
+		user: async (parent, _args, { prisma }) => {
+			return await prisma.user.findUnique({
+				where: { id: parent.userId },
+			});
 		},
 	},
 };
