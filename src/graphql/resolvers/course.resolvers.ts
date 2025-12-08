@@ -29,12 +29,24 @@ export const courseResolvers = {
 			}
 			return course;
 		},
+		categories: async (_parent, _args, { prisma }) => {
+			return await prisma.category.findMany();
+		},
 	},
 	Course: {
 		user: async (parent, _args, { prisma }) => {
 			return await prisma.user.findUnique({
 				where: { id: parent.userId },
 			});
+		},
+		categories: async (parent, _args, { prisma }) => {
+			const courseCategories = await prisma.courseHasCategory.findMany({
+				where: { courseId: parent.id },
+				include: { category: true },
+			});
+			return courseCategories.map(
+				(courseCatergory) => courseCatergory.category,
+			);
 		},
 	},
 };

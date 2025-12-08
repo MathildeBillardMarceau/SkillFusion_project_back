@@ -1,3 +1,6 @@
+## Prérequis 
+node 22.20
+
 ## Installation
 ```bash
 pnpm i
