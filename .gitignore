@@ -1,5 +1,6 @@
-node_modules
-.env
-/src/generated/prisma
+# Dependency directories
+node_modules/
+.pnpm-store
 
-/src/generated/prisma
+# Environment variables files
+.env
