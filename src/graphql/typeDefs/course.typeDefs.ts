@@ -52,10 +52,77 @@ export const courseTypeDefs = `#graphql
   # Queries
   # ===========================
   type Query {
+    # courses
     courses: [Course!]!
     courseById(id: UUID!): Course!
     courseBySlug(slug: String!): Course!
 
+    # categories
     categories: [Category!]!
+    categoryById(id: UUID!): Category!
+    categoryByName(name: String!): Category!
+  }
+  # ===========================
+  # Inputs
+  # ===========================
+  # Categories
+  input CreateCategoryInput {
+    name:        String!
+    description: String
+    icon:        String
+    color:       String
+  }
+  input UpdateCategoryInput {
+    name:        String
+    description: String
+    icon:        String
+    color:       String
+  }
+
+  # Courses
+  input CreateCourseInput {
+    title:       String!
+    slug:        String!
+    
+    description: String  
+    image:       String  
+    level:       Level     
+    duration:    String  
+    cost:        String  
+    material:    String  
+    publishedAt: String
+
+    userId:      UUID!    # lien avec le user créateur
+    categoriesId:[UUID!]  # lien avec les catégories
+  }
+  
+  input UpdateCourseInput {
+    title:       String
+    slug:        String
+    
+    description: String  
+    image:       String  
+    level:       Level     
+    duration:    String  
+    cost:        String  
+    material:    String  
+    publishedAt: String
+
+    categoriesId:[UUID!]  # pour mettre à jour les catégories
+  }
+
+  # ===========================
+  # Mutations
+  # ===========================
+  type Mutation {
+    # category
+    createCategory(input: CreateCategoryInput!): Category!
+    updateCategory(id: UUID!, input: UpdateCategoryInput!): Category!
+    deleteCategory(id: UUID!): Boolean!
+
+    # course
+    createCourse(input: CreateCourseInput!): Course!
+    updateCourse(id: UUID!, input: UpdateCourseInput!): Course!
+    deleteCourse(id: UUID!): Boolean!
   }
 `;
