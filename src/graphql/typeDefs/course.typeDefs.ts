@@ -65,6 +65,7 @@ export const courseTypeDefs = `#graphql
   # ===========================
   # Inputs
   # ===========================
+  # Categories
   input CreateCategoryInput {
     name:        String!
     description: String
@@ -78,6 +79,7 @@ export const courseTypeDefs = `#graphql
     color:       String
   }
 
+  # Courses
   input CreateCourseInput {
     title:       String!
     slug:        String!
@@ -93,6 +95,21 @@ export const courseTypeDefs = `#graphql
     userId:      UUID!    # lien avec le user créateur
     categoriesId:[UUID!]  # lien avec les catégories
   }
+  
+  input UpdateCourseInput {
+    title:       String
+    slug:        String
+    
+    description: String  
+    image:       String  
+    level:       Level     
+    duration:    String  
+    cost:        String  
+    material:    String  
+    publishedAt: String
+
+    categoriesId:[UUID!]  # pour mettre à jour les catégories
+  }
 
   # ===========================
   # Mutations
@@ -100,10 +117,12 @@ export const courseTypeDefs = `#graphql
   type Mutation {
     # category
     createCategory(input: CreateCategoryInput!): Category!
-    updateCategory(id: UUID! input: UpdateCategoryInput!): Category!
+    updateCategory(id: UUID!, input: UpdateCategoryInput!): Category!
     deleteCategory(id: UUID!): Boolean!
 
     # course
     createCourse(input: CreateCourseInput!): Course!
+    updateCourse(id: UUID!, input: UpdateCourseInput!): Course!
+    deleteCourse(id: UUID!): Boolean!
   }
 `;

@@ -128,5 +128,37 @@ export const courseResolvers = {
 
 			return course;
 		},
+		updateCourse: async (_parent, { id, input }, { prisma }) => {
+			const { categoriesId, ...courseData } = input;
+
+			// mettre à jour les informations du cours
+			const course = await prisma.course.update({
+				where: { id },
+				data: {
+					...courseData,
+				},
+			});
+
+			// mettre à jour les catégories de la table de jointure
+			if (categoriesId?.length) {
+				// supprimer les anciennes catégories liées
+				await prisma.courseHasCategory.deleteMany({ where: { courseId: id } });
+				// ajouter les nouvelles catégories
+				await prisma.courseHasCategory.createMany({
+					data: categoriesId.map((categoryId) => ({
+						courseId: course.id,
+						categoryId,
+					})),
+					skipDuplicates: true,
+				});
+			}
+
+			return course;
+		},
+		deleteCourse: async (_parent, { id }, { prisma }) => {
+			// supprimer le cours
+			await prisma.course.delete({ where: { id } });
+			return true;
+		},
 	},
 };
