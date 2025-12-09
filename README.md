@@ -51,50 +51,45 @@ Accès à [Apollo Server](http://localhost:4000/graphql)
 
 ### En mode dev
 
-Créer un `.env` (ou `.env.dev`)
+Créer un `.env`
 ```ini
 PORT=4000
 PGUSER=skillfusion
 PGPASSWORD=skillfusion_pw
-PGDATABASE=skillfusion_db_dev
+PGDATABASE=skillfusion_db_dev # Ici on pointe vers une bdd de dev skillfusion_db_dev
 PGHOST=127.0.0.1
-PGPORT=5433
+PGPORT=5433 # 5433 !! pour Docker
 
-DATABASE_URL=postgresql://skillfusion:skillfusion_pw@127.0.0.1:5433/skillfusion_db_dev
+DATABASE_URL=postgresql://skillfusion:skillfusion_pw@127.0.0.1:5433/skillfusion_db_dev # 5433 !! pour Docker # Ici on pointe vers une bdd de dev skillfusion_db_dev
 
-DOCKERFILE=Dockerfile.dev
 CMD=sh -c "pnpm run db:generate && pnpm run db:reset && pnpm dev"
 ```
 Lancer la commande 
 ```bash
 docker compose up --build
 ```
-ou
-```bash
-docker compose --env-file .env.dev up --build
-```
 
 ### En mode prod
 
-Créer un `.env` (ou `.env.prod`)
+Créer un `.env`
 ```ini
 PORT=4000
 PGUSER=skillfusion
 PGPASSWORD=skillfusion_pw
 PGDATABASE=skillfusion_db
 PGHOST=127.0.0.1
-PGPORT=5433
+PGPORT=5433 # 5433 !! pour Docker
 
-DATABASE_URL=postgresql://skillfusion:skillfusion_pw@127.0.0.1:5433/skillfusion_db
+DATABASE_URL=postgresql://skillfusion:skillfusion_pw@127.0.0.1:5433/skillfusion_db # 5433 !! pour Docker
 
-DOCKERFILE=Dockerfile
 CMD=pnpm run docker:start
 ```
 Lancer la commande 
 ```bash
 docker compose up --build
 ```
-ou
+
+Pour vider la bdd
 ```bash
-docker compose --env-file .env.prod up --build
+pnpm db:migrate:reset
 ```

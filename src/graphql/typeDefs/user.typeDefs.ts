@@ -77,36 +77,3 @@ export const userTypeDefs = `#graphql
     deleteUser(id: UUID!): Boolean!
   }
 `;
-
-/* 
-# ===========================
-  # Inputs
-  # ===========================
-  input CreateUserInput {
-    email:      EmailAddress!
-    password:   String!
-    firstName:  String!
-    lastName:   String!
-  }
-  input LoginUserInput {
-    email:      EmailAddress!
-    password:   String!
-  }
-  input UpdateUserInput {
-    email:      EmailAddress
-    password:   String
-    firstName:  String
-    lastName:   String
-    role:       Role
-  }
-
-  # ===========================
-  # Mutations
-  # ===========================
-  type Mutation{
-    registerUser(input: CreateUserInput): User!
-    loginUser(input: LoginUserInput): AuthPayload!
-    updateUser(id: UUID!, input: UpdateUserInput): User!
-    deleteUser(id: UUID!): Boolean!
-  }
-*/

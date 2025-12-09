@@ -24,5 +24,8 @@ RUN pnpm run build
 # Exposer le port de l'API
 EXPOSE 4000
 
-# Lancer l'application
-CMD ["pnpm", "run", "docker:start"]
+# Lancer l'application en prod
+# CMD ["pnpm", "run", "docker:start"]
+
+# Lancer l'application en dev
+CMD ["pnpm", "dev"]
