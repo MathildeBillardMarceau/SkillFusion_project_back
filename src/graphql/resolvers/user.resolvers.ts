@@ -79,11 +79,12 @@ export const userResolvers = {
 		},
 		updateUser: async (_parent, { id, input }, { prisma }) => {
 			// mettre à jour les informations du user
-			await prisma.user.update({ where: { id }, data: input });
+			return await prisma.user.update({ where: { id }, data: input });
 		},
 		deleteUser: async (_parent, { id }, { prisma }) => {
 			// supprimer le user
-			await !!prisma.user.delete({ where: { id } });
+			await prisma.user.delete({ where: { id } });
+			return true;
 		},
 	},
 };

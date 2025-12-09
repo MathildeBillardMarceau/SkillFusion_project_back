@@ -52,17 +52,27 @@ export const courseTypeDefs = `#graphql
   # Queries
   # ===========================
   type Query {
+    # courses
     courses: [Course!]!
     courseById(id: UUID!): Course!
     courseBySlug(slug: String!): Course!
 
+    # categories
     categories: [Category!]!
+    categoryById(id: UUID!): Category!
+    categoryByName(name: String!): Category!
   }
   # ===========================
   # Inputs
   # ===========================
   input CreateCategoryInput {
     name:        String!
+    description: String
+    icon:        String
+    color:       String
+  }
+  input UpdateCategoryInput {
+    name:        String
     description: String
     icon:        String
     color:       String
@@ -88,7 +98,12 @@ export const courseTypeDefs = `#graphql
   # Mutations
   # ===========================
   type Mutation {
+    # category
     createCategory(input: CreateCategoryInput!): Category!
+    updateCategory(id: UUID! input: UpdateCategoryInput!): Category!
+    deleteCategory(id: UUID!): Boolean!
+
+    # course
     createCourse(input: CreateCourseInput!): Course!
   }
 `;

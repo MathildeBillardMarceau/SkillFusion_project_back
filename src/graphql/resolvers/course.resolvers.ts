@@ -2,6 +2,7 @@ import { GraphQLError } from "graphql";
 
 export const courseResolvers = {
 	Query: {
+		// courses
 		courses: async (_parent, _args, { prisma }) => {
 			return await prisma.course.findMany();
 		},
@@ -29,8 +30,24 @@ export const courseResolvers = {
 			}
 			return course;
 		},
+		// categories
 		categories: async (_parent, _args, { prisma }) => {
 			return await prisma.category.findMany();
+		},
+		categoryById: async (_parent, _args, { prisma }) => {
+			return await prisma.category.findMany();
+		},
+		categoryByName: async (_parent, { name }, { prisma }) => {
+			const category = await prisma.category.findUnique({ where: { name } });
+			if (!category) {
+				throw new GraphQLError("la 'category' n'existe pas", {
+					extensions: {
+						code: "NOT FOUND",
+						http: { status: 404 },
+					},
+				});
+			}
+			return category;
 		},
 	},
 	Course: {
@@ -51,6 +68,7 @@ export const courseResolvers = {
 	},
 
 	Mutation: {
+		// Category
 		createCategory: async (_parent, { input }, { prisma }) => {
 			const category = await prisma.category.create({
 				data: {
@@ -59,6 +77,17 @@ export const courseResolvers = {
 			});
 			return category;
 		},
+		updateCategory: async (_parent, { id, input }, { prisma }) => {
+			// mettre à jour les informations de la catégorie
+			return await prisma.category.update({ where: { id }, data: input });
+		},
+		deleteCategory: async (_parent, { id }, { prisma }) => {
+			// supprimer la catégorie
+			await prisma.category.delete({ where: { id } });
+			return true;
+		},
+
+		// Course
 		createCourse: async (_parent, { input }, { prisma }) => {
 			const { userId, categoriesId } = input;
 
