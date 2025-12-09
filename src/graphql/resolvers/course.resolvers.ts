@@ -89,7 +89,7 @@ export const courseResolvers = {
 
 		// Course
 		createCourse: async (_parent, { input }, { prisma }) => {
-			const { userId, categoriesId } = input;
+			const { userId, categoriesId, ...courseData } = input;
 
 			// vérifier si le user existe
 			const user = await prisma.user.findUnique({ where: { id: userId } });
@@ -104,15 +104,27 @@ export const courseResolvers = {
 			// créer le cours et le lier au user (créateur)
 			const course = await prisma.course.create({
 				data: {
-					...input,
+					...courseData,
+					userId,
 					// lier les catégories
-					...(categoriesId && {
-						categories: {
-							connect: categoriesId.map((id) => ({ id })),
-						},
-					}),
+					// ...(categoriesId && {
+					// 	categories: {
+					// 		connect: categoriesId.map((id) => ({ id })),
+					// 	},
+					// }),
 				},
 			});
+
+			// lier les catégories avec la table de jointure
+			if (categoriesId?.length) {
+				await prisma.courseHasCategory.createMany({
+					data: categoriesId.map((categoryId) => ({
+						courseId: course.id,
+						categoryId,
+					})),
+					skipDuplicates: true,
+				});
+			}
 
 			return course;
 		},
