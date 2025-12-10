@@ -9,10 +9,8 @@
 		"build": "tsc",
 		"start": "node --env-file=.env dist/src/index.js",
 		"docker:start": "pnpm run db:migrate:deploy && node dist/src/index.js",
-
 		"======= Pour la dev =======": "========================",
 		"dev": "node --env-file=.env ./src/index.ts --watch",
-
 		"======= Pour la BDD =======": "========================",
 		"db:seed": "node --env-file=.env ./src/models/seed.ts",
 		"db:migrate:deploy": "prisma migrate deploy",
@@ -44,6 +42,7 @@
 		"express": "^5.2.1",
 		"graphql": "^16.12.0",
 		"graphql-scalars": "^1.25.0",
+		"jsonwebtoken": "^9.0.3",
 		"pg": "^8.16.3",
 		"zod": "^4.1.13"
 	},

@@ -1,5 +1,6 @@
 import { hash, verify } from "argon2";
 import { GraphQLError } from "graphql";
+import jwt from 'jsonwebtoken';
 
 export const userResolvers = {
 	Query: {
@@ -72,10 +73,14 @@ export const userResolvers = {
 				throw new Error("Unauthorizerd: Invalid credentials"); // 401
 			}
 
-			// TODO: générer un accessToken
+			const accessToken = jwt.sign(
+				{ userId: user.id, email: user.email, role: user.role },
+				process.env.JWT_SECRET!,
+				{ expiresIn: "1h" }
+			);
 
 			// retourner les infos du user (sans le pw, avec l'accessToken)
-			return { user: { ...user, password: undefined } };
+			return { user: { ...user, password: undefined }, accessToken };
 		},
 		updateUser: async (_parent, { id, input }, { prisma }) => {
 			// mettre à jour les informations du user
