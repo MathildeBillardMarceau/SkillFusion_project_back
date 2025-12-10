@@ -61,6 +61,9 @@ export const courseTypeDefs = `#graphql
     categories: [Category!]!
     categoryById(id: UUID!): Category!
     categoryByName(name: String!): Category!
+
+    # levels
+    levels: [Level!]!
   }
   # ===========================
   # Inputs

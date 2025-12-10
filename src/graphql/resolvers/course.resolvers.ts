@@ -1,4 +1,5 @@
 import { GraphQLError } from "graphql";
+import { Level } from "../../../prisma/prismaClient.ts";
 
 export const courseResolvers = {
 	Query: {
@@ -49,6 +50,7 @@ export const courseResolvers = {
 			}
 			return category;
 		},
+		levels: () => Object.values(Level),
 	},
 	Course: {
 		user: async (parent, _args, { prisma }) => {
