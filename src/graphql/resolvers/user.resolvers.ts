@@ -74,7 +74,7 @@ export const userResolvers = {
 			}
 
 			const accessToken = jwt.sign(
-				{ userId: user.id, email: user.email, role: user.role },
+				{ userId: user.id, role: user.role },
 				process.env.JWT_SECRET!,
 				{ expiresIn: "1h" }
 			);
