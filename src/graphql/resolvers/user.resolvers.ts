@@ -84,6 +84,7 @@ export const userResolvers = {
 				{ expiresIn: "7d" }
 			);
 
+			// jwt.verify ?
 			
 
 			// retourner les infos du user (sans le pw, avec l'accessToken)
