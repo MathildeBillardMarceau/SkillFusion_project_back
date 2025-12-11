@@ -39,16 +39,15 @@ export const userResolvers = {
 			if (existingUser) throw Error("Conflict: User already exists"); // 409
 
 			// hasher le pw
-			const hashedPassord = await hash(password);
+			const hashedPassword = await hash(password);
 
 			// créer le user
 			const newUser = await prisma.user.create({
-				data: { email, password: hashedPassord, firstName, lastName },
-				omit: { password: true }, // on ne renvoie pas le pw
+				data: { email, password: hashedPassword, firstName, lastName },
 			});
 
 			// retourner les infos du user (sans le pw)
-			return newUser;
+			return {...newUser, password: undefined };
 		},
 		loginUser: async (_parent, { input }, { prisma }) => {
 			// récupération des arguments
@@ -61,7 +60,7 @@ export const userResolvers = {
 			console.log("user?", user);
 
 			// vérifier si le user n'existe pas
-			if (!user) throw new Error("Unauthorizerd: Invalid credentials"); // 401
+			if (!user) throw new Error("Unauthorized: Invalid credentials"); // 401
 
 			try {
 				// vérifier que le pw du user correspond au pw hashé de l'input
@@ -70,7 +69,7 @@ export const userResolvers = {
 				if (!isValidPassword)
 					throw new Error("Unauthorized: Invalid credentials"); // 401
 			} catch (e) {
-				throw new Error("Unauthorizerd: Invalid credentials"); // 401
+				throw new Error("Unauthorized: Invalid credentials"); // 401
 			}
 
 			const accessToken = jwt.sign(
@@ -79,16 +78,26 @@ export const userResolvers = {
 				{ expiresIn: "1h" }
 			);
 
+			const refreshToken = jwt.sign(
+				{ userId: user.id, role: user.role },
+				process.env.JWT_REFRESH_SECRET!,
+				{ expiresIn: "7d" }
+			);
+
+			
+
 			// retourner les infos du user (sans le pw, avec l'accessToken)
-			return { user: { ...user, password: undefined }, accessToken };
+			return { user: { ...user, password: undefined }, accessToken, refreshToken };
 		},
 		updateUser: async (_parent, { id, input }, { prisma }) => {
 			// mettre à jour les informations du user
-			await prisma.user.update({ where: { id }, data: input });
+			const updatedUser = await prisma.user.update({ where: { id }, data: input });
+			return { ...updatedUser, password: undefined };
 		},
 		deleteUser: async (_parent, { id }, { prisma }) => {
 			// supprimer le user
-			await !!prisma.user.delete({ where: { id } });
+			const deletedUser = await prisma.user.delete({ where: { id } });
+			return { ...deletedUser, password: undefined };
 		},
 	},
 };
