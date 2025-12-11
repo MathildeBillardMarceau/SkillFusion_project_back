@@ -3,13 +3,16 @@ import { expressMiddleware } from "@as-integrations/express5";
 import cors from "cors";
 import type { Request, Response } from "express";
 import express from "express";
-// import { expressMiddleware } from "@apollo/server/express5";
+import jwt from "jsonwebtoken";
 import { prisma } from "../prisma/prismaClient.ts";
 import { config } from "./config.ts";
 import { resolvers } from "./graphql/resolvers/index.ts";
 import { typeDefs } from "./graphql/typeDefs/index.ts";
 
 async function init() {
+	console.log("config:", config);
+	const { PORT, JWT_SECRET } = config;
+
 	const app = express();
 
 	// Apollo Server
@@ -28,16 +31,26 @@ async function init() {
 		}),
 		express.json(),
 		expressMiddleware(server, {
-			context: async ({ req }) => ({ prisma }),
+			context: async ({ req }) => {
+				const accessToken = req.headers.authorization?.split("")[1]; // Bearer ???
+				let connectedUser = null;
+				if (accessToken) {
+					try {
+						connectedUser = jwt.verify(accessToken, JWT_SECRET);
+						console.log("TOKEN", connectedUser);
+					} catch (e) {
+						console.log("invalid access token");
+					}
+				}
+
+				return { prisma, connectedUser };
+			},
 		}),
 	);
 
 	app.get("/", (req: Request, res: Response) =>
 		res.send("Hello Skillfusion back"),
 	);
-
-	console.log("config:", config);
-	const { PORT } = config;
 
 	app.listen(PORT, () => {
 		console.log(`🚀 Server ready: http://localhost:${PORT}/graphql`);

@@ -1,13 +1,27 @@
 import { hash, verify } from "argon2";
 import { GraphQLError } from "graphql";
-import jwt from 'jsonwebtoken';
+import jwt from "jsonwebtoken";
+import { config } from "../../config.ts";
+import { requireAuth } from "../utils/requireAuth.ts";
 
 export const userResolvers = {
 	Query: {
-		users: async (_parent, _args, { prisma }) => {
+		users: async (_parent, _args, { prisma, connectedUser }) => {
 			return await prisma.user.findMany();
 		},
-		userById: async (_parent, { id }, { prisma }) => {
+		userById: async (_parent, { id }, { prisma, connectedUser }) => {
+			requireAuth(connectedUser);
+
+			// ne permettre qu'au user actuel et à un admin de pouvoir mettre à jour
+			if (connectedUser.userId !== id || connectedUser.role !== "ADMIN") {
+				throw new GraphQLError("Forbidden", {
+					extensions: {
+						code: "FORBIDDEN",
+						http: { status: 403 },
+					},
+				});
+			}
+
 			const user = await prisma.user.findUnique({ where: { id } });
 			if (!user) {
 				throw new GraphQLError("le 'user' n'existe pas", {
@@ -47,7 +61,7 @@ export const userResolvers = {
 			});
 
 			// retourner les infos du user (sans le pw)
-			return {...newUser, password: undefined };
+			return { ...newUser, password: undefined };
 		},
 		loginUser: async (_parent, { input }, { prisma }) => {
 			// récupération des arguments
@@ -74,31 +88,107 @@ export const userResolvers = {
 
 			const accessToken = jwt.sign(
 				{ userId: user.id, role: user.role },
-				process.env.JWT_SECRET!,
-				{ expiresIn: "1h" }
+				config.JWT_SECRET,
+				{ expiresIn: "1h" },
 			);
 
 			const refreshToken = jwt.sign(
 				{ userId: user.id, role: user.role },
-				process.env.JWT_REFRESH_SECRET!,
-				{ expiresIn: "7d" }
+				config.JWT_REFRESH_SECRET,
+				{ expiresIn: "7d" },
 			);
 
-			// jwt.verify ?
-			
+			// stocker le refresh token en bdd
+			await prisma.user.update({
+				where: { id: user.id },
+				data: { refreshToken },
+			});
 
 			// retourner les infos du user (sans le pw, avec l'accessToken)
-			return { user: { ...user, password: undefined }, accessToken, refreshToken };
+			return {
+				user: { ...user, password: undefined },
+				accessToken,
+				refreshToken,
+			};
 		},
-		updateUser: async (_parent, { id, input }, { prisma }) => {
+		updateUser: async (_parent, { id, input }, { prisma, connectedUser }) => {
+			requireAuth(connectedUser);
+
+			// ne permettre qu'au user actuel et à un admin de pouvoir mettre à jour
+			if (connectedUser.userId !== id || connectedUser.role !== "ADMIN") {
+				throw new GraphQLError("Forbidden", {
+					extensions: {
+						code: "FORBIDDEN",
+						http: { status: 403 },
+					},
+				});
+			}
+
 			// mettre à jour les informations du user
-			const updatedUser = await prisma.user.update({ where: { id }, data: input });
+			const updatedUser = await prisma.user.update({
+				where: { id },
+				data: input,
+			});
 			return { ...updatedUser, password: undefined };
 		},
 		deleteUser: async (_parent, { id }, { prisma }) => {
 			// supprimer le user
 			const deletedUser = await prisma.user.delete({ where: { id } });
 			return { ...deletedUser, password: undefined };
+		},
+		refreshToken: async (_parent, { refreshToken }, { prisma }) => {
+			// 1. vérifier le refresh token
+			if (!refreshToken) {
+				throw new GraphQLError("Missing refresh token", {
+					extensions: { code: "BAD_REQUEST" },
+				});
+			}
+
+			// vérifier sur le refresh token correspon à un user
+			const user = await prisma.user.findFirst({
+				where: { refreshToken },
+			});
+			if (!user) {
+				throw new GraphQLError("Invalid refresh token", {
+					extensions: { code: "UNAUTHORIZED" },
+				});
+			}
+
+			// vérifier le refresh token
+			try {
+				jwt.verify(refreshToken, config.JWT_REFRESH_SECRET);
+			} catch (e) {
+				throw new GraphQLError("Invalid or expired refresh token", {
+					extensions: { code: "UNAUTHORIZED" },
+				});
+			}
+
+			// 2. Créer un nouvel access token
+			const newAccessToken = jwt.sign(
+				{ userId: user.id, role: user.role },
+				config.JWT_SECRET,
+				{ expiresIn: "1h" },
+			);
+
+			// Créer un nouvel refresh token
+			const newRefreshToken = jwt.sign(
+				{ userId: user.id, role: user.role },
+				config.JWT_REFRESH_SECRET,
+				{ expiresIn: "7d" },
+			);
+
+			// mettre à jour en bdd
+			await prisma.user.update({
+				where: { id: user.id },
+				data: { refreshToken: newRefreshToken },
+			});
+
+			// retourner les infos du user (sans le pw, avec l'accessToken + refreshToken)
+			return {
+				user: { ...user, password: undefined },
+				accessToken: newAccessToken,
+				refreshToken: newRefreshToken,
+			};
 		},
 	},
 };

@@ -3,5 +3,6 @@ onlyBuiltDependencies:
   - '@prisma/engines'
   - argon2
   - ejs
+  - esbuild
   - highlight.js
   - prisma
