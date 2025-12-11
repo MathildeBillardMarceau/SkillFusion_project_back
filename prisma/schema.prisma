@@ -20,7 +20,6 @@ enum Level {
   BEGINNER
   INTERMEDIATE
   ADVANCED
-  // pas possible de mettre des chiffres dans un enum comme prévu dans la DB, donc il faudra soit 
 }
 enum Role {
   ADMIN
@@ -50,17 +49,15 @@ model Course {
   publishedAt DateTime? @map("published_at")
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @default(now()) @map("updated_at")
-  // @updatedAt permet d'automatiquement modifier le updated_at lorsque l'enregistrement est modifié
-  // @Nicolas Mais il faut soit utiliser @updatedAt, soit @default(now())
 
   // FK
   userId      String    @map("user_id")
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // Relation 
-  categories CourseHasCategory[]
+  // Relations : un cours peut avoir plusieurs catégories
+  categories  CourseHasCategory[]
 
-  @@map("course") // Correspondant entre le model Course et le table course (min) en DB 
+  @@map("course")
 }
 
 // ===========================
@@ -78,13 +75,10 @@ model User {
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @default(now()) @map("updated_at")
 
-  // Relations
-  course      Course[]
+  // Relations : le user peut créer plusieurs cours
+  course      Course[] // TODO: à corriger en "courses" pour être bien explicite
 
-  @@map("user") 
-  // pour éviter d'avoir une table user en DB qui est spécifique à PG
-  // @Nicolas ENFAIT oui et non, il y a bien une table user dans PG, mais qui se nomme sans les "". 
-  // De notre côté, si on veux utiliser un mot-clé déjà utilisé par PG, il suffit de mettre de "".
+  @@map("user")
 }
 
 // ===========================
@@ -101,18 +95,20 @@ model Category {
   createdAt   DateTime  @default(now()) @map("created_at")
   updatedAt   DateTime  @default(now()) @map("updated_at")
 
-  // relation
+  // Relations : 
   courses     CourseHasCategory[]
 
   @@map("category")
 }
 
 model CourseHasCategory{
+  // FK
   courseId    String @map("course_id")
   categoryId  String @map("category_id")
 
-  course      Course @relation(fields: [courseId], references: [id])
-  category    Category @relation(fields: [categoryId], references: [id])
+  // Relations
+  course      Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  category    Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
 
   @@id([courseId, categoryId])
 
