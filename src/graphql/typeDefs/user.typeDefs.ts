@@ -75,5 +75,7 @@ export const userTypeDefs = `#graphql
     loginUser(input: LoginUserInput): AuthPayload!
     updateUser(id: UUID!, input: UpdateUserInput): User!
     deleteUser(id: UUID!): Boolean!
+
+    refreshToken(refreshToken: String!): AuthPayload!
   }
 `;

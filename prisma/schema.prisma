@@ -78,6 +78,9 @@ model User {
   // Relations : le user peut créer plusieurs cours
   course      Course[] // TODO: à corriger en "courses" pour être bien explicite
 
+  // Refresh token
+  refreshToken String?
+
   @@map("user")
 }
 
