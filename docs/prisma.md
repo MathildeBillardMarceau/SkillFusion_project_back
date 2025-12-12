@@ -25,12 +25,15 @@
 ### one-to-many (1..N) - Un cours est écrit par 1 et 1 seul user - un user peut écrire 0 à N cours
 #### Dans Course:
 ```prisma
-userId  String    @map("user_id")
-user  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+userId  String    @map("user_id") // champ physique
+user  User      @relation(fields: [userId], references: [id], onDelete: Cascade) // relation virtuelle
 ```
 - la syntaxe est confuse car dans une relation, prisma a besoin de séparer le nom du champ de la relation du nom utilisé dans le code js
-- la première ligne indique le champ et le type du modèle (userId) et le champ correspondant en DB ("user_id")
-- la seconde ligne indique le champ utilisable en js (user) et ensuite la relation
+- 
+  - la première ligne indique le champ et le type du modèle (userId) et le champ correspondant en DB ("user_id") 
+    - => on utilisera userId pour faire des FILTRES (SELECT * FROM message WHERE course_id = 'c7f8a1b2';)
+  - la seconde ligne indique le champ le champ de relation virtuel
+    - => on utilisera user pour faire des INCLUDE/JOINTURES (SELECT *, course.* FROM message JOIN course ON message.course_id = course.id;)
 
 
 
