@@ -7,9 +7,10 @@
   @default(uuid()) @db.Uuid
     le @db.Uuid sert à préciser à prisma que si on a un string coté prisma, le type coté DB est un UUID
   @unique précise un champ unique
-  String? ? précise qu'un champ n'est pas not null
+  String? ? précise qu'un champ est optionnel (donc pas NOT NULL)
 
-  @@map ("model")      permet de faire correspondre un Model (prisma) avec une table (PostGRE)
+  @map ("champ")      nom du champ en DB
+  @@map ("model")     nom de la table en DB
 
 ## enums
   on crée le enum en-dessous et on ajoute le enum en Type (avec une Majuscule donc)
@@ -23,12 +24,27 @@
 
 ### one-to-many (1..N) - Un cours est écrit par 1 et 1 seul user - un user peut écrire 0 à N cours
 #### Dans Course:
-    user_id     String    @db.Uuid
-    user_id: c'est la valeur du champ qui sera entré dans la colonne user_id table course de la DB
+```prisma
+userId  String    @map("user_id")
+user  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+```
+- la syntaxe est confuse car dans une relation, prisma a besoin de séparer le nom du champ de la relation du nom utilisé dans le code js
+- la première ligne indique le champ et le type du modèle (userId) et le champ correspondant en DB ("user_id")
+- la seconde ligne indique le champ utilisable en js (user) et ensuite la relation
+
+
+
+    userId      String    @map("user_id")
+      - userId: valeur du champ dans le modèle Course
+      - user_id: c'est la valeur du champ qui sera entré dans la DB par le modèle
     
-    user        User      @relation(fields:[user_id], references: [id])
-      user: c'est le champ du modèle
-    On explique qu'on va chercher dans le model User sa clef id et qu'on va la mettre dans le champ user_id de course
+    user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+      - user: c'est le champ du modèle dans Course
+      - User: c'est le modèle User dans lequel on va chercher...
+      - ...references[id] la clef id dans le modèle User
+      - fields:[userId]: le nom du champ dans le modèle Course
+
+
 
 #### Dans User:
     course      Course[]
