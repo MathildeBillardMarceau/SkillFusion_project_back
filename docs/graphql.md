@@ -3,6 +3,8 @@
 
 ## Les typeDefs
 
+Les typeDefs servent à structurer les données
+
 ### le fichier index.ts
 
 importe les types définis dans les autres fichiers de l'ensemble et les regroupe dans une grosse variable utilisable par graphQl
@@ -128,3 +130,81 @@ export const scalarTypeDefs = [
 Ici on a importe DateTime, Email et UUID
 
 ## Les résolvers
+
+Les résolvers exécutent des opérations pour
+  - aller rechercher les données, via l'ORM, la DB ou une API
+  - transformer ou combiner les données pour les retourner au client
+
+### le fichier index.ts
+
+Importe et concatène tous les resolvers pour les exporter dans une grosse constante `resolvers`
+
+Il se compose de deux parties `Query` et `Mutation`
+On peut trouver une 3ème pour des types personnalisés
+
+### un fichier type (ex: messageResolvers.ts)
+
+### Query
+
+```js
+export const messageResolvers = {
+	Query: {
+```
+Une fois l'export structuré, on rentre dans la partue `Query:{}`
+
+Chaque Query comment par un nom qui correspond aux types Query definis dans message.typeDefs.js
+
+**exemple:**
+```js
+		messages: async (_parent, _args, { prisma }) => {
+			return await prisma.message.findMany({
+				include: { user: true, course: true },
+			});
+		},
+```
+
+Ici `messages` fait une requête (donc async await)
+On doit fournir les champs `_parent, _args,` qui sont vides donc préfixés avec un `_`
+On appelle ensuite `{ prisma }`
+Pour faire une requête `prisma.message.findMany()`
+Et on va spécifier qu'on fourni aussi les éléments joints `include: { user: true, course: true },` qui correspondent aux éléménts définis dans le type Message dans message.typeDefs.js (et correspondent dans prisma aux liaisons entre plusieurs Modèles et donc entre plusieurs tables dans la DB)
+
+
+```js
+		messagesByCourse: async (_parent, args, { prisma }) => {
+			const messages = await prisma.message.findMany({
+				where: { courseId: args.id },
+				include: { user: true },
+			});
+			return messages;
+		},
+```
+Cet exemple est un peu plus complexe:
+`messagesByCourse` fait une requête, mais on aura besoin de `args` qui n'est donc pas préfixé
+Dans mon `prisma.message.findMany()` 
+- je vais faire un filtre avec `where: { courseId: args.id },`
+    Comme je **filtre** je vais utiliser le champ `courseId` de mon modèle prisma qui est le champ physique contenant la clef étrangère dans la DB
+    `args` est un objet, donc j'utilise sa valeur id avec `args.id`
+- je vais ensuite joindre avec `include: { user: true },`
+    Comme je **joins** je vais utiliser le champ `user` de mon modèle prisma qui est la relation virtuelle entre les modèles Message et User
+
+_(voir les notes prisma en cas de doute)_
+
+
+
+```js
+
+		messagesByUser: async (__parent, args, { prisma }) => {
+			const messages = await prisma.message.findMany({
+				where: { userId: args.id },
+				include: { course: true },
+			});
+			return messages;
+		},
+		// fonction jumelle de la précédente
+	},
+};
+```
+
+### Mutation
+
