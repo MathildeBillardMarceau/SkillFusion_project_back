@@ -62,11 +62,17 @@ Quand dans mon resolver je vais faire une query nommés **messagesByCourse** je 
 
 #### input CreateMessage & input UpdateMessage
 
-Role: définir les **données nécéssaires** pour **créer** et **mettre à jour** un message.
+Role: définir les **données nécéssaires à retourner** lors de la **création** et **mise à jour** d'un message.
+
 Create indique tous les champs obliatoire
 Update indique les champs optionnels (ici il y a quand même une obligation)
 
 _Il n'est pas nécéssaire de faire d'input pour les suppressions_
+```ts
+  input UpdateMessage {
+    content:    String!
+  }
+```
 
 ```ts
   input CreateMessage {
@@ -74,11 +80,54 @@ _Il n'est pas nécéssaire de faire d'input pour les suppressions_
     userId:       UUID!
     courseId:     UUID!
   }
+```
 
-  input UpdateMessage {
+**Attention** sous cette forme avec les `!` obligations **de retour** il va falloir dans la mutation inclure userId et courseId sous la forme 
+`include: { user: true, course: true },`
+sinon il ne sera pas possible de retourner les champs obtenus après création (même si ce sont les champs qu'on a fournis, ils seront requis à partir du message)
+
+**Il y a deux solutions:**
+1°/ rendre les champs optionnels - ce qui permet de garder la destructuration dans la mutation
+```ts
+  input CreateMessage {
+    content:    String!
+    userId:       UUID
+    courseId:     UUID
+  }
+```
+et `include` signifiant inclure le résultat de ces requêtes dans la réponse
+```ts
+	createMessage: async (_parent, { input }, { prisma }) => {
+			const message = await prisma.message.create({
+				data: { ...input }, 
+				include: { user: true, course: true }, 
+			});
+			return message;
+		},
+```
+
+2°/ ne pas demander du tout les infos dans l'input, il faudra alors les prendre ailleurs (et on ne pourra pas destructurer l'input de la requête)
+```ts
+  input CreateMessage {
     content:    String!
   }
 ```
+
+```ts
+	createMessage: async (_parent, { input }, { prisma }) => {
+			const message = await prisma.message.create({
+				  data: {
+    				content: input.content,
+    				userId: input.userId,
+    				courseId: input.courseId,
+						},
+			});
+			return message;
+		},
+```
+
+
+
 
 #### type Mutation
 
@@ -229,7 +278,8 @@ export const messageResolvers = {
 ```ts
 createMessage: async (_parent, { input }, { prisma }) => {
 			const message = await prisma.message.create({
-				data: { ...input }, 
+				data: { ...input },
+				include: { user: true, course: true }, 
 			});
 			return message;
 		},
@@ -241,6 +291,8 @@ On utilise `{ input }` au lieu de `args` sinon la syntaxe ne change pas
 Dans ma requête `prisma.message.create({ data: { ...input },});`
 Je fais appel à la **destructuration de l'input** ou **spread opérator**
 Les `...` indique que comme les champs définis dans l'input GraphQL et le modèle Prisma, je n'ai pas besoin de les nommer, ils vont se préciser tout seuls
+
+Ici je suis obligé de rajouter `include: { user: true, course: true },` car mon input les attends en champs obligatoires
 
 
 ```ts

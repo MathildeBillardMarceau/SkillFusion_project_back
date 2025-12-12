@@ -50,6 +50,7 @@ export const messageResolvers = {
 			// input correspond au input CreateMessage défini dans les typeDefs
 			const message = await prisma.message.create({
 				data: { ...input }, // ici c'est une destructuration de l'input (ou spread opérator): comme mes champs correspondent en nom entre GraphQL et Prisma il vont correspondre sans avoir besoin de les préciser
+				include: { user: true, course: true }, // il est nécéssaire d'include user et course car la destructuration impose de les
 			});
 			return message;
 		},

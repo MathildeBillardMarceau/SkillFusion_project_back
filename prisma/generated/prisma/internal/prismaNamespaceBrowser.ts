@@ -54,7 +54,8 @@ export const ModelName = {
   Course: 'Course',
   User: 'User',
   Category: 'Category',
-  CourseHasCategory: 'CourseHasCategory'
+  CourseHasCategory: 'CourseHasCategory',
+  Message: 'Message'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -98,6 +99,7 @@ export const UserScalarFieldEnum = {
   password: 'password',
   firstName: 'firstName',
   lastName: 'lastName',
+  avatar: 'avatar',
   role: 'role',
   status: 'status',
   createdAt: 'createdAt',
@@ -127,6 +129,18 @@ export const CourseHasCategoryScalarFieldEnum = {
 } as const
 
 export type CourseHasCategoryScalarFieldEnum = (typeof CourseHasCategoryScalarFieldEnum)[keyof typeof CourseHasCategoryScalarFieldEnum]
+
+
+export const MessageScalarFieldEnum = {
+  id: 'id',
+  content: 'content',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  userId: 'userId',
+  courseId: 'courseId'
+} as const
+
+export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
 
 
 export const SortOrder = {
