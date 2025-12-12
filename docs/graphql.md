@@ -144,7 +144,7 @@ On peut trouver une 3ème pour des types personnalisés
 
 ### un fichier type (ex: messageResolvers.ts)
 
-### Query
+#### Query
 
 ```js
 export const messageResolvers = {
@@ -193,18 +193,73 @@ _(voir les notes prisma en cas de doute)_
 
 
 ```js
-
 		messagesByUser: async (__parent, args, { prisma }) => {
 			const messages = await prisma.message.findMany({
 				where: { userId: args.id },
 				include: { course: true },
 			});
+			// ajout d'un controle d'erreur si rien n'es retourné
+      if (!messages) {
+				throw new GraphQLError("Message(s) non trouvé(s)", {
+					extensions: {
+						code: "NOT FOUND",
+						http: { status: 404 },
+					},
+				});
+			}
 			return messages;
-		},
-		// fonction jumelle de la précédente
-	},
-};
+		}
 ```
 
-### Mutation
+Cette fonction est identique à la précédente, mais j'ai rajouté un controle en cas d'absence de résultats.
+Ce controle utilise `GraphQLError` une classe de graphQL qui se traduit par un import de `import { GraphQLError } from "graphql";`
 
+Les `extensions` servent à définir des valeurs comme `code` et `http status` pour la machine qui demande la query
+
+#### Mutation
+
+Positionnement des mutations
+```ts
+export const messageResolvers = {
+	Query: {},
+  Mutation:{},
+}
+```
+
+```ts
+createMessage: async (_parent, { input }, { prisma }) => {
+			const message = await prisma.message.create({
+				data: { ...input }, 
+			});
+			return message;
+		},
+```
+On va utiliser la mutation `createMessage` qui correspond à l'input `CreateMessage`. On fait la différence entre l'input qui a une Majuscule et le resolver qui a une minuscule
+
+On utilise `{ input }` au lieu de `args` sinon la syntaxe ne change pas
+
+Dans ma requête `prisma.message.create({ data: { ...input },});`
+Je fais appel à la **destructuration de l'input** ou **spread opérator**
+Les `...` indique que comme les champs définis dans l'input GraphQL et le modèle Prisma, je n'ai pas besoin de les nommer, ils vont se préciser tout seuls
+
+
+```ts
+		updateMessage: async (_parent, { id, input }, { prisma }) => {
+			const message = await prisma.message.update({
+				where: { id },
+				data: input,
+			});
+			return message;
+		},
+```
+Ici on note qu'on passe deux arguments `{ id, input }` alors que id n'est pas défini dans mon input
+En fait le second champ de la requête correspond à la partie entre parenthèses dans le type Mutation de typeDefs.ts
+`updateMessage(id:UUID!, input:UpdateMessage!): Message!`
+
+```ts
+		deleteMessage: async (_parent, { id }, { prisma }) => {
+			await prisma.message.delete({ where: { id } });
+			return true;
+		},
+```
+Finalement le delete est le plus simple, on passe juste l'id comme défini dans le type Mutation
