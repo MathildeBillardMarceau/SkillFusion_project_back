@@ -108,7 +108,7 @@ await prisma.course.createMany({
 			slug: "title-6",
 			description: loremIpsum,
 			userId: (await getUser("2john@carpenter.io"))!.id,
-			image: "/images/tableau_electrique.jpg"
+			image: "/images/tableau_electrique.jpg",
 		},
 		{
 			title: "Title n°7",
@@ -158,5 +158,41 @@ await prisma.courseHasCategory.createMany({
 		},
 	],
 });
+
+// creation des messages
+async function seedMessages() {
+	// récupérer un tableau de tous les users
+	const allUsers = await prisma.user.findMany();
+	const allCourses = await prisma.course.findMany();
+
+	// pour chaque cours, faire un message de chaque user disant "message de X dans cours Y"
+	for (const course of allCourses) {
+		for (const user of allUsers) {
+			await prisma.message.create({
+				data: {
+					content: `Bonjour, je suis ${user.firstName} ${user.lastName} et mon message dans le cours ${course.title} est à présent gravé pour sauve l'humanité et le futur: je suis ton père, suis-moi si tu veux vivre, la grande tempête elle approche, hasta la vista baby`,
+					userId: user.id,
+					courseId: course.id,
+				},
+			});
+		}
+		console.log("✅messages créés dans un cours :", course);
+	}
+
+	// version plus complexe pour un second message
+	const messages = [];
+	for (const course of allCourses) {
+		for (const user of allUsers) {
+			messages.push({
+				content: `I'll be back - enfin non I am back en fait... zut ça marche pas <br> Bon I'll be back-end alors!`,
+				userId: user.id,
+				courseId: course.id,
+			});
+		}
+	}
+	await prisma.message.createMany({ data: messages });
+	console.log("✅ messages créés dans tous les cours ok ");
+}
+seedMessages();
 
 console.log(`✅ Données d'échantillonnage correctement ajoutées à la BDD.`);
