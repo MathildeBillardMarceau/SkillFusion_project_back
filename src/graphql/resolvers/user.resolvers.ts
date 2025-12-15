@@ -13,7 +13,7 @@ export const userResolvers = {
 			requireAuth(connectedUser);
 
 			// ne permettre qu'au user actuel et à un admin de pouvoir mettre à jour
-			if (connectedUser.userId !== id || connectedUser.role !== "ADMIN") {
+			if (connectedUser.userId !== id && connectedUser.role !== "ADMIN") {
 				throw new GraphQLError("Forbidden", {
 					extensions: {
 						code: "FORBIDDEN",
