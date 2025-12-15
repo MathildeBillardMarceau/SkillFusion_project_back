@@ -32,7 +32,8 @@ async function init() {
 		express.json(),
 		expressMiddleware(server, {
 			context: async ({ req }) => {
-				const accessToken = req.headers.authorization?.split("")[1]; // Bearer ???
+				const authHeader = req.headers.authorization || "";
+				const accessToken = authHeader.replace("Bearer","").trim();
 				let connectedUser = null;
 				if (accessToken) {
 					try {
