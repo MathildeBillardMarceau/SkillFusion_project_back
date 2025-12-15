@@ -56,6 +56,7 @@ model Course {
 
   // Relations : un cours peut avoir plusieurs catégories
   categories  CourseHasCategory[]
+  messages    Message[]
 
   @@map("course")
 }
@@ -69,6 +70,7 @@ model User {
   password    String
   firstName   String  @map("first_name")
   lastName    String  @map("last_name")
+  avatar      String?
   role        Role    @default(APPRENTICE)
   status      Status  @default(APPROVED)
 
@@ -77,6 +79,10 @@ model User {
 
   // Relations : le user peut créer plusieurs cours
   course      Course[] // TODO: à corriger en "courses" pour être bien explicite
+
+  // Relations : le user peut créer plusieurs messages
+  messages    Message[]
+
 
   // Refresh token
   refreshToken String?
@@ -116,4 +122,28 @@ model CourseHasCategory{
   @@id([courseId, categoryId])
 
   @@map("course_has_category")
+}
+
+// ===========================
+// MODEL : Message
+// ===========================
+
+model Message {
+    id          String  @id @default(uuid(7))
+    content     String
+
+    createdAt   DateTime  @default(now()) @map("created_at")
+    updatedAt   DateTime  @default(now()) @map("updated_at")
+
+    //relations 
+    //un message est fait par un et un seul user mais un user peut faire plusieurs messages (Many to One)
+    // FK
+    userId      String    @map("user_id")
+    user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    //un message fait partie de un et un seul cours, mais un cours peut avoir plusieurs messages (Many to One)
+    courseId    String    @map("course_id")
+    course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@map("message")
 }

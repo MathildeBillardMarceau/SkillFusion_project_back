@@ -59,3 +59,8 @@ export type Category = Prisma.CategoryModel
  * 
  */
 export type CourseHasCategory = Prisma.CourseHasCategoryModel
+/**
+ * Model Message
+ * 
+ */
+export type Message = Prisma.MessageModel

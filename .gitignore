@@ -8,3 +8,5 @@ node_modules/
 # Environment variables files
 .env
 
+# Suppression du prisma generated dans les push
+prisma/generated/

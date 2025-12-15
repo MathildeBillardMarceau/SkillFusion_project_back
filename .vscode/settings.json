@@ -1,4 +1,6 @@
 {
+	"workbench.colorTheme": "Noctis",
+	"window.zoomLevel": 1,
 	// Utiliser Biome pour le formatage
 	"editor.defaultFormatter": "biomejs.biome",
 	"editor.formatOnSave": true,
