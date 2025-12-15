@@ -40,6 +40,26 @@ export const messageResolvers = {
 			}
 			return messages;
 		},
+
+		messagesByCourseSlug: async (_parent, { slug }, { prisma }) => {
+			const messages = await prisma.message.findMany({
+				where: {
+					course: { slug: slug },
+				},
+				include: { user: true, course: true },
+			});
+			if (!messages) {
+				throw new GraphQLError("Message(s) non trouvé(s)", {
+					// utilisation de la classe GraphQLError qui se retrouve importée en début de fichier
+					extensions: {
+						code: "NOT FOUND",
+						http: { status: 404 },
+					},
+					// les extensions servent à définir les retours qui sont faits à la machine requêtante
+				});
+			}
+			return messages;
+		},
 	},
 
 	Mutation: {

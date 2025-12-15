@@ -59,6 +59,13 @@ Le ! après`[Message!]!`signifie que la liste ne peut pas être nulle (même vid
 ```
 Quand dans mon resolver je vais faire une query nommés **messagesByCourse** je dois impérativement avoir un argument `id` au format `UUID`
 
+**Si je veux utiliser un champ qui n'est pas dans mon type**
+```ts
+    messagesByCourseSlug:(slug: String!): [Message!]
+```
+ajout de recherche des cours par slug pour chaque cours plutôt que UUID
+=> la suite dans le resolver
+ 
 
 #### input CreateMessage & input UpdateMessage
 

@@ -23,6 +23,9 @@ export const messageTypeDefs = `#graphql
     messages: [Message!]!
     messagesByCourse(id: UUID!): [Message!]
     messagesByUser(id: UUID!): [Message!]
+    # ajout de recherche des cours par slug pour chaque cours plutôt que UUID
+    # la suite dans le resolver
+    messagesByCourseSlug(slug: String!): [Message!]
   }
 
   # ===========================
