@@ -28,6 +28,7 @@ export const courseTypeDefs = `#graphql
     user:        User
 
     categories:  [Category!]
+    chapters:    [Chapter!]
 
     createdAt:   DateTime!
     updatedAt:   DateTime!

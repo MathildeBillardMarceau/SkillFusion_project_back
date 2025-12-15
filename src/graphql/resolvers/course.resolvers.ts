@@ -67,6 +67,11 @@ export const courseResolvers = {
 				(courseCatergory) => courseCatergory.category,
 			);
 		},
+		chapters: async (parent, _args, { prisma }) => {
+			return await prisma.chapter.findMany({
+				where: { courseId: parent.id },
+			});
+		},
 	},
 
 	Mutation: {

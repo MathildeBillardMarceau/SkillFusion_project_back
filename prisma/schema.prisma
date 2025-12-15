@@ -31,34 +31,9 @@ enum Status {
   APPROVED
   BANNED
 }
-
-// ===========================
-// MODEL : Course
-// ===========================
-model Course {
-  id          String  @id @default(uuid(7))   
-  title       String  @unique
-  slug        String  @unique
-  description String?
-  image       String?
-  level       Level?
-  duration    String?
-  cost        String?
-  material    String?
-
-  publishedAt DateTime? @map("published_at")
-  createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @default(now()) @map("updated_at")
-
-  // FK
-  userId      String    @map("user_id")
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  // Relations : un cours peut avoir plusieurs catégories
-  categories  CourseHasCategory[]
-  messages    Message[]
-
-  @@map("course")
+enum MediaType {
+  IMAGE
+  VIDEO
 }
 
 // ===========================
@@ -91,9 +66,92 @@ model User {
 }
 
 // ===========================
-// MODEL : Courses
+// MODEL : Course
 // ===========================
+model Course {
+  id          String  @id @default(uuid(7))   
+  title       String  @unique
+  slug        String  @unique
+  description String?
+  image       String?
+  level       Level?
+  duration    String?
+  cost        String?
+  material    String?
 
+  publishedAt DateTime? @map("published_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @map("updated_at")
+
+  // FK
+  userId      String    @map("user_id")
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Relations : un cours peut avoir plusieurs catégories
+  categories  CourseHasCategory[]
+  messages    Message[]
+  chapters    Chapter[]
+
+  @@map("course")
+}
+
+// ===========================
+// MODEL : Chapter
+// ===========================
+model Chapter {
+  id          String   @id @default(uuid(7))
+  title       String
+  description String?
+  text        String?
+
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @map("updated_at")
+
+  // FK
+  courseId    String @map("course_id")
+  course      Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  // Relations
+  medias      ChapterHasMedia[]
+
+
+  @@map("chapter")
+}
+
+// ===========================
+// MODEL : Media
+// ===========================
+model Media {
+  id          String   @id @default(uuid(7))
+  url         String   @unique
+  type        MediaType
+
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @map("updated_at")
+
+  // Relations
+  chapters    ChapterHasMedia[]
+
+  @@map("media")
+}
+
+model ChapterHasMedia{
+  // FK
+  chapterId   String @map("chapter_id")
+  mediaId     String @map("media_id")
+
+  // Relations
+  chapter     Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  media       Media @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+
+  @@id([chapterId, mediaId])
+
+  @@map("chapter_has_media")
+}
+
+// ===========================
+// MODEL : Category
+// ===========================
 model Category {
   id          String   @id @default(uuid(7))
   name        String   @unique
@@ -127,7 +185,6 @@ model CourseHasCategory{
 // ===========================
 // MODEL : Message
 // ===========================
-
 model Message {
     id          String  @id @default(uuid(7))
     content     String

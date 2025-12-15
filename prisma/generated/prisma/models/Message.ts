@@ -341,48 +341,6 @@ export type MessageMinOrderByAggregateInput = {
   courseId?: Prisma.SortOrder
 }
 
-export type MessageCreateNestedManyWithoutCourseInput = {
-  create?: Prisma.XOR<Prisma.MessageCreateWithoutCourseInput, Prisma.MessageUncheckedCreateWithoutCourseInput> | Prisma.MessageCreateWithoutCourseInput[] | Prisma.MessageUncheckedCreateWithoutCourseInput[]
-  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutCourseInput | Prisma.MessageCreateOrConnectWithoutCourseInput[]
-  createMany?: Prisma.MessageCreateManyCourseInputEnvelope
-  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
-}
-
-export type MessageUncheckedCreateNestedManyWithoutCourseInput = {
-  create?: Prisma.XOR<Prisma.MessageCreateWithoutCourseInput, Prisma.MessageUncheckedCreateWithoutCourseInput> | Prisma.MessageCreateWithoutCourseInput[] | Prisma.MessageUncheckedCreateWithoutCourseInput[]
-  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutCourseInput | Prisma.MessageCreateOrConnectWithoutCourseInput[]
-  createMany?: Prisma.MessageCreateManyCourseInputEnvelope
-  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
-}
-
-export type MessageUpdateManyWithoutCourseNestedInput = {
-  create?: Prisma.XOR<Prisma.MessageCreateWithoutCourseInput, Prisma.MessageUncheckedCreateWithoutCourseInput> | Prisma.MessageCreateWithoutCourseInput[] | Prisma.MessageUncheckedCreateWithoutCourseInput[]
-  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutCourseInput | Prisma.MessageCreateOrConnectWithoutCourseInput[]
-  upsert?: Prisma.MessageUpsertWithWhereUniqueWithoutCourseInput | Prisma.MessageUpsertWithWhereUniqueWithoutCourseInput[]
-  createMany?: Prisma.MessageCreateManyCourseInputEnvelope
-  set?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
-  disconnect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
-  delete?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
-  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
-  update?: Prisma.MessageUpdateWithWhereUniqueWithoutCourseInput | Prisma.MessageUpdateWithWhereUniqueWithoutCourseInput[]
-  updateMany?: Prisma.MessageUpdateManyWithWhereWithoutCourseInput | Prisma.MessageUpdateManyWithWhereWithoutCourseInput[]
-  deleteMany?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
-}
-
-export type MessageUncheckedUpdateManyWithoutCourseNestedInput = {
-  create?: Prisma.XOR<Prisma.MessageCreateWithoutCourseInput, Prisma.MessageUncheckedCreateWithoutCourseInput> | Prisma.MessageCreateWithoutCourseInput[] | Prisma.MessageUncheckedCreateWithoutCourseInput[]
-  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutCourseInput | Prisma.MessageCreateOrConnectWithoutCourseInput[]
-  upsert?: Prisma.MessageUpsertWithWhereUniqueWithoutCourseInput | Prisma.MessageUpsertWithWhereUniqueWithoutCourseInput[]
-  createMany?: Prisma.MessageCreateManyCourseInputEnvelope
-  set?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
-  disconnect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
-  delete?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
-  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
-  update?: Prisma.MessageUpdateWithWhereUniqueWithoutCourseInput | Prisma.MessageUpdateWithWhereUniqueWithoutCourseInput[]
-  updateMany?: Prisma.MessageUpdateManyWithWhereWithoutCourseInput | Prisma.MessageUpdateManyWithWhereWithoutCourseInput[]
-  deleteMany?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
-}
-
 export type MessageCreateNestedManyWithoutUserInput = {
   create?: Prisma.XOR<Prisma.MessageCreateWithoutUserInput, Prisma.MessageUncheckedCreateWithoutUserInput> | Prisma.MessageCreateWithoutUserInput[] | Prisma.MessageUncheckedCreateWithoutUserInput[]
   connectOrCreate?: Prisma.MessageCreateOrConnectWithoutUserInput | Prisma.MessageCreateOrConnectWithoutUserInput[]
@@ -425,58 +383,46 @@ export type MessageUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
 }
 
-export type MessageCreateWithoutCourseInput = {
-  id?: string
-  content: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  user: Prisma.UserCreateNestedOneWithoutMessagesInput
+export type MessageCreateNestedManyWithoutCourseInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutCourseInput, Prisma.MessageUncheckedCreateWithoutCourseInput> | Prisma.MessageCreateWithoutCourseInput[] | Prisma.MessageUncheckedCreateWithoutCourseInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutCourseInput | Prisma.MessageCreateOrConnectWithoutCourseInput[]
+  createMany?: Prisma.MessageCreateManyCourseInputEnvelope
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
 }
 
-export type MessageUncheckedCreateWithoutCourseInput = {
-  id?: string
-  content: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  userId: string
+export type MessageUncheckedCreateNestedManyWithoutCourseInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutCourseInput, Prisma.MessageUncheckedCreateWithoutCourseInput> | Prisma.MessageCreateWithoutCourseInput[] | Prisma.MessageUncheckedCreateWithoutCourseInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutCourseInput | Prisma.MessageCreateOrConnectWithoutCourseInput[]
+  createMany?: Prisma.MessageCreateManyCourseInputEnvelope
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
 }
 
-export type MessageCreateOrConnectWithoutCourseInput = {
-  where: Prisma.MessageWhereUniqueInput
-  create: Prisma.XOR<Prisma.MessageCreateWithoutCourseInput, Prisma.MessageUncheckedCreateWithoutCourseInput>
+export type MessageUpdateManyWithoutCourseNestedInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutCourseInput, Prisma.MessageUncheckedCreateWithoutCourseInput> | Prisma.MessageCreateWithoutCourseInput[] | Prisma.MessageUncheckedCreateWithoutCourseInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutCourseInput | Prisma.MessageCreateOrConnectWithoutCourseInput[]
+  upsert?: Prisma.MessageUpsertWithWhereUniqueWithoutCourseInput | Prisma.MessageUpsertWithWhereUniqueWithoutCourseInput[]
+  createMany?: Prisma.MessageCreateManyCourseInputEnvelope
+  set?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  disconnect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  delete?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  update?: Prisma.MessageUpdateWithWhereUniqueWithoutCourseInput | Prisma.MessageUpdateWithWhereUniqueWithoutCourseInput[]
+  updateMany?: Prisma.MessageUpdateManyWithWhereWithoutCourseInput | Prisma.MessageUpdateManyWithWhereWithoutCourseInput[]
+  deleteMany?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
 }
 
-export type MessageCreateManyCourseInputEnvelope = {
-  data: Prisma.MessageCreateManyCourseInput | Prisma.MessageCreateManyCourseInput[]
-  skipDuplicates?: boolean
-}
-
-export type MessageUpsertWithWhereUniqueWithoutCourseInput = {
-  where: Prisma.MessageWhereUniqueInput
-  update: Prisma.XOR<Prisma.MessageUpdateWithoutCourseInput, Prisma.MessageUncheckedUpdateWithoutCourseInput>
-  create: Prisma.XOR<Prisma.MessageCreateWithoutCourseInput, Prisma.MessageUncheckedCreateWithoutCourseInput>
-}
-
-export type MessageUpdateWithWhereUniqueWithoutCourseInput = {
-  where: Prisma.MessageWhereUniqueInput
-  data: Prisma.XOR<Prisma.MessageUpdateWithoutCourseInput, Prisma.MessageUncheckedUpdateWithoutCourseInput>
-}
-
-export type MessageUpdateManyWithWhereWithoutCourseInput = {
-  where: Prisma.MessageScalarWhereInput
-  data: Prisma.XOR<Prisma.MessageUpdateManyMutationInput, Prisma.MessageUncheckedUpdateManyWithoutCourseInput>
-}
-
-export type MessageScalarWhereInput = {
-  AND?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
-  OR?: Prisma.MessageScalarWhereInput[]
-  NOT?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
-  id?: Prisma.StringFilter<"Message"> | string
-  content?: Prisma.StringFilter<"Message"> | string
-  createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Message"> | Date | string
-  userId?: Prisma.StringFilter<"Message"> | string
-  courseId?: Prisma.StringFilter<"Message"> | string
+export type MessageUncheckedUpdateManyWithoutCourseNestedInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutCourseInput, Prisma.MessageUncheckedCreateWithoutCourseInput> | Prisma.MessageCreateWithoutCourseInput[] | Prisma.MessageUncheckedCreateWithoutCourseInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutCourseInput | Prisma.MessageCreateOrConnectWithoutCourseInput[]
+  upsert?: Prisma.MessageUpsertWithWhereUniqueWithoutCourseInput | Prisma.MessageUpsertWithWhereUniqueWithoutCourseInput[]
+  createMany?: Prisma.MessageCreateManyCourseInputEnvelope
+  set?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  disconnect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  delete?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  update?: Prisma.MessageUpdateWithWhereUniqueWithoutCourseInput | Prisma.MessageUpdateWithWhereUniqueWithoutCourseInput[]
+  updateMany?: Prisma.MessageUpdateManyWithWhereWithoutCourseInput | Prisma.MessageUpdateManyWithWhereWithoutCourseInput[]
+  deleteMany?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
 }
 
 export type MessageCreateWithoutUserInput = {
@@ -521,7 +467,27 @@ export type MessageUpdateManyWithWhereWithoutUserInput = {
   data: Prisma.XOR<Prisma.MessageUpdateManyMutationInput, Prisma.MessageUncheckedUpdateManyWithoutUserInput>
 }
 
-export type MessageCreateManyCourseInput = {
+export type MessageScalarWhereInput = {
+  AND?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
+  OR?: Prisma.MessageScalarWhereInput[]
+  NOT?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
+  id?: Prisma.StringFilter<"Message"> | string
+  content?: Prisma.StringFilter<"Message"> | string
+  createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Message"> | Date | string
+  userId?: Prisma.StringFilter<"Message"> | string
+  courseId?: Prisma.StringFilter<"Message"> | string
+}
+
+export type MessageCreateWithoutCourseInput = {
+  id?: string
+  content: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutMessagesInput
+}
+
+export type MessageUncheckedCreateWithoutCourseInput = {
   id?: string
   content: string
   createdAt?: Date | string
@@ -529,28 +495,30 @@ export type MessageCreateManyCourseInput = {
   userId: string
 }
 
-export type MessageUpdateWithoutCourseInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutMessagesNestedInput
+export type MessageCreateOrConnectWithoutCourseInput = {
+  where: Prisma.MessageWhereUniqueInput
+  create: Prisma.XOR<Prisma.MessageCreateWithoutCourseInput, Prisma.MessageUncheckedCreateWithoutCourseInput>
 }
 
-export type MessageUncheckedUpdateWithoutCourseInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
+export type MessageCreateManyCourseInputEnvelope = {
+  data: Prisma.MessageCreateManyCourseInput | Prisma.MessageCreateManyCourseInput[]
+  skipDuplicates?: boolean
 }
 
-export type MessageUncheckedUpdateManyWithoutCourseInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  content?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  userId?: Prisma.StringFieldUpdateOperationsInput | string
+export type MessageUpsertWithWhereUniqueWithoutCourseInput = {
+  where: Prisma.MessageWhereUniqueInput
+  update: Prisma.XOR<Prisma.MessageUpdateWithoutCourseInput, Prisma.MessageUncheckedUpdateWithoutCourseInput>
+  create: Prisma.XOR<Prisma.MessageCreateWithoutCourseInput, Prisma.MessageUncheckedCreateWithoutCourseInput>
+}
+
+export type MessageUpdateWithWhereUniqueWithoutCourseInput = {
+  where: Prisma.MessageWhereUniqueInput
+  data: Prisma.XOR<Prisma.MessageUpdateWithoutCourseInput, Prisma.MessageUncheckedUpdateWithoutCourseInput>
+}
+
+export type MessageUpdateManyWithWhereWithoutCourseInput = {
+  where: Prisma.MessageScalarWhereInput
+  data: Prisma.XOR<Prisma.MessageUpdateManyMutationInput, Prisma.MessageUncheckedUpdateManyWithoutCourseInput>
 }
 
 export type MessageCreateManyUserInput = {
@@ -583,6 +551,38 @@ export type MessageUncheckedUpdateManyWithoutUserInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   courseId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type MessageCreateManyCourseInput = {
+  id?: string
+  content: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  userId: string
+}
+
+export type MessageUpdateWithoutCourseInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutMessagesNestedInput
+}
+
+export type MessageUncheckedUpdateWithoutCourseInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+}
+
+export type MessageUncheckedUpdateManyWithoutCourseInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 
