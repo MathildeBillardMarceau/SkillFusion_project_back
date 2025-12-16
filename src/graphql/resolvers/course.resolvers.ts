@@ -20,8 +20,10 @@ export const courseResolvers = {
 			return course;
 		},
 		courseBySlug: async (_parent, { slug }, { prisma }) => {
-			const course = await prisma.course.findUnique({ where: { slug } });
-			if (!course) {
+			/* const course = */ return await prisma.course.findUnique({
+				where: { slug },
+			});
+			/* if (!course) {
 				throw new GraphQLError("le 'course' n'existe pas", {
 					extensions: {
 						code: "NOT FOUND",
@@ -29,7 +31,7 @@ export const courseResolvers = {
 					},
 				});
 			}
-			return course;
+			return course; */
 		},
 		// categories
 		categories: async (_parent, _args, { prisma }) => {
@@ -105,6 +107,18 @@ export const courseResolvers = {
 					extensions: {
 						code: "NOT FOUND",
 						http: { status: 404 },
+					},
+				});
+
+			// vérifier si le slug existe déjà
+			const existingSlug = await prisma.course.findUnique({
+				where: { slug: courseData.slug },
+			});
+			if (existingSlug)
+				throw new GraphQLError("le 'slug' existe déjà", {
+					extensions: {
+						code: "BAD USER INPUT",
+						http: { status: 400 },
 					},
 				});
 
