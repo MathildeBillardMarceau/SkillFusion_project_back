@@ -120,19 +120,19 @@ export const courseResolvers = {
 					// 	},
 					// }),
 					// lier les chapitres
-					...(chapters?.length && {
+					/* ...(chapters?.length && {
 						chapters: {
 							create: chapters,
-							/* 
-							create: chapters.map((chapter, index) => ({
-            title: chapter.title,
-            description: chapter.description,
-            text: chapter.text,
-            order: chapter.order ?? index + 1, // sécurité
-          })),
-							*/
+							
+					// 		create: chapters.map((chapter, index) => ({
+          //   title: chapter.title,
+          //   description: chapter.description,
+          //   text: chapter.text,
+          //   order: chapter.order ?? index + 1, // sécurité
+          // })),
+							
 						},
-					}),
+					}), */
 				},
 			});
 
@@ -145,6 +145,38 @@ export const courseResolvers = {
 					})),
 					skipDuplicates: true,
 				});
+			}
+
+			// lier les chapitres au cours
+			if (chapters?.length) {
+				for (const chapterInput of chapters) {
+					const { media, ...chapterData } = chapterInput;
+
+					const createdChapter = await prisma.chapter.create({
+						data: {
+							...chapterData,
+							courseId: course.id,
+						},
+					});
+
+					// lier le média si fourni
+					if (media) {
+						const createdMedia = await prisma.media.upsert({
+							where: media.id ? { id: media.id } : { url: media.url },
+							update: {},
+							create: {
+								...media,
+							},
+						});
+						// lier le média au chapitre
+						await prisma.chapterHasMedia.create({
+							data: {
+								chapterId: createdChapter.id,
+								mediaId: createdMedia.id,
+							},
+						});
+					}
+				}
 			}
 
 			return course;
