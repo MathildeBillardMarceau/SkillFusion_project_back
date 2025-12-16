@@ -133,8 +133,8 @@ export const userResolvers = {
 		},
 		deleteUser: async (_parent, { id }, { prisma }) => {
 			// supprimer le user
-			const deletedUser = await prisma.user.delete({ where: { id } });
-			return { ...deletedUser, password: undefined };
+			await prisma.user.delete({ where: { id } });
+			return true;
 		},
 		refreshToken: async (_parent, { refreshToken }, { prisma }) => {
 			// 1. vérifier le refresh token
