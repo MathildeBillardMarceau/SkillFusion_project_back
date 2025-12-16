@@ -83,13 +83,6 @@ export const courseTypeDefs = `#graphql
     color:       String
   }
 
-  # Chapters
-  input CreateChapterInput {
-    title:       String!
-    description: String
-    text:        String
-  }
-
   # Courses
   input CreateCourseInput {
     title:       String!

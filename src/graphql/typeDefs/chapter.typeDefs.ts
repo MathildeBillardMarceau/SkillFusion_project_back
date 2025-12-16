@@ -8,18 +8,28 @@ export const chapterTypeDefs = `#graphql
     title:        String!
     description:  String
     text:         String
+    medias:       [Media!]
 
-    createdAt:   DateTime!
-    updatedAt:   DateTime!
+    createdAt:    DateTime!
+    updatedAt:    DateTime!
   }
 
 
   # ===========================
   # Queries
   # ===========================
-
   type Query {
-    chapters: [Chapter!]!
+    chapters:     [Chapter!]!
+  }
+
+  # ===========================
+  # Inputs
+  # ===========================
+  input CreateChapterInput {
+    title:        String!
+    description:  String
+    text:         String
+    media:        CreateMediaInput
   }
 
 `;
