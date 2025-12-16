@@ -96,7 +96,7 @@ export const courseResolvers = {
 
 		// Course
 		createCourse: async (_parent, { input }, { prisma }) => {
-			const { userId, categoriesId, ...courseData } = input;
+			const { userId, categoriesId, chapters, ...courseData } = input;
 
 			// vérifier si le user existe
 			const user = await prisma.user.findUnique({ where: { id: userId } });
@@ -119,6 +119,20 @@ export const courseResolvers = {
 					// 		connect: categoriesId.map((id) => ({ id })),
 					// 	},
 					// }),
+					// lier les chapitres
+					...(chapters?.length && {
+						chapters: {
+							create: chapters,
+							/* 
+							create: chapters.map((chapter, index) => ({
+            title: chapter.title,
+            description: chapter.description,
+            text: chapter.text,
+            order: chapter.order ?? index + 1, // sécurité
+          })),
+							*/
+						},
+					}),
 				},
 			});
 
