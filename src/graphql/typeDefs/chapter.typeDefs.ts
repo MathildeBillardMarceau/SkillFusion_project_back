@@ -22,4 +22,20 @@ export const chapterTypeDefs = `#graphql
     chapters: [Chapter!]!
   }
 
+  # ===========================
+  # Input
+  # ===========================
+
+  input UpdateChapter {
+    text: String! 
+  }
+
+
+  # ===========================
+  # Mutations
+  # ===========================
+
+  type Mutation {
+    updateChapter(id:UUID!, input:UpdateChapter!): Chapter!
+  }
 `;
