@@ -51,8 +51,11 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Course: 'Course',
   User: 'User',
+  Course: 'Course',
+  Chapter: 'Chapter',
+  Media: 'Media',
+  ChapterHasMedia: 'ChapterHasMedia',
   Category: 'Category',
   CourseHasCategory: 'CourseHasCategory',
   Message: 'Message'
@@ -74,6 +77,23 @@ export const TransactionIsolationLevel = {
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const UserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  password: 'password',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  avatar: 'avatar',
+  role: 'role',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  refreshToken: 'refreshToken'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
 export const CourseScalarFieldEnum = {
   id: 'id',
   title: 'title',
@@ -93,21 +113,36 @@ export const CourseScalarFieldEnum = {
 export type CourseScalarFieldEnum = (typeof CourseScalarFieldEnum)[keyof typeof CourseScalarFieldEnum]
 
 
-export const UserScalarFieldEnum = {
+export const ChapterScalarFieldEnum = {
   id: 'id',
-  email: 'email',
-  password: 'password',
-  firstName: 'firstName',
-  lastName: 'lastName',
-  avatar: 'avatar',
-  role: 'role',
-  status: 'status',
+  title: 'title',
+  description: 'description',
+  text: 'text',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
-  refreshToken: 'refreshToken'
+  courseId: 'courseId'
 } as const
 
-export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+export type ChapterScalarFieldEnum = (typeof ChapterScalarFieldEnum)[keyof typeof ChapterScalarFieldEnum]
+
+
+export const MediaScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  type: 'type',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type MediaScalarFieldEnum = (typeof MediaScalarFieldEnum)[keyof typeof MediaScalarFieldEnum]
+
+
+export const ChapterHasMediaScalarFieldEnum = {
+  chapterId: 'chapterId',
+  mediaId: 'mediaId'
+} as const
+
+export type ChapterHasMediaScalarFieldEnum = (typeof ChapterHasMediaScalarFieldEnum)[keyof typeof ChapterHasMediaScalarFieldEnum]
 
 
 export const CategoryScalarFieldEnum = {

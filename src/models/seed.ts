@@ -139,6 +139,24 @@ await prisma.category.createMany({
 	],
 });
 
+// Création de chapitres
+await prisma.chapter.createMany({
+	data: [
+		{
+			title: "chapitre n°1",
+			description: "desc 1ère chapitre",
+			text: "<p>contenu du chapitre 1</p>",
+			courseId: (await getCourse("title-1"))!.id,
+		},
+		{
+			title: "chapitre n°2",
+			description: "desc 2ème chapitre",
+			text: "<p>contenu du chapitre 2</p>",
+			courseId: (await getCourse("title-1"))!.id,
+		},
+	],
+});
+
 async function getCategory(name: string) {
 	return await prisma.category.findUnique({ where: { name } });
 }

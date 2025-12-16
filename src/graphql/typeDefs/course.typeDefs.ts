@@ -23,11 +23,12 @@ export const courseTypeDefs = `#graphql
     duration:    String  
     cost:        String  
     material:    String  
-    publishedAt: String
+    publishedAt: DateTime
 
     user:        User
 
     categories:  [Category!]
+    chapters:    [Chapter!]
 
     createdAt:   DateTime!
     updatedAt:   DateTime!
@@ -82,6 +83,13 @@ export const courseTypeDefs = `#graphql
     color:       String
   }
 
+  # Chapters
+  input CreateChapterInput {
+    title:       String!
+    description: String
+    text:        String
+  }
+
   # Courses
   input CreateCourseInput {
     title:       String!
@@ -97,6 +105,7 @@ export const courseTypeDefs = `#graphql
 
     userId:      UUID!    # lien avec le user créateur
     categoriesId:[UUID!]  # lien avec les catégories
+    chapters:    [CreateChapterInput!]
   }
   
   input UpdateCourseInput {

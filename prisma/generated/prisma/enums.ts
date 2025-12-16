@@ -34,3 +34,11 @@ export const Status = {
 } as const
 
 export type Status = (typeof Status)[keyof typeof Status]
+
+
+export const MediaType = {
+  IMAGE: 'IMAGE',
+  VIDEO: 'VIDEO'
+} as const
+
+export type MediaType = (typeof MediaType)[keyof typeof MediaType]
