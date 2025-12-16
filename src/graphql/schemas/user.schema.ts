@@ -2,7 +2,7 @@ import { z } from "zod";
 
 ///REGISTER
 
-const PW_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+export const PW_REGEX = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
 
 
 export const registerUserSchema = z.object({
@@ -17,4 +17,13 @@ export const registerUserSchema = z.object({
 export const loginUserSchema = z.object({
   email: z.email(),
   password: z.regex(PW_REGEX),
+})
+
+//UPDATE
+
+export const updateUserSchema = z.object({
+  email: z.email().optional(),
+  password: z.string().regex(PW_REGEX).optional(),
+  firstName: z.string().min(2).optional(),
+  lastName: z.string().min(2).optional(),
 })
