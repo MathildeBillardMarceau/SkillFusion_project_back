@@ -1,7 +1,9 @@
 import { hash, verify } from "argon2";
 import { GraphQLError } from "graphql";
 import jwt from "jsonwebtoken";
+import { ZodError } from 'zod';
 import { config } from "../../config.ts";
+import { registerUserSchema } from "../Validation/schemas/user.schema.ts";
 import { requireAuth } from "../utils/requireAuth.ts";
 
 export const userResolvers = {
@@ -44,16 +46,31 @@ export const userResolvers = {
 	Mutation: {
 		registerUser: async (_parent, { input }, { prisma }) => {
 			// récupération des arguments
-			const { email, password, firstName, lastName } = input;
-
-			// TODO: validation des arguments (zod)
+			
+			const parsedInput = registerUserSchema.safeParse(input);
+			if (!parsedInput.success) {
+				const errorMessages = (parsedInput.error as ZodError);
+				throw new GraphQLError("Invalid input", {
+					extensions: {
+						code: "BAD_USER_INPUT",
+						errors: errorMessages,
+					},
+				});
+			}
+			const { email, password, firstName, lastName } = parsedInput.data;
 
 			// vérifier si le user existe déjà
 			const existingUser = await prisma.user.findUnique({ where: { email } });
-			if (existingUser) throw Error("Conflict: User already exists"); // 409
+			if (existingUser) throw new GraphQLError("Conflict: User already exists",
+				{ extensions: {
+					code: "CONFLICT",
+					http: { status: 409 },
+				},
+			}
+			); // 409
 
 			// hasher le pw
-			const hashedPassword = await hash(password);
+			const hashedPassword = await hash(password as string);
 
 			// créer le user
 			const newUser = await prisma.user.create({
