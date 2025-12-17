@@ -32,4 +32,20 @@ export const chapterTypeDefs = `#graphql
     media:        CreateMediaInput
   }
 
+  # ===========================
+  # Input
+  # ===========================
+
+  input UpdateChapter {
+    text: String! 
+  }
+
+
+  # ===========================
+  # Mutations
+  # ===========================
+
+  type Mutation {
+    updateChapter(id:UUID!, input:UpdateChapter!): Chapter!
+  }
 `;
