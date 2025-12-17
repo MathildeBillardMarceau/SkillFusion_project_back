@@ -8,7 +8,7 @@ export const chapterTypeDefs = `#graphql
     title:        String!
     description:  String
     text:         String
-    medias:       [Media!]
+    media:        Media
 
     createdAt:    DateTime!
     updatedAt:    DateTime!
@@ -26,6 +26,7 @@ export const chapterTypeDefs = `#graphql
   # Inputs
   # ===========================
   input CreateChapterInput {
+    id:           UUID
     title:        String!
     description:  String
     text:         String

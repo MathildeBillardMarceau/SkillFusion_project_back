@@ -5,12 +5,13 @@ export const chapterResolvers = {
 		},
 	},
 	Chapter: {
-		medias: async (parent, _args, { prisma }) => {
-			const chapterMedia = await prisma.chapterHasMedia.findMany({
+		media: async (parent, _args, { prisma }) => {
+			const chapterMedia = await prisma.chapterHasMedia.findFirst({
 				where: { chapterId: parent.id },
 				include: { media: true },
 			});
-			return chapterMedia.map((cm) => cm.media);
+			// return chapterMedia.map((cm) => cm.media);
+			return chapterMedia?.media ?? null;
 		},
 	},
 };
