@@ -66,6 +66,7 @@ export const courseTypeDefs = `#graphql
     # levels
     levels: [Level!]!
   }
+
   # ===========================
   # Inputs
   # ===========================
@@ -113,7 +114,8 @@ export const courseTypeDefs = `#graphql
     material:    String  
     publishedAt: String
 
-    categoriesId:[UUID!]  # pour mettre à jour les catégories
+    categoriesId:[UUID!] 
+    chapters:    [CreateChapterInput!]
   }
 
   # ===========================
