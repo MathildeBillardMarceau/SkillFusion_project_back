@@ -9,12 +9,14 @@ await prisma.user.createMany({
 			lastName: "Carpenter2",
 			email: "2john@carpenter.io",
 			password: await hash("Azerty123!"),
+			avatar: "arnold.png",
 		},
 		{
 			firstName: "Sarah2",
 			lastName: "Connor2",
 			email: "2sarah@connor.io",
 			password: await hash("Azerty123!"),
+			avatar: "Manchas.jpg",
 		},
 		{
 			firstName: "Sarah2",
@@ -22,36 +24,42 @@ await prisma.user.createMany({
 			email: "2sarah+admin@connor.io",
 			password: await hash("Azerty123!"),
 			role: "ADMIN",
+			avatar: "sarah.png",
 		},
 		{
 			firstName: "Al2",
 			lastName: "Beback2",
 			email: "2al@illbeback.io",
 			password: await hash("Azerty123!"),
+			avatar: "av02.jpg",
 		},
 		{
 			firstName: "Olive2",
 			lastName: "Yew2",
 			email: "2olive@you.io",
 			password: await hash("Azerty123!"),
+			avatar: "av03.jpg",
 		},
 		{
 			firstName: "Justin2",
 			lastName: "Time2",
 			email: "2justin@ontime.io",
 			password: await hash("Azerty123!"),
+			avatar: "av04.jpg",
 		},
 		{
 			firstName: "alice",
 			lastName: "fusion",
 			email: "alice@mail.com",
 			password: await hash("Alice123!"),
+			avatar: "av05.jpg",
 		},
 		{
 			firstName: "Bob",
 			lastName: "fusion",
 			email: "bob@mail.com",
 			password: await hash("Bob123!"),
+			avatar: "av06.jpg",
 		},
 	],
 	skipDuplicates: true,
@@ -72,6 +80,17 @@ await prisma.course.createMany({
 			userId: (await getUser("2sarah+admin@connor.io"))!.id,
 			level: "BEGINNER",
 			image: "/images/carrelage.jpg",
+		},
+		{
+			title: "Nico1",
+			slug: "nico-1",
+			userId: (await getUser("2john@carpenter.io"))!.id,
+			level: "BEGINNER",
+			description: "Cours de présentation par Nicolas",
+			image: "/images/niveau-a-bulle.jpg",
+			duration: "99h99",
+			cost: "~99€",
+			material: "tête, épaules, patience, obstination, self-control ",
 		},
 		{
 			title: "Title n°2",
@@ -177,6 +196,56 @@ await prisma.courseHasCategory.createMany({
 	],
 });
 
+// création des chapitres du cours de Nico
+async function seedChapters() {
+	const nicoCourse = await prisma.course.findUnique({
+		where: { slug: "nico-1" },
+	});
+	//console.log("nicoCourse ID:", nicoCourse);
+
+	if (!nicoCourse) throw new Error("Cours introuvable !");
+
+	const chapt1 = {
+		title: "Nico 101 - introduction",
+		description:
+			"Ce premier chapitre nous servira uniquement d'introduction, nous ajouterons des titres, du texte et du parapgrahe en HTML",
+		text: "<h3>Titre 1</h3><p>Bonjour je suis un texte mais on s'en fiche un peu.</p><p>Et moi un second paragraphe avec des mots en <b>gras</b> et en <i>italique</i></p><h3>Titre 2</h3><p>Nous allons faire des listes</p><ul><li>puce</li><li>pupuce</li><li>repuce</li></ul><h3>Titre 3</h3><p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Odio, hic aliquid unde expedita minus praesentium sequi iusto ratione a nostrum odit tempora iste perspiciatis cum rem, molestiae laborum, cumque dolorum.</p>",
+	};
+
+	const chapt2 = {
+		title: "Nico 102 - images",
+		description: "Ce chapitre nous ajouterons des images",
+		text: `
+    <h3>Image locale</h3>
+    <p>Cette image vient de notre dossier public</p>
+    <img src="/images/carrelage.jpg" alt="Carrelage" />
+		<p> ou depuis public </p>
+		<img src="/public/images/carrelage.jpg" alt="Carrelage" />
+
+    <h3>Image du web</h3>
+    <p>En direct des interwebez</p>
+    <img src="https://urlr.me/8cp7e4" alt="Femme souriante" />
+  `,
+	};
+
+	const chapt3 = {
+		title: "Nico 103 - texte long",
+		description: "Non sans raison tombent les feulles de la lorem",
+		text: "<h3>Tout d'abord la lorem copiée telle que</h3><p></p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus pharetra varius varius. Pellentesque consectetur id tortor eu scelerisque. Proin volutpat mauris eros, vel ultrices ligula euismod at. Suspendisse non lectus in risus ultrices ullamcorper. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam sit amet cursus leo, et suscipit enim. Donec non commodo sem, ac porta est. Praesent maximus tellus sem, ac varius urna gravida accumsan. In ullamcorper et nibh eget volutpat. Duis consequat rhoncus rutrum. Vestibulum cursus posuere turpis vel ornare. Vivamus id mauris nulla.</p><p>Donec in cursus mauris. In lacinia condimentum ipsum, vel vestibulum sapien placerat a. Aenean eget lectus aliquet diam euismod viverra at fringilla leo. Donec placerat, tellus gravida rhoncus ultrices, diam risus interdum nibh, bibendum faucibus justo turpis id nulla. Nullam ultricies iaculis auctor. Morbi accumsan velit ligula, id auctor arcu mollis nec. Nullam mollis condimentum interdum. Nullam ipsum metus, blandit eget faucibus eget, ultrices a erat. Sed malesuada placerat sapien, at lacinia lacus fringilla a. Maecenas aliquam ligula eu quam convallis, dictum tincidunt risus mollis. Morbi egestas, est sed pellentesque efficitur, ex quam pellentesque ante, accumsan imperdiet mauris eros sit amet nunc. Vestibulum lacinia fermentum tortor, nec fermentum lectus dapibus et.</p><p>Integer quis elit ante. Nam ut diam gravida, luctus augue ut, auctor ipsum. Duis eget odio pretium, lacinia mauris non, mollis massa. Maecenas viverra molestie scelerisque. Pellentesque posuere dictum ligula eget semper. Suspendisse nulla libero, semper eget nisi nec, porttitor consequat risus. Cras tincidunt, lectus nec auctor convallis, lacus nibh tincidunt elit, eu sagittis nisl lectus a velit.</p><p>Nam a tincidunt velit. Nullam sit amet arcu et tellus imperdiet lobortis. Suspendisse potenti. Curabitur dictum ante sed tortor euismod, vel elementum dui luctus. Mauris ornare ligula vel mi laoreet, in varius urna accumsan. Integer faucibus quam at justo hendrerit, non tristique felis sodales. Suspendisse at ante sem. Quisque nisl sapien, facilisis vitae ex vitae, interdum luctus augue.</p><p>Suspendisse tincidunt sodales eros vitae varius. Aliquam in porta eros. Praesent egestas leo at dolor ultricies scelerisque. Quisque quis faucibus turpis, ut lacinia nisl. Donec ac velit accumsan, fermentum ipsum at, viverra quam. Integer ac dui dui. Nam at nisl est. Fusce sit amet luctus libero. Etiam risus eros, euismod sed quam sit amet, molestie rutrum enim. Vestibulum velit massa, rhoncus ac sollicitudin id, volutpat eu arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec vitae arcu elementum, malesuada tellus nec, blandit erat. Nam feugiat ex tristique eleifend rutrum. Nam id euismod sapien. Nunc fringilla maximus convallis.</p><p></p><p><strong>Ensuite la Lorem ou je fais des sauts de lignes</strong></p><p></p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus pharetra varius varius. Pellentesque consectetur id tortor eu scelerisque. Proin volutpat mauris eros, vel ultrices ligula euismod at. Suspendisse non lectus in risus ultrices ullamcorper. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Etiam sit amet cursus leo, et suscipit enim. Donec non commodo sem, ac porta est. Praesent maximus tellus sem, ac varius urna gravida accumsan. In ullamcorper et nibh eget volutpat. Duis consequat rhoncus rutrum. Vestibulum cursus posuere turpis vel ornare. Vivamus id mauris nulla.</p><p></p><p>Donec in cursus mauris. In lacinia condimentum ipsum, vel vestibulum sapien placerat a. Aenean eget lectus aliquet diam euismod viverra at fringilla leo. Donec placerat, tellus gravida rhoncus ultrices, diam risus interdum nibh, bibendum faucibus justo turpis id nulla. Nullam ultricies iaculis auctor. Morbi accumsan velit ligula, id auctor arcu mollis nec. Nullam mollis condimentum interdum. Nullam ipsum metus, blandit eget faucibus eget, ultrices a erat. Sed malesuada placerat sapien, at lacinia lacus fringilla a. Maecenas aliquam ligula eu quam convallis, dictum tincidunt risus mollis. Morbi egestas, est sed pellentesque efficitur, ex quam pellentesque ante, accumsan imperdiet mauris eros sit amet nunc. Vestibulum lacinia fermentum tortor, nec fermentum lectus dapibus et.</p><p></p><p>Integer quis elit ante. Nam ut diam gravida, luctus augue ut, auctor ipsum. Duis eget odio pretium, lacinia mauris non, mollis massa. Maecenas viverra molestie scelerisque. Pellentesque posuere dictum ligula eget semper. Suspendisse nulla libero, semper eget nisi nec, porttitor consequat risus. Cras tincidunt, lectus nec auctor convallis, lacus nibh tincidunt elit, eu sagittis nisl lectus a velit.</p><p></p><p>Nam a tincidunt velit. Nullam sit amet arcu et tellus imperdiet lobortis. Suspendisse potenti. Curabitur dictum ante sed tortor euismod, vel elementum dui luctus. Mauris ornare ligula vel mi laoreet, in varius urna accumsan. Integer faucibus quam at justo hendrerit, non tristique felis sodales. Suspendisse at ante sem. Quisque nisl sapien, facilisis vitae ex vitae, interdum luctus augue.</p><p></p><p>Suspendisse tincidunt sodales eros vitae varius. Aliquam in porta eros. Praesent egestas leo at dolor ultricies scelerisque. Quisque quis faucibus turpis, ut lacinia nisl. Donec ac velit accumsan, fermentum ipsum at, viverra quam. Integer ac dui dui. Nam at nisl est. Fusce sit amet luctus libero. Etiam risus eros, euismod sed quam sit amet, molestie rutrum enim. Vestibulum velit massa, rhoncus ac sollicitudin id, volutpat eu arcu. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Donec vitae arcu elementum, malesuada tellus nec, blandit erat. Nam feugiat ex tristique eleifend rutrum. Nam id euismod sapien. Nunc fringilla maximus convallis.</p>",
+	};
+
+	const chapters = [chapt1, chapt2, chapt3].map((ch) => ({
+		...ch,
+		courseId: nicoCourse.id,
+	}));
+
+	for (const chapter of chapters) {
+		await prisma.chapter.create({ data: chapter });
+	}
+
+	console.log("✅ - Chapitres ajoutés avec succès !");
+}
+
 // creation des messages
 async function seedMessages() {
 	// récupérer un tableau de tous les users
@@ -194,7 +263,7 @@ async function seedMessages() {
 				},
 			});
 		}
-		console.log("✅messages créés dans un cours :", course);
+		//console.log("✅messages créés dans un cours :", course);
 	}
 
 	// version plus complexe pour un second message
@@ -209,8 +278,14 @@ async function seedMessages() {
 		}
 	}
 	await prisma.message.createMany({ data: messages });
-	console.log("✅ messages créés dans tous les cours ok ");
+	console.log("✅ - messages créés dans tous les cours ok ");
 }
-seedMessages();
+
+async function fillDB() {
+	await seedMessages();
+	await seedChapters();
+}
+
+fillDB();
 
 console.log(`✅ Données d'échantillonnage correctement ajoutées à la BDD.`);

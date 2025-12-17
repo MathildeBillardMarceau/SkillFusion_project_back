@@ -24,6 +24,7 @@ export const userTypeDefs = `#graphql
     
     firstName:   String!
     lastName:    String!
+    avatar:      String
     
     role:        Role!  
     status:      Status!  
