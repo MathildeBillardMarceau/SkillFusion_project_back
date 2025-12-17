@@ -15,6 +15,3 @@ export const updateMessageSchema = z.object({
   }),
 });
 
-export const deleteMessageSchema = z.object({
-  id: z.string(),
-});

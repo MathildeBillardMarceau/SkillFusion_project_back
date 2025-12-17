@@ -1,5 +1,14 @@
 import { z } from 'zod';
 
+export const createCategorySchema = z.object({
+  name: z.string().min(2),
+});
+
+export const updateCategorySchema = z.object({
+  name: z.string().min(2),
+});
+
+
 export const createCourseSchema = z.object({
   title: z.string().min(1),
   description: z.string().optional(),
@@ -35,8 +44,4 @@ export const updateCourseSchema = z.object ({
       }).optional(),
     })).optional(),
   }).optional(),
-});
-
-export const deleteCourseSchema = z.object({
-  id: z.string().min(1),
 });
