@@ -226,7 +226,7 @@ async function seedChapters() {
 	const nicoCourse = await prisma.course.findUnique({
 		where: { slug: "nico-1" },
 	});
-	//console.log("nicoCourse ID:", nicoCourse);
+//console.log("nicoCourse ID:", nicoCourse);
 
 	if (!nicoCourse) throw new Error("Cours introuvable !");
 
@@ -268,7 +268,9 @@ async function seedChapters() {
 		await prisma.chapter.create({ data: chapter });
 	}
 
+
 	console.log("✅ - Chapitres ajoutés avec succès !");
+
 }
 
 // creation des messages
@@ -310,6 +312,7 @@ async function fillDB() {
 	await seedMessages();
 	await seedChapters();
 }
+
 
 fillDB();
 

@@ -117,7 +117,7 @@ model Chapter {
   course      Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   // Relations
-  medias      ChapterHasMedia[]
+  medias       ChapterHasMedia[]
 
 
   @@map("chapter")

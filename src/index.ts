@@ -9,7 +9,7 @@ import { config } from "./config.ts";
 import { resolvers } from "./graphql/resolvers/index.ts";
 import { typeDefs } from "./graphql/typeDefs/index.ts";
 
-async function init() {
+export async function init() {
 	console.log("config:", config);
 	const { PORT, JWT_SECRET } = config;
 
@@ -31,9 +31,14 @@ async function init() {
 		}),
 		express.json(),
 		expressMiddleware(server, {
-			context: async ({ req }) => {
+			context: async ({ req, res }) => {
 				const authHeader = req.headers.authorization || "";
-				const accessToken = authHeader.replace("Bearer","").trim();
+
+				let accessToken = null;
+				if (authHeader.startsWith("Bearer ")) {
+  				accessToken = authHeader.split(" ")[1];
+				}
+
 				let connectedUser = null;
 				if (accessToken) {
 					try {
@@ -44,21 +49,27 @@ async function init() {
 					}
 				}
 
-				return { prisma, connectedUser };
+				return { prisma, req, res, connectedUser };
 			},
 		}),
 	);
 
-	app.get("/", (req: Request, res: Response) =>
+	app.get("/", (_req: Request, res: Response) =>
 		res.send("Hello Skillfusion back"),
 	);
 
-	app.listen(PORT, () => {
+	const httpServer = app.listen(PORT, () => {
 		console.log(`🚀 Server ready: http://localhost:${PORT}/graphql`);
 	});
-}
 
-await init();
+	return {
+		httpServer,
+		prisma,
+	};
+}
+if (process.env.NODE_ENV !== "test") {
+	await init();
+}
 
 // async function testPrisma() {
 // 	// await prisma.$queryRaw`SELECT NOW()`
