@@ -31,7 +31,7 @@ CREATE TYPE status_enum AS ENUM ('PENDING', 'APPROVED', 'BANNED');
 CREATE TYPE video_enum AS ENUM ('IMAGE', 'VIDEO');
 
 -- ===========================
--- TABLE : user
+-- TABLE : user (done)
 -- ===========================
 CREATE TABLE "user" (
     "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -46,7 +46,7 @@ CREATE TABLE "user" (
 );
 
 -- ===========================
--- TABLE : course
+-- TABLE : course (done)
 -- ===========================
 CREATE TABLE "course" (
     "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -65,7 +65,7 @@ CREATE TABLE "course" (
 );
 
 -- ===========================
--- TABLE : chapter
+-- TABLE : chapter (done)
 -- ===========================
 CREATE TABLE "chapter" (
     "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -79,7 +79,7 @@ CREATE TABLE "chapter" (
 );
 
 -- ===========================
--- TABLE : media
+-- TABLE : media (done)
 -- ===========================
 CREATE TABLE "media" (
     "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -90,7 +90,7 @@ CREATE TABLE "media" (
 );
 
 -- ===========================
--- TABLE : message
+-- TABLE : message (done)
 -- ===========================
 CREATE TABLE "message" (
     "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -102,7 +102,7 @@ CREATE TABLE "message" (
 );
 
 -- ===========================
--- TABLE : category
+-- TABLE : category (done)
 -- ===========================
 CREATE TABLE "category" (
     "id" UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -115,7 +115,7 @@ CREATE TABLE "category" (
 );
 
 -- ===========================
--- TABLE : chapter_has_media (Many-to-Many)
+-- TABLE : chapter_has_media (Many-to-Many) (done)
 -- ===========================
 CREATE TABLE "chapter_has_media" (
     "chapter_id" UUID NOT NULL REFERENCES "chapter"("id") ON DELETE CASCADE,
@@ -124,7 +124,7 @@ CREATE TABLE "chapter_has_media" (
 );
 
 -- ===========================
--- TABLE : course_has_category (Many-to-Many)
+-- TABLE : course_has_category (Many-to-Many) (done)
 -- ===========================
 CREATE TABLE "course_has_category" (
     "course_id" UUID NOT NULL REFERENCES "course"("id") ON DELETE CASCADE,
@@ -133,7 +133,7 @@ CREATE TABLE "course_has_category" (
 );
 
 -- ===========================
--- TABLE : course_prerequisites_course (Many-to-Many)
+-- TABLE : course_prerequisites_course (Many-to-Many) (done)
 -- ===========================
 CREATE TABLE "course_prerequisites_course" (
     "course_id" UUID NOT NULL REFERENCES "course"("id") ON DELETE CASCADE,

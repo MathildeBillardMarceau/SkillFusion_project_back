@@ -182,6 +182,13 @@ model CourseHasCategory{
   @@map("course_has_category")
 }
 
+model CourseHasSubscriber{
+  completion
+  //FK
+}
+
+
+
 // ===========================
 // MODEL : Message
 // ===========================
@@ -203,4 +210,24 @@ model Message {
     course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@map("message")
+}
+
+
+// ===========================
+// MODEL : CoursePrerequisitesCourse 
+// ===========================
+
+model CoursePrerequisitesCourse{
+  @@id([courseId, prerequisiteId])
+
+  //FK
+  courseId        String @map("course_id")
+  prerequisiteId  String @map("prerequisite_id")
+  
+  //Relations (ici on doit préciser quelle relation pour les préciser dans course donc elles sont nommées)
+  course        Course @relation("PickedCourse", fields: [courseId], references: [id], onDelete: Cascade)
+  prerequisite  Course @relation("PrereqCourse", fields: [prerequisiteId], references: [id], onDelete: Cascade)
+
+
+@@map("course_prerequisites_course")
 }
