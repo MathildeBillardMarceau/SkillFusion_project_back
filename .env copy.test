@@ -1,0 +1,18 @@
+PORT=4000
+PGUSER=skillfusion
+PGPASSWORD=skillfusion_pw
+PGDATABASE=skillfusion_db_test
+PGHOST=skillfusion-db # 127.0.0.1
+PGPORT=5432
+
+DATABASE_URL=postgresql://skillfusion:skillfusion_pw@skillfusion-db:5432/skillfusion_db_test
+
+JWT_SECRET=the_enormous_secret_CHUT321!
+JWT_REFRESH_SECRET=just_another_enormous_secret_CHUT4321!?
+
+# DEV
+CMD=sh -c "pnpm run db:generate && pnpm run db:reset && pnpm dev"
+# CMD=sh -c "pnpm dev"
+
+# PROD
+# CMD=pnpm run docker:start
