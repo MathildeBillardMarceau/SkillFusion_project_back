@@ -14,7 +14,6 @@ export const messageTypeDefs = `#graphql
     updatedAt:   DateTime!
   }
 
-
   # ===========================
   # Queries
   # ===========================

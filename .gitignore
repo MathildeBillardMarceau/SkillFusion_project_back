@@ -10,3 +10,4 @@ node_modules/
 
 # Suppression du prisma generated dans les push
 prisma/generated/
+prisma/generated_orig/

@@ -1,7 +1,5 @@
 import { GraphQLError } from "graphql";
-import { ZodError } from "zod";
 import { Level } from "../../../prisma/prismaClient.ts";
-import { createCategorySchema, createCourseSchema, updateCategorySchema, updateCourseSchema } from "../Validation/schemas/course.schema.ts";
 
 export const courseResolvers = {
 	Query: {
@@ -81,69 +79,27 @@ export const courseResolvers = {
 	Mutation: {
 		// Category
 		createCategory: async (_parent, { input }, { prisma }) => {
-		
-			const parsedInput = createCategorySchema.safeParse(input);
-						
-				if (!parsedInput.success) {
-					const errorMessages = (parsedInput.error as ZodError);
-					throw new GraphQLError("Invalid input", {
-							extensions: {
-								code: "BAD_USER_INPUT",
-								errors: errorMessages,
-							},
-						}
-					);
-				}
-			
 			const category = await prisma.category.create({
-				data: 
-					parsedInput.data,
-				
+				data: {
+					...input,
+				},
 			});
 			return category;
 		},
 		updateCategory: async (_parent, { id, input }, { prisma }) => {
-
-			const parsedInput = updateCategorySchema.safeParse(input);
-						
-				if (!parsedInput.success) {
-					const errorMessages = (parsedInput.error as ZodError);
-					throw new GraphQLError("Invalid input", {
-							extensions: {
-								code: "BAD_USER_INPUT",
-								errors: errorMessages,
-							},
-						}
-					);
-				}
-						
 			// mettre à jour les informations de la catégorie
-			return await prisma.category.update({ where: { id }, data: parsedInput });
+			return await prisma.category.update({ where: { id }, data: input });
 		},
 		deleteCategory: async (_parent, { id }, { prisma }) => {
 			// supprimer la catégorie
 			await prisma.category.delete({ where: { id } });
 			return true;
 		},
-		
+
 		// Course
 		createCourse: async (_parent, { input }, { prisma }) => {
-
-			const parsedInput = createCourseSchema.safeParse(input);
-									
-					if (!parsedInput.success) {
-						const errorMessages = (parsedInput.error as ZodError);
-						throw new GraphQLError("Invalid input", {
-								extensions: {
-									code: "BAD_USER_INPUT",
-									errors: errorMessages,
-								},
-							}
-						);
-					}
-					
 			const { userId, categoriesId, chapters, ...courseData } = input;
-			
+
 			// vérifier si le user existe
 			const user = await prisma.user.findUnique({ where: { id: userId } });
 			if (!user)
@@ -241,20 +197,8 @@ export const courseResolvers = {
 			return course;
 		},
 		updateCourse: async (_parent, { id, input }, { prisma }) => {
-				
-			const parsedInput = updateCourseSchema.safeParse(input);
-									
-				if (!parsedInput.success) {
-					const errorMessages = (parsedInput.error as ZodError);
-					throw new GraphQLError("Invalid input", {
-							extensions: {
-								code: "BAD_USER_INPUT",
-								errors: errorMessages,
-							},
-						}
-					);
-				}
-
+			console.log("updateCourse");
+			const { categoriesId, chapters, ...courseData } = input;
 
 			// vérifier si le slug existe déjà
 			// const existingSlug = await prisma.course.findUnique({
@@ -268,15 +212,16 @@ export const courseResolvers = {
 			// 		},
 			// 	});
 			// }
-			
-      
-      const { categoriesId} = input;
+
 			// mettre à jour les informations du cours
 			const course = await prisma.course.update({
 				where: { id },
-				data: {
-					parsedInput,
-				},
+				data: courseData,
+			});
+
+			console.log("course updated:", course);
+
+			// return course;
 
 			// mettre à jour les catégories de la table de jointure
 			if (categoriesId?.length) {
@@ -291,42 +236,94 @@ export const courseResolvers = {
 					skipDuplicates: true,
 				});
 			}
-			// console.log("categoriesId?.length:", categoriesId?.length);
+			console.log("categoriesId?.length:", categoriesId?.length);
 
-			// chapters: supprimer tous les chapitres liés au cours
-			await prisma.chapter.deleteMany({
-				where: { courseId: id },
-			});
+			// Mise à jour des CHAPTERS
+			const safeChapters = chapters ?? [];
+			console.log(
+				"chapters payload:",
+				safeChapters.map((c) => ({ id: c.id, title: c.title })),
+			);
+			if (safeChapters.length) {
+				// 1. récupérer les chapitres existants
+				const existingChapters = await prisma.chapter.findMany({
+					where: { courseId: id },
+					select: { id: true },
+				});
+				console.log("existingChapters:", existingChapters);
+				const existingChapterIds = existingChapters.map((c) => c.id);
+				console.log("existingChapterIds:", existingChapterIds);
+				// 2. chapitres à créer ou mettre à jour
 
-			// Recréation des chapitres liés
-			if (chapters?.length) {
-				for (const chapterInput of chapters) {
-					const { media, ...chapterData } = chapterInput;
-
-					const chapter = await prisma.chapter.create({
-						data: {
-							...chapterData,
-							courseId: id,
-						},
+				const incomingChapterIds = safeChapters
+					.filter((c) => c.id)
+					.map((c) => c.id);
+				console.log("incomingChapterIds:", incomingChapterIds);
+				// 3. chapitres à supprimer
+				const chaptersToDelete = existingChapterIds.filter(
+					(existingId) => !incomingChapterIds.includes(existingId),
+				);
+				console.log("chaptersToDelete:", chaptersToDelete);
+				// 4. supprimer les chapitres non présents dans la mise à jour
+				if (chaptersToDelete.length) {
+					await prisma.chapter.deleteMany({
+						where: { id: { in: chaptersToDelete } },
 					});
-
-					if (media) {
-						const mediaEntity = await prisma.media.upsert({
-							where: { url: media.url },
-							update: {},
-							create: media,
+				}
+				console.log("deleted chapters");
+				/////////////////////////
+				// 5. créer ou mettre à jour les chapitres
+				for (const chapterInput of safeChapters) {
+					const { id: chapterId, media, ...chapterData } = chapterInput;
+					// biome-ignore lint/suspicious/noImplicitAnyLet: <explanation>
+					let chapter;
+					if (chapterId && existingChapterIds.includes(chapterId)) {
+						// 5.a mettre à jour le chapitre existant
+						chapter = await prisma.chapter.update({
+							where: { id: chapterId },
+							data: chapterData,
 						});
-
-						await prisma.chapterHasMedia.create({
+						console.log("updated chapter id:", chapterId);
+					} else {
+						// 5.b créer un nouveau chapitre
+						chapter = await prisma.chapter.create({
 							data: {
-								chapterId: chapter.id,
-								mediaId: mediaEntity.id,
+								...chapterData,
+								courseId: course.id,
 							},
 						});
+						console.log("createdChapter:", chapter);
+
+						// 6. lier le média si fourni
+						/* if (media) {
+							const createdMedia = await prisma.media.upsert({
+								where: media.id ? { id: media.id } : { url: media.url },
+								update: {}, // type: media.type},
+								create: {
+									...media,
+								},
+							});
+							console.log("createdMedia:", createdMedia);
+
+							// lier le média au chapitre
+							await prisma.chapterHasMedia.upsert({
+								where: {
+									chapterId_mediaId: {
+										chapterId: chapter.id,
+										mediaId: createdMedia.id,
+									},
+								},
+								update: {},
+								create: {
+									chapterId: chapter.id,
+									mediaId: createdMedia.id,
+								},
+							});
+							console.log("linked media to chapter");
+						} */
 					}
 				}
 			}
-			// console.log("chapters recreated");
 
 			return course;
 		},
