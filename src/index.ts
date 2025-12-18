@@ -9,7 +9,7 @@ import { config } from "./config.ts";
 import { resolvers } from "./graphql/resolvers/index.ts";
 import { typeDefs } from "./graphql/typeDefs/index.ts";
 
-async function init() {
+export async function init() {
 	console.log("config:", config);
 	const { PORT, JWT_SECRET } = config;
 
@@ -33,7 +33,7 @@ async function init() {
 		expressMiddleware(server, {
 			context: async ({ req }) => {
 				const authHeader = req.headers.authorization || "";
-				const accessToken = authHeader.replace("Bearer","").trim();
+				const accessToken = authHeader.replace("Bearer", "").trim();
 				let connectedUser = null;
 				if (accessToken) {
 					try {
@@ -49,16 +49,22 @@ async function init() {
 		}),
 	);
 
-	app.get("/", (req: Request, res: Response) =>
+	app.get("/", (_req: Request, res: Response) =>
 		res.send("Hello Skillfusion back"),
 	);
 
-	app.listen(PORT, () => {
+	const httpServer = app.listen(PORT, () => {
 		console.log(`🚀 Server ready: http://localhost:${PORT}/graphql`);
 	});
-}
 
-await init();
+	return {
+		httpServer,
+		prisma,
+	};
+}
+if (process.env.NODE_ENV !== "test") {
+	await init();
+}
 
 // async function testPrisma() {
 // 	// await prisma.$queryRaw`SELECT NOW()`
