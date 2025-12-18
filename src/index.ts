@@ -31,9 +31,14 @@ export async function init() {
 		}),
 		express.json(),
 		expressMiddleware(server, {
-			context: async ({ req }) => {
+			context: async ({ req, res }) => {
 				const authHeader = req.headers.authorization || "";
-				const accessToken = authHeader.replace("Bearer", "").trim();
+
+				let accessToken = null;
+				if (authHeader.startsWith("Bearer ")) {
+  				accessToken = authHeader.split(" ")[1];
+				}
+
 				let connectedUser = null;
 				if (accessToken) {
 					try {
@@ -44,7 +49,7 @@ export async function init() {
 					}
 				}
 
-				return { prisma, connectedUser };
+				return { prisma, req, res, connectedUser };
 			},
 		}),
 	);

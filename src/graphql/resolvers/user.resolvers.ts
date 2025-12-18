@@ -80,7 +80,7 @@ export const userResolvers = {
 			// retourner les infos du user (sans le pw)
 			return { ...newUser, password: undefined };
 		},
-		loginUser: async (_parent, { input }, { prisma }) => {
+		loginUser: async (_parent, { input }, { prisma, req, res }) => {
 			// récupération des arguments
 
 			const parsedInput = loginUserSchema.safeParse(input);
@@ -121,8 +121,15 @@ export const userResolvers = {
 			const refreshToken = jwt.sign(
 				{ userId: user.id, role: user.role },
 				config.JWT_REFRESH_SECRET,
-				{ expiresIn: "7d" },
+				{ expiresIn: "2d" },
 			);
+
+			res.cookie("refreshToken", refreshToken, {
+  		httpOnly: true,
+  		//secure: process.env.NODE_ENV === "production",
+  		sameSite: "strict",
+  		maxAge: 2 * 24 * 60 * 60 * 1000,
+			});
 
 			// stocker le refresh token en bdd
 			await prisma.user.update({
@@ -134,7 +141,6 @@ export const userResolvers = {
 			return {
 				user: { ...user, password: undefined },
 				accessToken,
-				refreshToken,
 			};
 		},
 		updateUser: async (_parent, { id, input }, { prisma, connectedUser }) => {
@@ -179,59 +185,65 @@ export const userResolvers = {
 			await prisma.user.delete({ where: { id } });
 			return true;
 		},
-		refreshToken: async (_parent, { refreshToken }, { prisma }) => {
-			// 1. vérifier le refresh token
-			if (!refreshToken) {
-				throw new GraphQLError("Missing refresh token", {
-					extensions: { code: "BAD_REQUEST" },
+		refreshToken: async (_parent, _args, { prisma, req, res }) => {
+			const refreshToken = req.cookies?.refreshToken;
+		
+	
+
+	 		// 1. vérifier le refresh token
+	 		if (!refreshToken) {
+	 			throw new GraphQLError("Missing refresh token", {
+	 				extensions: { code: "BAD_REQUEST" },
 				});
-			}
+	 		}
 
-			// vérifier sur le refresh token correspon à un user
-			const user = await prisma.user.findFirst({
-				where: { refreshToken },
-			});
-			if (!user) {
-				throw new GraphQLError("Invalid refresh token", {
-					extensions: { code: "UNAUTHORIZED" },
-				});
-			}
+	 		// vérifier sur le refresh token correspon à un user
+	 		const user = await prisma.user.findFirst({
+	 			where: { refreshToken },
+	 		});
+	 		if (!user) {
+	 			throw new GraphQLError("Invalid refresh token", {
+	 				extensions: { code: "UNAUTHORIZED" },
+	 			});
+	 		}
 
-			// vérifier le refresh token
-			try {
-				jwt.verify(refreshToken, config.JWT_REFRESH_SECRET);
-			} catch (e) {
-				throw new GraphQLError("Invalid or expired refresh token", {
-					extensions: { code: "UNAUTHORIZED" },
-				});
-			}
+	 		// vérifier le refresh token
+	 		try {
+	 			jwt.verify(refreshToken, config.JWT_REFRESH_SECRET);
+	 		} catch (e) {
+	 			throw new GraphQLError("Invalid or expired refresh token", {
+	 				extensions: { code: "UNAUTHORIZED" },
+	 			});
+	 		}
 
-			// 2. Créer un nouvel access token
-			const newAccessToken = jwt.sign(
-				{ userId: user.id, role: user.role },
-				config.JWT_SECRET,
-				{ expiresIn: "1h" },
-			);
+	 		// 2. Créer un nouvel access token
+	 		const newAccessToken = jwt.sign(
+	 			{ userId: user.id, role: user.role },
+	 			config.JWT_SECRET,
+	 			{ expiresIn: "1h" },
+	 		);
 
-			// Créer un nouvel refresh token
-			const newRefreshToken = jwt.sign(
-				{ userId: user.id, role: user.role },
-				config.JWT_REFRESH_SECRET,
-				{ expiresIn: "7d" },
-			);
+ 		// Créer un nouvel refresh token
+	 		const newRefreshToken = jwt.sign(
+	 			{ userId: user.id, role: user.role },
+	 			config.JWT_REFRESH_SECRET,
+	 			{ expiresIn: "2d" },
+ 		);
 
-			// mettre à jour en bdd
-			await prisma.user.update({
-				where: { id: user.id },
-				data: { refreshToken: newRefreshToken },
-			});
+ 		// mettre à jour en bdd
+	 		await prisma.user.update({
+	 			where: { id: user.id },
+	 			data: { refreshToken: newRefreshToken },
+	 		});
 
-			// retourner les infos du user (sans le pw, avec l'accessToken + refreshToken)
-			return {
-				user: { ...user, password: undefined },
-				accessToken: newAccessToken,
-				refreshToken: newRefreshToken,
-			};
-		},
-	},
-};
+ 		// retourner les infos du user (sans le pw, avec l'accessToken + refreshToken)
+ 		return {
+ 			user: { ...user, password: undefined },
+			accessToken: newAccessToken,
+	// 			refreshToken: newRefreshToken,
+	// 		};
+	// 	},
+	// },
+   }
+	}}
+}
