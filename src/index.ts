@@ -12,7 +12,6 @@ import { typeDefs } from "./graphql/typeDefs/index.ts";
 export async function init() {
 	console.log("config:", config);
 	const { PORT, JWT_SECRET } = config;
-
 	const app = express();
 
 	// Apollo Server

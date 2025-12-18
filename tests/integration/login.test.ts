@@ -1,10 +1,12 @@
 import assert from "node:assert";
+import type { Server } from "node:http";
 import test from "node:test";
+import type { PrismaClient } from "../../prisma/prismaClient.ts";
 import { init } from "../../src/index.ts";
 import { graphqlRequest } from "../helpers/graphqlClient.ts";
 import { createTestUser } from "../helpers/user.ts";
 
-let prisma, httpServer;
+let prisma: PrismaClient, httpServer: Server;
 
 test.before(async () => {
 	process.env.NODE_ENV = "test";
@@ -16,7 +18,6 @@ test.before(async () => {
 
 test.after(async () => {
 	// fermer le serveur et Prisma à la fin de tous les tests
-	await prisma.$disconnect;
 	await prisma.$disconnect();
 	httpServer.close();
 });
