@@ -44,6 +44,7 @@ export const subscriptionResolvers = {
 			const subscription = await prisma.CourseHasSubscriber.update({
 				where: {
 					courseId_userId: { courseId: input.course, userId: input.user },
+					// ici on utilise une clef composite courseId_userId composée des deux champs de input
 				},
 				data: { completion: input.completion },
 			});
