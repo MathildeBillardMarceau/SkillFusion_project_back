@@ -7,6 +7,9 @@ export const subscriptionTypeDefs = `#graphql
     course:     Course!
     user:       User!
     completion: String! 
+
+    createdAt:   DateTime!
+    updatedAt:   DateTime!
   }
 
   # ===========================
@@ -16,6 +19,9 @@ export const subscriptionTypeDefs = `#graphql
     subscriptions: [Subscription]!
     subscriptionByUser(userId: UUID!):[Subscription]!
     subscriptionByCourse(courseId: UUID!):[Subscription]!
+
+    subscriptionByUserAtCourse(courseId: UUID!, userId:UUID!):[Subscription]!
+    subscriptionByUserAtCourseBySlug(userId:UUID!, slug: String!):[Subscription]!
 
     # on récupère les subscriptions sur la base du UUID du user ou du cours
     # subscriptions: [Subscription]!

@@ -155,6 +155,31 @@ await prisma.category.createMany({
 			description: "desc 2ème cat",
 			color: "#ee66ee",
 		},
+		{
+			name: "électricité",
+			description: "desc 1ère cat",
+			color: "#e1bf18ff",
+		},
+		{
+			name: "maçonnerie",
+			description: "desc 2ème cat",
+			color: "#3719b1ff",
+		},
+		{
+			name: "platrerie",
+			description: "desc 2ème cat",
+			color: "#e31414ff",
+		},
+		{
+			name: "réparations",
+			description: "desc 2ème cat",
+			color: "#8fee66ff",
+		},
+		{
+			name: "autres",
+			description: "desc 2ème cat",
+			color: "#66e0eeff",
+		},
 	],
 });
 
