@@ -24,11 +24,13 @@ export const userTypeDefs = `#graphql
     
     firstName:   String!
     lastName:    String!
+    avatar:      String
     
     role:        Role!  
     status:      Status!  
 
-    courses:     [Course!]
+    # courses - représente les cours CREES par le user
+    courses:        [Course!]
 
     createdAt:   DateTime!
     updatedAt:   DateTime!
@@ -42,6 +44,7 @@ export const userTypeDefs = `#graphql
   # Queries
   # ===========================
   type Query {
+    # users
     users: [User!]!
     userById(id: UUID!): User!
   }
@@ -66,6 +69,7 @@ export const userTypeDefs = `#graphql
     lastName:   String
     role:       Role
   }
+
 
   # ===========================
   # Mutations

@@ -9,49 +9,57 @@ await prisma.user.createMany({
 			lastName: "Carpenter2",
 			email: "2john@carpenter.io",
 			password: await hash("Azerty123!"),
+			avatar: "arnold.png",
 		},
 		{
-			firstName: "Sarah2",
-			lastName: "Connor2",
-			email: "2sarah@connor.io",
+			firstName: "Sarah",
+			lastName: "Connor",
+			email: "sarah@connor.io",
 			password: await hash("Azerty123!"),
+			avatar: "Manchas.jpg",
 		},
 		{
-			firstName: "Sarah2",
-			lastName: "Connor2",
-			email: "2sarah+admin@connor.io",
+			firstName: "Sarah",
+			lastName: "Connor ADMIN",
+			email: "sarah+admin@connor.io",
 			password: await hash("Azerty123!"),
 			role: "ADMIN",
+			avatar: "sarah.png",
 		},
 		{
-			firstName: "Al2",
-			lastName: "Beback2",
-			email: "2al@illbeback.io",
+			firstName: "Al",
+			lastName: "Beback",
+			email: "al@illbeback.io",
 			password: await hash("Azerty123!"),
+			avatar: "av02.jpg",
 		},
 		{
-			firstName: "Olive2",
-			lastName: "Yew2",
-			email: "2olive@you.io",
+			firstName: "Olive",
+			lastName: "Yew",
+			email: "olive@you.io",
 			password: await hash("Azerty123!"),
+			avatar: "av03.jpg",
 		},
 		{
-			firstName: "Justin2",
-			lastName: "Time2",
-			email: "2justin@ontime.io",
+			firstName: "Justin",
+			lastName: "Time",
+			email: "justin@ontime.io",
 			password: await hash("Azerty123!"),
+			avatar: "av04.jpg",
 		},
 		{
 			firstName: "alice",
 			lastName: "fusion",
 			email: "alice@mail.com",
 			password: await hash("Alice123!"),
+			avatar: "av05.jpg",
 		},
 		{
 			firstName: "Bob",
 			lastName: "fusion",
 			email: "bob@mail.com",
 			password: await hash("Bob123!"),
+			avatar: "av06.jpg",
 		},
 	],
 	skipDuplicates: true,
@@ -69,7 +77,7 @@ await prisma.course.createMany({
 		{
 			title: "Title n°1",
 			slug: "title-1",
-			userId: (await getUser("2sarah+admin@connor.io"))!.id,
+			userId: (await getUser("sarah+admin@connor.io"))!.id,
 			level: "BEGINNER",
 			image: "/images/carrelage.jpg",
 		},
@@ -94,7 +102,7 @@ await prisma.course.createMany({
 		{
 			title: "Title n°3",
 			slug: "title-3",
-			userId: (await getUser("2sarah@connor.io"))!.id,
+			userId: (await getUser("sarah@connor.io"))!.id,
 			level: "ADVANCED",
 			image: "/images/plomberie.jpg",
 			description: loremIpsum,
@@ -105,7 +113,7 @@ await prisma.course.createMany({
 		{
 			title: "Title n°4",
 			slug: "title-4",
-			userId: (await getUser("2sarah@connor.io"))!.id,
+			userId: (await getUser("sarah@connor.io"))!.id,
 			image: "/images/niveau-a-bulle.jpg",
 		},
 		{
@@ -146,6 +154,31 @@ await prisma.category.createMany({
 			name: "plomberie",
 			description: "desc 2ème cat",
 			color: "#ee66ee",
+		},
+		{
+			name: "électricité",
+			description: "desc 1ère cat",
+			color: "#e1bf18ff",
+		},
+		{
+			name: "maçonnerie",
+			description: "desc 2ème cat",
+			color: "#3719b1ff",
+		},
+		{
+			name: "platrerie",
+			description: "desc 2ème cat",
+			color: "#e31414ff",
+		},
+		{
+			name: "réparations",
+			description: "desc 2ème cat",
+			color: "#8fee66ff",
+		},
+		{
+			name: "autres",
+			description: "desc 2ème cat",
+			color: "#66e0eeff",
 		},
 	],
 });
@@ -193,7 +226,7 @@ async function seedChapters() {
 	const nicoCourse = await prisma.course.findUnique({
 		where: { slug: "nico-1" },
 	});
-	console.log("nicoCourse ID:", nicoCourse);
+//console.log("nicoCourse ID:", nicoCourse);
 
 	if (!nicoCourse) throw new Error("Cours introuvable !");
 
@@ -235,7 +268,9 @@ async function seedChapters() {
 		await prisma.chapter.create({ data: chapter });
 	}
 
-	console.log("Chapitres ajoutés avec succès !");
+
+	console.log("✅ - Chapitres ajoutés avec succès !");
+
 }
 
 // creation des messages
@@ -270,13 +305,14 @@ async function seedMessages() {
 		}
 	}
 	await prisma.message.createMany({ data: messages });
-	console.log("✅ messages créés dans tous les cours ok ");
+	console.log("✅ - messages créés dans tous les cours ok ");
 }
 
 async function fillDB() {
 	await seedMessages();
 	await seedChapters();
 }
+
 
 fillDB();
 

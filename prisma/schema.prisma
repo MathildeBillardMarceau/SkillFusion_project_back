@@ -57,6 +57,7 @@ model User {
 
   // Relations : le user peut créer plusieurs messages
   messages    Message[]
+  subscribers CourseHasSubscriber[]
 
 
   // Refresh token
@@ -91,6 +92,10 @@ model Course {
   categories  CourseHasCategory[]
   messages    Message[]
   chapters    Chapter[]
+  subscribers CourseHasSubscriber[]
+
+  relationPickedCourse      CoursePrerequisitesCourse[] @relation("PickedCourse")
+  relationPrereqCourse      CoursePrerequisitesCourse[] @relation("PrereqCourse")
 
   @@map("course")
 }
@@ -182,6 +187,26 @@ model CourseHasCategory{
   @@map("course_has_category")
 }
 
+model CourseHasSubscriber{
+  completion  Int
+
+  //FK
+  courseId  String @map("course_id")
+  userId    String @map("user_id")
+
+  //relations
+  course      Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([courseId, userId])
+
+  @@map("course_has_subscriber")
+
+}
+
+
+
+
 // ===========================
 // MODEL : Message
 // ===========================
@@ -203,4 +228,24 @@ model Message {
     course      Course    @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@map("message")
+}
+
+
+// ===========================
+// MODEL : CoursePrerequisitesCourse 
+// ===========================
+
+model CoursePrerequisitesCourse{
+  @@id([courseId, prerequisiteId])
+
+  //FK
+  courseId        String @map("course_id")
+  prerequisiteId  String @map("prerequisite_id")
+  
+  //Relations (ici on doit préciser quelle relation pour les préciser dans course donc elles sont nommées)
+  course        Course @relation("PickedCourse", fields: [courseId], references: [id], onDelete: Cascade)
+  prerequisite  Course @relation("PrereqCourse", fields: [prerequisiteId], references: [id], onDelete: Cascade)
+
+
+@@map("course_prerequisites_course")
 }
