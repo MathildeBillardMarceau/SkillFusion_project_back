@@ -1,7 +1,9 @@
 import { hash, verify } from "argon2";
 import { GraphQLError } from "graphql";
 import jwt from "jsonwebtoken";
+import { ZodError } from 'zod';
 import { config } from "../../config.ts";
+import { loginUserSchema, registerUserSchema, updateUserSchema } from "../Validation/schemas/user.schema.ts";
 import { requireAuth } from "../utils/requireAuth.ts";
 
 export const userResolvers = {
@@ -44,16 +46,31 @@ export const userResolvers = {
 	Mutation: {
 		registerUser: async (_parent, { input }, { prisma }) => {
 			// récupération des arguments
-			const { email, password, firstName, lastName } = input;
-
-			// TODO: validation des arguments (zod)
+			
+			const parsedInput = registerUserSchema.safeParse(input);
+			if (!parsedInput.success) {
+				const errorMessages = (parsedInput.error as ZodError);
+				throw new GraphQLError("Invalid input, try a valid email and a strong password. Your name must be at least 2 characters long.", {
+					extensions: {
+						code: "BAD_USER_INPUT",
+						errors: errorMessages,
+					},
+				});
+			}
+			const { email, password, firstName, lastName } = parsedInput.data;
 
 			// vérifier si le user existe déjà
 			const existingUser = await prisma.user.findUnique({ where: { email } });
-			if (existingUser) throw Error("Conflict: User already exists"); // 409
+			if (existingUser) throw new GraphQLError("Conflict: User already exists",
+				{ extensions: {
+					code: "CONFLICT",
+					http: { status: 409 },
+				},
+			}
+			); // 409
 
 			// hasher le pw
-			const hashedPassword = await hash(password);
+			const hashedPassword = await hash(password as string);
 
 			// créer le user
 			const newUser = await prisma.user.create({
@@ -65,9 +82,18 @@ export const userResolvers = {
 		},
 		loginUser: async (_parent, { input }, { prisma }) => {
 			// récupération des arguments
-			const { email, password } = input;
 
-			// TODO: validation des arguments (zod)
+			const parsedInput = loginUserSchema.safeParse(input);
+			if (!parsedInput.success) {
+				const errorMessages = (parsedInput.error as ZodError);
+				throw new GraphQLError("Invalid input", {
+					extensions: {
+						code: "BAD_USER_INPUT",
+						errors: errorMessages,
+					},
+				});
+			}
+			const { email, password } = parsedInput.data;
 
 			// récupération du user
 			const user = await prisma.user.findUnique({ where: { email } });
@@ -113,8 +139,7 @@ export const userResolvers = {
 		},
 		updateUser: async (_parent, { id, input }, { prisma, connectedUser }) => {
 			requireAuth(connectedUser);
-
-			// ne permettre qu'au user actuel et à un admin de pouvoir mettre à jour
+			
 			if (connectedUser.userId !== id && connectedUser.role !== "ADMIN") {
 				throw new GraphQLError("Forbidden", {
 					extensions: {
@@ -124,17 +149,35 @@ export const userResolvers = {
 				});
 			}
 
+			const parsedInput = updateUserSchema.safeParse(input);
+			
+			if (!parsedInput.success) {
+				const errorMessages = (parsedInput.error as ZodError);
+				throw new GraphQLError("Invalid input, try a valid email and a first and lastname at least 2 characters long", {
+					extensions: {
+						code: "BAD_USER_INPUT",
+						errors: errorMessages,
+					},
+				}
+  		);
+		}
+
+			const { email, lastName, firstName } = parsedInput.data;
+
+			// ne permettre qu'au user actuel et à un admin de pouvoir mettre à jour
+
 			// mettre à jour les informations du user
 			const updatedUser = await prisma.user.update({
 				where: { id },
-				data: input,
+				data: parsedInput.data,
 			});
 			return { ...updatedUser, password: undefined };
 		},
+
 		deleteUser: async (_parent, { id }, { prisma }) => {
 			// supprimer le user
-			const deletedUser = await prisma.user.delete({ where: { id } });
-			return { ...deletedUser, password: undefined };
+			await prisma.user.delete({ where: { id } });
+			return true;
 		},
 		refreshToken: async (_parent, { refreshToken }, { prisma }) => {
 			// 1. vérifier le refresh token

@@ -1,5 +1,7 @@
 import { GraphQLError } from "graphql";
+import { ZodError } from "zod";
 import { Level } from "../../../prisma/prismaClient.ts";
+import { createCategorySchema, createCourseSchema, updateCategorySchema, updateCourseSchema } from "../Validation/schemas/course.schema.ts";
 
 export const courseResolvers = {
 	Query: {
@@ -79,27 +81,69 @@ export const courseResolvers = {
 	Mutation: {
 		// Category
 		createCategory: async (_parent, { input }, { prisma }) => {
+		
+			const parsedInput = createCategorySchema.safeParse(input);
+						
+				if (!parsedInput.success) {
+					const errorMessages = (parsedInput.error as ZodError);
+					throw new GraphQLError("Invalid input", {
+							extensions: {
+								code: "BAD_USER_INPUT",
+								errors: errorMessages,
+							},
+						}
+					);
+				}
+			
 			const category = await prisma.category.create({
-				data: {
-					...input,
-				},
+				data: 
+					parsedInput.data,
+				
 			});
 			return category;
 		},
 		updateCategory: async (_parent, { id, input }, { prisma }) => {
+
+			const parsedInput = updateCategorySchema.safeParse(input);
+						
+				if (!parsedInput.success) {
+					const errorMessages = (parsedInput.error as ZodError);
+					throw new GraphQLError("Invalid input", {
+							extensions: {
+								code: "BAD_USER_INPUT",
+								errors: errorMessages,
+							},
+						}
+					);
+				}
+						
 			// mettre à jour les informations de la catégorie
-			return await prisma.category.update({ where: { id }, data: input });
+			return await prisma.category.update({ where: { id }, data: parsedInput });
 		},
 		deleteCategory: async (_parent, { id }, { prisma }) => {
 			// supprimer la catégorie
 			await prisma.category.delete({ where: { id } });
 			return true;
 		},
-
+		
 		// Course
 		createCourse: async (_parent, { input }, { prisma }) => {
-			const { userId, categoriesId, chapters, ...courseData } = input;
 
+			const parsedInput = createCourseSchema.safeParse(input);
+									
+					if (!parsedInput.success) {
+						const errorMessages = (parsedInput.error as ZodError);
+						throw new GraphQLError("Invalid input", {
+								extensions: {
+									code: "BAD_USER_INPUT",
+									errors: errorMessages,
+								},
+							}
+						);
+					}
+					
+			const { userId, categoriesId, chapters, ...courseData } = input;
+			
 			// vérifier si le user existe
 			const user = await prisma.user.findUnique({ where: { id: userId } });
 			if (!user)
@@ -197,8 +241,20 @@ export const courseResolvers = {
 			return course;
 		},
 		updateCourse: async (_parent, { id, input }, { prisma }) => {
-			// console.log("updateCourse");
-			const { categoriesId, chapters, ...courseData } = input;
+				
+			const parsedInput = updateCourseSchema.safeParse(input);
+									
+				if (!parsedInput.success) {
+					const errorMessages = (parsedInput.error as ZodError);
+					throw new GraphQLError("Invalid input", {
+							extensions: {
+								code: "BAD_USER_INPUT",
+								errors: errorMessages,
+							},
+						}
+					);
+				}
+
 
 			// vérifier si le slug existe déjà
 			// const existingSlug = await prisma.course.findUnique({
@@ -212,16 +268,15 @@ export const courseResolvers = {
 			// 		},
 			// 	});
 			// }
-
+			
+      
+      const { categoriesId} = input;
 			// mettre à jour les informations du cours
 			const course = await prisma.course.update({
 				where: { id },
-				data: courseData,
-			});
-
-			// console.log("course updated:", course);
-
-			// return course;
+				data: {
+					parsedInput,
+				},
 
 			// mettre à jour les catégories de la table de jointure
 			if (categoriesId?.length) {

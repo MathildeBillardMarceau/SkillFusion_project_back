@@ -1,4 +1,6 @@
 import { GraphQLError } from "graphql";
+import { ZodError } from "zod";
+import { createMessageSchema, updateMessageSchema } from "../Validation/schemas/message.schema.ts";
 
 export const messageResolvers = {
 	Query: {
@@ -64,6 +66,21 @@ export const messageResolvers = {
 
 	Mutation: {
 		createMessage: async (_parent, { input }, { prisma }) => {
+
+			const parsedInput = createMessageSchema.safeParse(input);
+						
+				if (!parsedInput.success) {
+					const errorMessages = (parsedInput.error as ZodError);
+					throw new GraphQLError("Invalid input", {
+							extensions: {
+								code: "BAD_USER_INPUT",
+								errors: errorMessages,
+							},
+						}
+					);
+				}
+
+
 			// fonctionne comme au-dessus
 			// note je "perds" la majuscule de CreateMessage - Majuscule = type, minuscule = resolver
 			// j'utilise input au lieu de args
@@ -76,11 +93,27 @@ export const messageResolvers = {
 		},
 
 		updateMessage: async (_parent, { id, input }, { prisma }) => {
+				
+			
+			const parsedInput = updateMessageSchema.safeParse(input);
+						
+				if (!parsedInput.success) {
+					const errorMessages = (parsedInput.error as ZodError);
+					throw new GraphQLError("Invalid input", {
+							extensions: {
+								code: "BAD_USER_INPUT",
+								errors: errorMessages,
+							},
+						}
+					);
+				}
+		
+			
 			// ici on utilisera id et input - alors que id n'est pas défini dans l'input
 			// on remarque que le second champ de la requête correspond à la partie entre parenthèses dans le type Mutation du .typeDefs.ts C'est de là que vient l'id
 			const message = await prisma.message.update({
 				where: { id },
-				data: input,
+				data: parsedInput,
 			});
 			return message;
 		},
