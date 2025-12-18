@@ -9,8 +9,10 @@
 		"build": "tsc",
 		"start": "node --env-file=.env dist/src/index.js",
 		"docker:start": "pnpm run db:migrate:deploy && node dist/src/index.js",
+
 		"======= Pour la dev =======": "========================",
 		"dev": "node --env-file=.env ./src/index.ts --watch",
+
 		"======= Pour la BDD =======": "========================",
 		"db:seed": "node --env-file=.env ./src/models/seed.ts",
 		"db:migrate:deploy": "prisma migrate deploy",
@@ -19,7 +21,12 @@
 		"db:reset": "pnpm run db:migrate:reset && pnpm run db:seed",
 		"db:sync": "prisma generate && prisma migrate deploy",
 		"db:update": "node scripts/migrate.ts",
-		"db:init": "pnpm db:sync && pnpm run db:seed"
+		"db:init": "pnpm db:sync && pnpm run db:seed",
+
+		"======= Pour les tests =======": "========================",
+		"test": "node --test",
+		"test:integration": "NODE_ENV=test node --env-file=.env.test --test tests/**/*.test.ts",
+		"docker:test:integration": "docker compose run --rm skillfusion-gql-api pnpm test:integration"
 	},
 	"repository": {
 		"type": "git",
