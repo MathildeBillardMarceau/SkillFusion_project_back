@@ -257,26 +257,27 @@ export const courseResolvers = {
 
 
 			// vérifier si le slug existe déjà
-			// const existingSlug = await prisma.course.findUnique({
-			// 	where: { slug: courseData.slug },
-			// });
-			// if (existingSlug) {
-			// 	throw new GraphQLError("le 'slug' existe déjà", {
-			// 		extensions: {
-			// 			code: "BAD USER INPUT",
-			// 			http: { status: 400 },
-			// 		},
-			// 	});
+			//  const existingSlug = await prisma.course.findUnique({
+			//  	where: { slug: courseData.slug },
+			//  });
+			//  if (existingSlug) {
+			//  	throw new GraphQLError("le 'slug' existe déjà", {
+			//  		extensions: {
+			//  			code: "BAD USER INPUT",
+			//  			http: { status: 400 },
+			//  		},
+			//  	});
 			// }
 			
       
-      const { categoriesId} = input;
+      const { categoriesId, chapters } = input;
 			// mettre à jour les informations du cours
 			const course = await prisma.course.update({
 				where: { id },
 				data: {
 					parsedInput,
 				},
+		})
 
 			// mettre à jour les catégories de la table de jointure
 			if (categoriesId?.length) {
