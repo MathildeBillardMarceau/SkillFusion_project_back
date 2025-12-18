@@ -57,6 +57,7 @@ model User {
 
   // Relations : le user peut créer plusieurs messages
   messages    Message[]
+  subscribers CourseHasSubscriber[]
 
 
   // Refresh token
@@ -91,6 +92,10 @@ model Course {
   categories  CourseHasCategory[]
   messages    Message[]
   chapters    Chapter[]
+  subscribers CourseHasSubscriber[]
+
+  relationPickedCourse      CoursePrerequisitesCourse[] @relation("PickedCourse")
+  relationPrereqCourse      CoursePrerequisitesCourse[] @relation("PrereqCourse")
 
   @@map("course")
 }
@@ -183,9 +188,22 @@ model CourseHasCategory{
 }
 
 model CourseHasSubscriber{
-  completion
+  completion  Int
+
   //FK
+  courseId  String @map("course_id")
+  userId    String @map("user_id")
+
+  //relations
+  course      Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  user        User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([courseId, userId])
+
+  @@map("course_has_subscriber")
+
 }
+
 
 
 

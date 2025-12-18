@@ -142,7 +142,7 @@ CREATE TABLE "course_prerequisites_course" (
 );
 
 -- ===========================
--- TABLE : course_has_subscriber (Many-to-Many)
+-- TABLE : course_has_subscriber (Many-to-Many) (done)
 -- ===========================
 CREATE TABLE "course_has_subscriber" (
     "course_id" UUID NOT NULL REFERENCES "course"("id") ON DELETE CASCADE,
