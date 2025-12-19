@@ -25,10 +25,10 @@ services:
     build: 
       context: ./
       dockerfile: Dockerfile
-    volumes:
-      - ./:/app
-      - ~/.pnpm-store:/root/.pnpm-store
-      - /app/node_modules
+    # volumes:
+    #   - ./:/app
+    #   - ~/.pnpm-store:/root/.pnpm-store
+    #   - /app/node_modules
     ports: 
       - ${PORT}:4000
     environment:
