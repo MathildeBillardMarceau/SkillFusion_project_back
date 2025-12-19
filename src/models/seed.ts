@@ -226,7 +226,7 @@ async function seedChapters() {
 	const nicoCourse = await prisma.course.findUnique({
 		where: { slug: "nico-1" },
 	});
-//console.log("nicoCourse ID:", nicoCourse);
+	//console.log("nicoCourse ID:", nicoCourse);
 
 	if (!nicoCourse) throw new Error("Cours introuvable !");
 
@@ -268,9 +268,7 @@ async function seedChapters() {
 		await prisma.chapter.create({ data: chapter });
 	}
 
-
 	console.log("✅ - Chapitres ajoutés avec succès !");
-
 }
 
 // creation des messages
@@ -308,11 +306,69 @@ async function seedMessages() {
 	console.log("✅ - messages créés dans tous les cours ok ");
 }
 
+// randomizer de users
+function getRandomValue(max) {
+	return Math.floor(Math.random() * max);
+}
+
+async function randomlyPickedUsers() {
+	const allUsers = await prisma.user.findMany({ select: { id: true } });
+	// je recherche tous mes users mais je ne prends que les IDs
+	const usedValues = new Set();
+	// le set est un listing de valeurs pour comparer si les valeurs existent dedans
+	const randomizedUsers = [];
+	// le tableau qui va recevoir les user et le sort value
+
+	const maxrandom = allUsers.length * 1000;
+	// je compte mes valeurs intiales, je les x1000 pour être sur d'avoir une grosse marge pour éviter les doublons
+
+	for (const user of allUsers) {
+		let sortValue = getRandomValue(maxrandom);
+		// je génère une valeur aléatoire
+
+		while (usedValues.has(sortValue)) {
+			// tant que cette valeur aléatoire est déjà dans usedValudes je la regén_re
+			sortValue = getRandomValue(maxrandom);
+		}
+		// j'ajoute enfin ma valeur dans ma liste des valeurs utilisées
+		usedValues.add(sortValue);
+		// et je push dans mon tableau de sortie user et la valeur de tri
+		randomizedUsers.push({ id: user.id, sortValue });
+	}
+	randomizedUsers.sort((a, b) => a.sortValue - b.sortValue);
+	// le sort va permettre de trier dans l'ordre en comparant les sortValue de chaque user
+
+	const nUsersToPick = Math.floor(Math.random() * randomizedUsers.length) + 1;
+	// je compte la longueur +1 de randomized users
+	const pickedUsers = randomizedUsers.slice(0, nUsersToPick);
+
+	return pickedUsers;
+}
+
+async function subscribeToCourse() {
+	const allCourses = await prisma.course.findMany();
+
+	for (const course of allCourses) {
+		const subscribers = await randomlyPickedUsers();
+		// j'init un tableau subscribers
+		const subscribersData = subscribers.map((user) => ({
+			courseId: course.id,
+			userId: user.id,
+			completion: "",
+		}));
+		// je map (donc je rajoute) dans ce tableau des objets avec courseId et userId
+		await prisma.courseHasSubscriber.createMany({ data: subscribersData });
+		// j'envoie ensuite ce tableau dans le createMany ?
+		console.log("Inscription à un cours réalisée");
+	}
+	console.log("✅Inscription à tous les cours ok");
+}
+
 async function fillDB() {
 	await seedMessages();
 	await seedChapters();
+	await subscribeToCourse();
 }
-
 
 fillDB();
 

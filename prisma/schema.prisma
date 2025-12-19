@@ -188,7 +188,7 @@ model CourseHasCategory{
 }
 
 model CourseHasSubscriber{
-  completion  Int
+  completion  String
 
   //FK
   courseId  String @map("course_id")
@@ -201,6 +201,9 @@ model CourseHasSubscriber{
   @@id([courseId, userId])
 
   @@map("course_has_subscriber")
+
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @map("updated_at")
 
 }
 
@@ -246,6 +249,8 @@ model CoursePrerequisitesCourse{
   course        Course @relation("PickedCourse", fields: [courseId], references: [id], onDelete: Cascade)
   prerequisite  Course @relation("PrereqCourse", fields: [prerequisiteId], references: [id], onDelete: Cascade)
 
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @map("updated_at")
 
 @@map("course_prerequisites_course")
 }
