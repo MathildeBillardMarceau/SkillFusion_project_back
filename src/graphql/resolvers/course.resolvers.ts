@@ -10,7 +10,7 @@ export const courseResolvers = {
 			return await prisma.course.findMany({
 				include: {
 					_count: {
-						select: { CourseHasSubscriber: true},
+						select: { subscribers: true},
 					}
 				}
 			});
