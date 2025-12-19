@@ -16,10 +16,10 @@ RUN pnpm install
 COPY . .
 
 # Générer Prisma (client)
-RUN pnpm run db:generate
+# RUN pnpm run db:generate
 
 # Créer le build de production
-RUN pnpm run build
+# RUN pnpm run build
 
 # Exposer le port de l'API
 EXPOSE 4000
