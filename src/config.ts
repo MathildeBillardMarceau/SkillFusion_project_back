@@ -5,7 +5,7 @@ export const config = {
 	PGDATABASE: getEnv(process.env.PGDATABASE, "PGDATABASE"),
 	PGHOST: getEnv(process.env.PGHOST, "PGHOST"),
 	PGPORT: Number.parseInt(getEnv(process.env.PGPORT, "PGPORT") || "5555"),
-	DATABASE_URL: `"postgresql://${getEnv(process.env.PGUSER, "PGUSER")}:${getEnv(process.env.PGPASSWORD, "PGPASSWORD")}@${getEnv(process.env.PGHOST, "PGHOST")}:${Number.parseInt(getEnv(process.env.PGPORT, "PGPORT") || "5432")}/${getEnv(process.env.PGDATABASE, "PGDATABASE")}"`,
+	DATABASE_URL: `postgresql://${getEnv(process.env.PGUSER, "PGUSER")}:${getEnv(process.env.PGPASSWORD, "PGPASSWORD")}@${getEnv(process.env.PGHOST, "PGHOST")}:${Number.parseInt(getEnv(process.env.PGPORT, "PGPORT") || "5432")}/${getEnv(process.env.PGDATABASE, "PGDATABASE")}`,
 	JWT_SECRET: getEnv(process.env.JWT_SECRET, "JWT_SECRET"),
 	JWT_REFRESH_SECRET: getEnv(
 		process.env.JWT_REFRESH_SECRET,

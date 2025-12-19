@@ -9,8 +9,8 @@ services:
       POSTGRES_PASSWORD: ${PGPASSWORD}
       POSTGRES_DB: ${PGDATABASE}
       PGDATA: /mydbdata
-    ports:
-      - ${PGPORT}:5432 # "left:right" → "l:r" → "local:remote"
+    # ports:
+      # - ${PGPORT}:5432 # "left:right" → "l:r" → "local:remote"
     volumes:
       - "skillfusion_db:/mydbdata"
     healthcheck:
