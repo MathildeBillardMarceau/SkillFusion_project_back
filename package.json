@@ -9,6 +9,8 @@
 		"build": "tsc",
 		"start": "node --env-file=.env dist/src/index.js",
 		"docker:start": "pnpm run db:migrate:deploy && node dist/src/index.js",
+		"docker:dev:local": "docker compose --env-file .env.local --profile local up",
+		"docker:dev:supabase": "docker compose --env-file .env.supabase --profile supabase up",
 
 		"======= Pour la dev =======": "========================",
 		"dev": "node --env-file=.env ./src/index.ts --watch",
@@ -18,6 +20,7 @@
 		"db:migrate:deploy": "prisma migrate deploy",
 		"db:generate": "prisma generate",
 		"db:migrate:reset": "prisma migrate reset --force",
+		"db:deploy": "DATABASE_URL=$DIRECT_URL prisma migrate deploy",
 		"db:reset": "pnpm run db:migrate:reset && pnpm run db:seed",
 		"db:sync": "prisma generate && prisma migrate deploy",
 		"db:update": "node scripts/migrate.ts",

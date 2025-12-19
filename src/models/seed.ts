@@ -75,14 +75,14 @@ const loremIpsum =
 await prisma.course.createMany({
 	data: [
 		{
-			title: "Title n°1",
+			title: "Title 1",
 			slug: "title-1",
 			userId: (await getUser("sarah+admin@connor.io"))!.id,
 			level: "BEGINNER",
 			image: "/images/carrelage.jpg",
 		},
 		{
-			title: "Nico1",
+			title: "Nico 1",
 			slug: "nico-1",
 			userId: (await getUser("2john@carpenter.io"))!.id,
 			level: "BEGINNER",
@@ -93,14 +93,14 @@ await prisma.course.createMany({
 			material: "tête, épaules, patience, obstination, self-control ",
 		},
 		{
-			title: "Title n°2",
+			title: "Title 2",
 			slug: "title-2",
 			userId: (await getUser("2john@carpenter.io"))!.id,
 			level: "INTERMEDIATE",
 			image: "/images/mur_beton.jpg",
 		},
 		{
-			title: "Title n°3",
+			title: "Title 3",
 			slug: "title-3",
 			userId: (await getUser("sarah@connor.io"))!.id,
 			level: "ADVANCED",
@@ -111,31 +111,31 @@ await prisma.course.createMany({
 			material: "tête, épaules, genoux, pieds",
 		},
 		{
-			title: "Title n°4",
+			title: "Title 4",
 			slug: "title-4",
 			userId: (await getUser("sarah@connor.io"))!.id,
 			image: "/images/niveau-a-bulle.jpg",
 		},
 		{
-			title: "Title n°5",
+			title: "Title 5",
 			slug: "title-5",
 			userId: (await getUser("2john@carpenter.io"))!.id,
 			description: loremIpsum,
 		},
 		{
-			title: "Title n°6",
+			title: "Title 6",
 			slug: "title-6",
 			description: loremIpsum,
 			userId: (await getUser("2john@carpenter.io"))!.id,
 			image: "/images/tableau_electrique.jpg",
 		},
 		{
-			title: "Title n°7",
+			title: "Title 7",
 			slug: "title-7",
 			userId: (await getUser("2john@carpenter.io"))!.id,
 		},
 		{
-			title: "Title n°8",
+			title: "Title 8",
 			slug: "title-8",
 			userId: (await getUser("2john@carpenter.io"))!.id,
 		},
@@ -226,7 +226,7 @@ async function seedChapters() {
 	const nicoCourse = await prisma.course.findUnique({
 		where: { slug: "nico-1" },
 	});
-//console.log("nicoCourse ID:", nicoCourse);
+	//console.log("nicoCourse ID:", nicoCourse);
 
 	if (!nicoCourse) throw new Error("Cours introuvable !");
 
@@ -268,9 +268,7 @@ async function seedChapters() {
 		await prisma.chapter.create({ data: chapter });
 	}
 
-
 	console.log("✅ - Chapitres ajoutés avec succès !");
-
 }
 
 // creation des messages
@@ -312,7 +310,6 @@ async function fillDB() {
 	await seedMessages();
 	await seedChapters();
 }
-
 
 fillDB();
 

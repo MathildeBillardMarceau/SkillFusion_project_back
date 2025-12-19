@@ -391,7 +391,9 @@ export const ModelName = {
   ChapterHasMedia: 'ChapterHasMedia',
   Category: 'Category',
   CourseHasCategory: 'CourseHasCategory',
-  Message: 'Message'
+  CourseHasSubscriber: 'CourseHasSubscriber',
+  Message: 'Message',
+  CoursePrerequisitesCourse: 'CoursePrerequisitesCourse'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -407,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "course" | "chapter" | "media" | "chapterHasMedia" | "category" | "courseHasCategory" | "message"
+    modelProps: "user" | "course" | "chapter" | "media" | "chapterHasMedia" | "category" | "courseHasCategory" | "courseHasSubscriber" | "message" | "coursePrerequisitesCourse"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -929,6 +931,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    CourseHasSubscriber: {
+      payload: Prisma.$CourseHasSubscriberPayload<ExtArgs>
+      fields: Prisma.CourseHasSubscriberFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CourseHasSubscriberFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasSubscriberPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CourseHasSubscriberFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasSubscriberPayload>
+        }
+        findFirst: {
+          args: Prisma.CourseHasSubscriberFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasSubscriberPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CourseHasSubscriberFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasSubscriberPayload>
+        }
+        findMany: {
+          args: Prisma.CourseHasSubscriberFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasSubscriberPayload>[]
+        }
+        create: {
+          args: Prisma.CourseHasSubscriberCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasSubscriberPayload>
+        }
+        createMany: {
+          args: Prisma.CourseHasSubscriberCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CourseHasSubscriberCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasSubscriberPayload>[]
+        }
+        delete: {
+          args: Prisma.CourseHasSubscriberDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasSubscriberPayload>
+        }
+        update: {
+          args: Prisma.CourseHasSubscriberUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasSubscriberPayload>
+        }
+        deleteMany: {
+          args: Prisma.CourseHasSubscriberDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CourseHasSubscriberUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CourseHasSubscriberUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasSubscriberPayload>[]
+        }
+        upsert: {
+          args: Prisma.CourseHasSubscriberUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CourseHasSubscriberPayload>
+        }
+        aggregate: {
+          args: Prisma.CourseHasSubscriberAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCourseHasSubscriber>
+        }
+        groupBy: {
+          args: Prisma.CourseHasSubscriberGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CourseHasSubscriberGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CourseHasSubscriberCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CourseHasSubscriberCountAggregateOutputType> | number
+        }
+      }
+    }
     Message: {
       payload: Prisma.$MessagePayload<ExtArgs>
       fields: Prisma.MessageFieldRefs
@@ -1000,6 +1076,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.MessageCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.MessageCountAggregateOutputType> | number
+        }
+      }
+    }
+    CoursePrerequisitesCourse: {
+      payload: Prisma.$CoursePrerequisitesCoursePayload<ExtArgs>
+      fields: Prisma.CoursePrerequisitesCourseFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.CoursePrerequisitesCourseFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePrerequisitesCoursePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.CoursePrerequisitesCourseFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePrerequisitesCoursePayload>
+        }
+        findFirst: {
+          args: Prisma.CoursePrerequisitesCourseFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePrerequisitesCoursePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.CoursePrerequisitesCourseFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePrerequisitesCoursePayload>
+        }
+        findMany: {
+          args: Prisma.CoursePrerequisitesCourseFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePrerequisitesCoursePayload>[]
+        }
+        create: {
+          args: Prisma.CoursePrerequisitesCourseCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePrerequisitesCoursePayload>
+        }
+        createMany: {
+          args: Prisma.CoursePrerequisitesCourseCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.CoursePrerequisitesCourseCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePrerequisitesCoursePayload>[]
+        }
+        delete: {
+          args: Prisma.CoursePrerequisitesCourseDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePrerequisitesCoursePayload>
+        }
+        update: {
+          args: Prisma.CoursePrerequisitesCourseUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePrerequisitesCoursePayload>
+        }
+        deleteMany: {
+          args: Prisma.CoursePrerequisitesCourseDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.CoursePrerequisitesCourseUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.CoursePrerequisitesCourseUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePrerequisitesCoursePayload>[]
+        }
+        upsert: {
+          args: Prisma.CoursePrerequisitesCourseUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$CoursePrerequisitesCoursePayload>
+        }
+        aggregate: {
+          args: Prisma.CoursePrerequisitesCourseAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateCoursePrerequisitesCourse>
+        }
+        groupBy: {
+          args: Prisma.CoursePrerequisitesCourseGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CoursePrerequisitesCourseGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.CoursePrerequisitesCourseCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.CoursePrerequisitesCourseCountAggregateOutputType> | number
         }
       }
     }
@@ -1131,6 +1281,15 @@ export const CourseHasCategoryScalarFieldEnum = {
 export type CourseHasCategoryScalarFieldEnum = (typeof CourseHasCategoryScalarFieldEnum)[keyof typeof CourseHasCategoryScalarFieldEnum]
 
 
+export const CourseHasSubscriberScalarFieldEnum = {
+  completion: 'completion',
+  courseId: 'courseId',
+  userId: 'userId'
+} as const
+
+export type CourseHasSubscriberScalarFieldEnum = (typeof CourseHasSubscriberScalarFieldEnum)[keyof typeof CourseHasSubscriberScalarFieldEnum]
+
+
 export const MessageScalarFieldEnum = {
   id: 'id',
   content: 'content',
@@ -1141,6 +1300,14 @@ export const MessageScalarFieldEnum = {
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
+export const CoursePrerequisitesCourseScalarFieldEnum = {
+  courseId: 'courseId',
+  prerequisiteId: 'prerequisiteId'
+} as const
+
+export type CoursePrerequisitesCourseScalarFieldEnum = (typeof CoursePrerequisitesCourseScalarFieldEnum)[keyof typeof CoursePrerequisitesCourseScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1270,6 +1437,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -1372,7 +1553,9 @@ export type GlobalOmitConfig = {
   chapterHasMedia?: Prisma.ChapterHasMediaOmit
   category?: Prisma.CategoryOmit
   courseHasCategory?: Prisma.CourseHasCategoryOmit
+  courseHasSubscriber?: Prisma.CourseHasSubscriberOmit
   message?: Prisma.MessageOmit
+  coursePrerequisitesCourse?: Prisma.CoursePrerequisitesCourseOmit
 }
 
 /* Types for Logging */

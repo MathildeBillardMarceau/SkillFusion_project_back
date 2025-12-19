@@ -58,7 +58,9 @@ export const ModelName = {
   ChapterHasMedia: 'ChapterHasMedia',
   Category: 'Category',
   CourseHasCategory: 'CourseHasCategory',
-  Message: 'Message'
+  CourseHasSubscriber: 'CourseHasSubscriber',
+  Message: 'Message',
+  CoursePrerequisitesCourse: 'CoursePrerequisitesCourse'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -166,6 +168,15 @@ export const CourseHasCategoryScalarFieldEnum = {
 export type CourseHasCategoryScalarFieldEnum = (typeof CourseHasCategoryScalarFieldEnum)[keyof typeof CourseHasCategoryScalarFieldEnum]
 
 
+export const CourseHasSubscriberScalarFieldEnum = {
+  completion: 'completion',
+  courseId: 'courseId',
+  userId: 'userId'
+} as const
+
+export type CourseHasSubscriberScalarFieldEnum = (typeof CourseHasSubscriberScalarFieldEnum)[keyof typeof CourseHasSubscriberScalarFieldEnum]
+
+
 export const MessageScalarFieldEnum = {
   id: 'id',
   content: 'content',
@@ -176,6 +187,14 @@ export const MessageScalarFieldEnum = {
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
+
+
+export const CoursePrerequisitesCourseScalarFieldEnum = {
+  courseId: 'courseId',
+  prerequisiteId: 'prerequisiteId'
+} as const
+
+export type CoursePrerequisitesCourseScalarFieldEnum = (typeof CoursePrerequisitesCourseScalarFieldEnum)[keyof typeof CoursePrerequisitesCourseScalarFieldEnum]
 
 
 export const SortOrder = {

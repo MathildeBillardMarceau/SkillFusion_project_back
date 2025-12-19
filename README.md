@@ -101,3 +101,10 @@ docker compose up --build
 > ```bash
 > pnpm db:migrate:reset
 > ```
+
+## Lancement du projet par Docker avec supabase :
+1. créez et renseignez votre fichier .env.supabase
+2. lancez la commande `pnpm docker:dev:supabase`
+
+## Lancement du projet par Docker avec bdd locale :
+lancez la commande `pnpm docker:dev:local`
