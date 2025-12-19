@@ -24,6 +24,7 @@ export const courseTypeDefs = `#graphql
     cost:        String  
     material:    String  
     publishedAt: DateTime
+    subscriptionsCount: Int!
 
     user:        User
 
