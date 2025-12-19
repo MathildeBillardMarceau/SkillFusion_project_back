@@ -232,6 +232,7 @@ export type UserWhereInput = {
   refreshToken?: Prisma.StringNullableFilter<"User"> | string | null
   course?: Prisma.CourseListRelationFilter
   messages?: Prisma.MessageListRelationFilter
+  subscribers?: Prisma.CourseHasSubscriberListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -248,6 +249,7 @@ export type UserOrderByWithRelationInput = {
   refreshToken?: Prisma.SortOrderInput | Prisma.SortOrder
   course?: Prisma.CourseOrderByRelationAggregateInput
   messages?: Prisma.MessageOrderByRelationAggregateInput
+  subscribers?: Prisma.CourseHasSubscriberOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -267,6 +269,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   refreshToken?: Prisma.StringNullableFilter<"User"> | string | null
   course?: Prisma.CourseListRelationFilter
   messages?: Prisma.MessageListRelationFilter
+  subscribers?: Prisma.CourseHasSubscriberListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -317,6 +320,7 @@ export type UserCreateInput = {
   refreshToken?: string | null
   course?: Prisma.CourseCreateNestedManyWithoutUserInput
   messages?: Prisma.MessageCreateNestedManyWithoutUserInput
+  subscribers?: Prisma.CourseHasSubscriberCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -333,6 +337,7 @@ export type UserUncheckedCreateInput = {
   refreshToken?: string | null
   course?: Prisma.CourseUncheckedCreateNestedManyWithoutUserInput
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput
+  subscribers?: Prisma.CourseHasSubscriberUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -349,6 +354,7 @@ export type UserUpdateInput = {
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   course?: Prisma.CourseUpdateManyWithoutUserNestedInput
   messages?: Prisma.MessageUpdateManyWithoutUserNestedInput
+  subscribers?: Prisma.CourseHasSubscriberUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -365,6 +371,7 @@ export type UserUncheckedUpdateInput = {
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   course?: Prisma.CourseUncheckedUpdateManyWithoutUserNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput
+  subscribers?: Prisma.CourseHasSubscriberUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -490,6 +497,20 @@ export type UserUpdateOneRequiredWithoutCourseNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCourseInput, Prisma.UserUpdateWithoutCourseInput>, Prisma.UserUncheckedUpdateWithoutCourseInput>
 }
 
+export type UserCreateNestedOneWithoutSubscribersInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSubscribersInput, Prisma.UserUncheckedCreateWithoutSubscribersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSubscribersInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSubscribersNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSubscribersInput, Prisma.UserUncheckedCreateWithoutSubscribersInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSubscribersInput
+  upsert?: Prisma.UserUpsertWithoutSubscribersInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSubscribersInput, Prisma.UserUpdateWithoutSubscribersInput>, Prisma.UserUncheckedUpdateWithoutSubscribersInput>
+}
+
 export type UserCreateNestedOneWithoutMessagesInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutMessagesInput, Prisma.UserUncheckedCreateWithoutMessagesInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutMessagesInput
@@ -517,6 +538,7 @@ export type UserCreateWithoutCourseInput = {
   updatedAt?: Date | string
   refreshToken?: string | null
   messages?: Prisma.MessageCreateNestedManyWithoutUserInput
+  subscribers?: Prisma.CourseHasSubscriberCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCourseInput = {
@@ -532,6 +554,7 @@ export type UserUncheckedCreateWithoutCourseInput = {
   updatedAt?: Date | string
   refreshToken?: string | null
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput
+  subscribers?: Prisma.CourseHasSubscriberUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCourseInput = {
@@ -563,6 +586,7 @@ export type UserUpdateWithoutCourseInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   messages?: Prisma.MessageUpdateManyWithoutUserNestedInput
+  subscribers?: Prisma.CourseHasSubscriberUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCourseInput = {
@@ -577,6 +601,87 @@ export type UserUncheckedUpdateWithoutCourseInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput
+  subscribers?: Prisma.CourseHasSubscriberUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutSubscribersInput = {
+  id?: string
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  avatar?: string | null
+  role?: $Enums.Role
+  status?: $Enums.Status
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  refreshToken?: string | null
+  course?: Prisma.CourseCreateNestedManyWithoutUserInput
+  messages?: Prisma.MessageCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSubscribersInput = {
+  id?: string
+  email: string
+  password: string
+  firstName: string
+  lastName: string
+  avatar?: string | null
+  role?: $Enums.Role
+  status?: $Enums.Status
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  refreshToken?: string | null
+  course?: Prisma.CourseUncheckedCreateNestedManyWithoutUserInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSubscribersInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSubscribersInput, Prisma.UserUncheckedCreateWithoutSubscribersInput>
+}
+
+export type UserUpsertWithoutSubscribersInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSubscribersInput, Prisma.UserUncheckedUpdateWithoutSubscribersInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSubscribersInput, Prisma.UserUncheckedCreateWithoutSubscribersInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSubscribersInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSubscribersInput, Prisma.UserUncheckedUpdateWithoutSubscribersInput>
+}
+
+export type UserUpdateWithoutSubscribersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  course?: Prisma.CourseUpdateManyWithoutUserNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSubscribersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  password?: Prisma.StringFieldUpdateOperationsInput | string
+  firstName?: Prisma.StringFieldUpdateOperationsInput | string
+  lastName?: Prisma.StringFieldUpdateOperationsInput | string
+  avatar?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  course?: Prisma.CourseUncheckedUpdateManyWithoutUserNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutUserNestedInput
 }
 
@@ -593,6 +698,7 @@ export type UserCreateWithoutMessagesInput = {
   updatedAt?: Date | string
   refreshToken?: string | null
   course?: Prisma.CourseCreateNestedManyWithoutUserInput
+  subscribers?: Prisma.CourseHasSubscriberCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMessagesInput = {
@@ -608,6 +714,7 @@ export type UserUncheckedCreateWithoutMessagesInput = {
   updatedAt?: Date | string
   refreshToken?: string | null
   course?: Prisma.CourseUncheckedCreateNestedManyWithoutUserInput
+  subscribers?: Prisma.CourseHasSubscriberUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMessagesInput = {
@@ -639,6 +746,7 @@ export type UserUpdateWithoutMessagesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   course?: Prisma.CourseUpdateManyWithoutUserNestedInput
+  subscribers?: Prisma.CourseHasSubscriberUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMessagesInput = {
@@ -654,6 +762,7 @@ export type UserUncheckedUpdateWithoutMessagesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   refreshToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   course?: Prisma.CourseUncheckedUpdateManyWithoutUserNestedInput
+  subscribers?: Prisma.CourseHasSubscriberUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -664,11 +773,13 @@ export type UserUncheckedUpdateWithoutMessagesInput = {
 export type UserCountOutputType = {
   course: number
   messages: number
+  subscribers: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   course?: boolean | UserCountOutputTypeCountCourseArgs
   messages?: boolean | UserCountOutputTypeCountMessagesArgs
+  subscribers?: boolean | UserCountOutputTypeCountSubscribersArgs
 }
 
 /**
@@ -695,6 +806,13 @@ export type UserCountOutputTypeCountMessagesArgs<ExtArgs extends runtime.Types.E
   where?: Prisma.MessageWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSubscribersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CourseHasSubscriberWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -710,6 +828,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   refreshToken?: boolean
   course?: boolean | Prisma.User$courseArgs<ExtArgs>
   messages?: boolean | Prisma.User$messagesArgs<ExtArgs>
+  subscribers?: boolean | Prisma.User$subscribersArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -759,6 +878,7 @@ export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = run
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   course?: boolean | Prisma.User$courseArgs<ExtArgs>
   messages?: boolean | Prisma.User$messagesArgs<ExtArgs>
+  subscribers?: boolean | Prisma.User$subscribersArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -769,6 +889,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   objects: {
     course: Prisma.$CoursePayload<ExtArgs>[]
     messages: Prisma.$MessagePayload<ExtArgs>[]
+    subscribers: Prisma.$CourseHasSubscriberPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1178,6 +1299,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   readonly [Symbol.toStringTag]: "PrismaPromise"
   course<T extends Prisma.User$courseArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$courseArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CoursePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   messages<T extends Prisma.User$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  subscribers<T extends Prisma.User$subscribersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$subscribersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CourseHasSubscriberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1651,6 +1773,30 @@ export type User$messagesArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.MessageScalarFieldEnum | Prisma.MessageScalarFieldEnum[]
+}
+
+/**
+ * User.subscribers
+ */
+export type User$subscribersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CourseHasSubscriber
+   */
+  select?: Prisma.CourseHasSubscriberSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CourseHasSubscriber
+   */
+  omit?: Prisma.CourseHasSubscriberOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CourseHasSubscriberInclude<ExtArgs> | null
+  where?: Prisma.CourseHasSubscriberWhereInput
+  orderBy?: Prisma.CourseHasSubscriberOrderByWithRelationInput | Prisma.CourseHasSubscriberOrderByWithRelationInput[]
+  cursor?: Prisma.CourseHasSubscriberWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CourseHasSubscriberScalarFieldEnum | Prisma.CourseHasSubscriberScalarFieldEnum[]
 }
 
 /**
