@@ -7,7 +7,13 @@ export const courseResolvers = {
 	Query: {
 		// courses
 		courses: async (_parent, _args, { prisma }) => {
-			return await prisma.course.findMany();
+			return await prisma.course.findMany({
+				include: {
+					_count: {
+						select: { CourseHasSubscriber: true},
+					}
+				}
+			});
 		},
 		courseById: async (_parent, { id }, { prisma }) => {
 			const course = await prisma.course.findUnique({ where: { id } });
@@ -336,5 +342,6 @@ export const courseResolvers = {
 			await prisma.course.delete({ where: { id } });
 			return true;
 		},
+		subscriptionscount: (_parent) =>{ _parent._count.CourseHasSubscriber || 0 }
 	},
 };
