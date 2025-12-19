@@ -61,6 +61,14 @@ await prisma.user.createMany({
 			password: await hash("Bob123!"),
 			avatar: "av06.jpg",
 		},
+		{
+			firstName: "Hello",
+			lastName: "world",
+			email: "coucou@lol.mdr",
+			role: 'INSTRUCTOR',
+			password: await hash("Azerty123!"),
+			avatar: "av06.jpg",
+		},
 	],
 	skipDuplicates: true,
 }); // { count: 6 }
