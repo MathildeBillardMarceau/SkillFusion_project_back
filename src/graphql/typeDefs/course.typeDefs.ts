@@ -24,6 +24,7 @@ export const courseTypeDefs = `#graphql
     cost:        String  
     material:    String  
     publishedAt: DateTime
+    subscriptionsCount: Int!
 
     user:        User
 
@@ -131,5 +132,8 @@ export const courseTypeDefs = `#graphql
     createCourse(input: CreateCourseInput!): Course!
     updateCourse(id: UUID!, input: UpdateCourseInput!): Course!
     deleteCourse(id: UUID!): Boolean!
+
+    #subscriptions count
+    subscriptionscount: Int!  
   }
 `;

@@ -1284,7 +1284,9 @@ export type CourseHasCategoryScalarFieldEnum = (typeof CourseHasCategoryScalarFi
 export const CourseHasSubscriberScalarFieldEnum = {
   completion: 'completion',
   courseId: 'courseId',
-  userId: 'userId'
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type CourseHasSubscriberScalarFieldEnum = (typeof CourseHasSubscriberScalarFieldEnum)[keyof typeof CourseHasSubscriberScalarFieldEnum]
@@ -1304,7 +1306,9 @@ export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeo
 
 export const CoursePrerequisitesCourseScalarFieldEnum = {
   courseId: 'courseId',
-  prerequisiteId: 'prerequisiteId'
+  prerequisiteId: 'prerequisiteId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type CoursePrerequisitesCourseScalarFieldEnum = (typeof CoursePrerequisitesCourseScalarFieldEnum)[keyof typeof CoursePrerequisitesCourseScalarFieldEnum]
