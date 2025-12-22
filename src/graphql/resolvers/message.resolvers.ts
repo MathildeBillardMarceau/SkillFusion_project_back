@@ -68,7 +68,7 @@ export const messageResolvers = {
 		createMessage: async (_parent, { input }, { prisma }) => {
 
 			const parsedInput = createMessageSchema.safeParse(input);
-						
+				  console.log("createMessage input reçu :", input);		
 				if (!parsedInput.success) {
 					const errorMessages = (parsedInput.error as ZodError);
 					throw new GraphQLError("Invalid input", {
