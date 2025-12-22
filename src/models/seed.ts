@@ -65,7 +65,7 @@ await prisma.user.createMany({
 			firstName: "Hello",
 			lastName: "world",
 			email: "coucou@lol.mdr",
-			role: 'INSTRUCTOR',
+			role: "INSTRUCTOR",
 			password: await hash("Azerty123!"),
 			avatar: "av06.jpg",
 		},
@@ -88,6 +88,7 @@ await prisma.course.createMany({
 			userId: (await getUser("sarah+admin@connor.io"))!.id,
 			level: "BEGINNER",
 			image: "/images/carrelage.jpg",
+			publishedAt: new Date().toISOString(),
 		},
 		{
 			title: "Nico 1",
@@ -99,6 +100,7 @@ await prisma.course.createMany({
 			duration: "99h99",
 			cost: "~99€",
 			material: "tête, épaules, patience, obstination, self-control ",
+			publishedAt: new Date().toISOString(),
 		},
 		{
 			title: "Title 2",
@@ -106,6 +108,7 @@ await prisma.course.createMany({
 			userId: (await getUser("2john@carpenter.io"))!.id,
 			level: "INTERMEDIATE",
 			image: "/images/mur_beton.jpg",
+			publishedAt: new Date().toISOString(),
 		},
 		{
 			title: "Title 3",
@@ -117,18 +120,21 @@ await prisma.course.createMany({
 			duration: "2h30",
 			cost: "~100€",
 			material: "tête, épaules, genoux, pieds",
+			publishedAt: new Date().toISOString(),
 		},
 		{
 			title: "Title 4",
 			slug: "title-4",
 			userId: (await getUser("sarah@connor.io"))!.id,
 			image: "/images/niveau-a-bulle.jpg",
+			publishedAt: new Date().toISOString(),
 		},
 		{
 			title: "Title 5",
 			slug: "title-5",
 			userId: (await getUser("2john@carpenter.io"))!.id,
 			description: loremIpsum,
+			publishedAt: new Date().toISOString(),
 		},
 		{
 			title: "Title 6",
