@@ -354,11 +354,14 @@ async function randomlyPickedUsers() {
 }
 
 async function subscribeToCourse() {
+	// je récupère tous les cours existants et pour chaque cours je prends sont id et ses chapters
 	const allCourses = await prisma.course.findMany();
 
+	// pour chaque course
 	for (const course of allCourses) {
+		// j'appelle la fonction qui choisit des users au hasard
 		const subscribers = await randomlyPickedUsers();
-		// j'init un tableau subscribers
+		// j'init un tableau subscribers dans lequel je map les courseId et userId
 		const subscribersData = subscribers.map((user) => ({
 			courseId: course.id,
 			userId: user.id,

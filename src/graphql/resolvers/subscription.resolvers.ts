@@ -13,9 +13,17 @@ export const subscriptionResolvers = {
 			});
 		},
 
+		subscriptionByCourse: async (_parent, args, { prisma }) => {
+			return await prisma.CourseHasSubscriber.findMany({
+				where: { courseId: args.courseId },
+				include: { user: true },
+			});
+		},
+
 		subscriptionByUserAtCourse: async (_parent, args, { prisma }) => {
 			return await prisma.CourseHasSubscriber.findMany({
 				where: { courseId: args.courseId, userId: args.userId },
+				include: { course: true, user: true },
 			});
 		},
 
@@ -51,10 +59,14 @@ export const subscriptionResolvers = {
 			return subscription;
 		},
 
-		deleteUserSubscription: async (_parent, { input }, { prisma }) => {
+		deleteUserSubscription: async (
+			_parent,
+			{ userId, courseId },
+			{ prisma },
+		) => {
 			await prisma.CourseHasSubscriber.delete({
 				where: {
-					courseId_userId: { courseId: input.course, userId: input.user },
+					courseId_userId: { courseId, userId },
 				},
 			});
 			return true;
