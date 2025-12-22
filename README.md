@@ -108,3 +108,6 @@ docker compose up --build
 
 ## Lancement du projet par Docker avec bdd locale :
 lancez la commande `pnpm docker:dev:local`
+
+## Lancement dest tests par Docker avec bdd locale :
+lancez la commande `pnpm docker:test:integration`

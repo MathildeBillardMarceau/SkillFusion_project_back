@@ -29,7 +29,7 @@
 		"======= Pour les tests =======": "========================",
 		"test": "node --test",
 		"test:integration": "NODE_ENV=test node --env-file=.env.test --import ./tests/setup.ts --test tests/**/*.test.ts",
-		"docker:test:integration": "docker compose --env-file .env.test run --rm -e NODE_ENV=test skillfusion-gql-api pnpm test:integration"
+		"docker:test:integration": "docker compose --env-file .env.test --profile test run --rm -e NODE_ENV=test skillfusion-gql-api pnpm test:integration"
 	},
 	"repository": {
 		"type": "git",

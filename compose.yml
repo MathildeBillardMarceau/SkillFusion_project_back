@@ -18,7 +18,7 @@ services:
       interval: 5s
       timeout: 3s
       retries: 5
-    profiles: ["local"]
+    profiles: ["local", "test"]
 
   skillfusion-gql-api:
     container_name: skillfusion-gql-api
@@ -46,7 +46,7 @@ services:
     #   skillfusion-db:
     #     condition: service_healthy
     command: ${CMD}
-    profiles: ["local", "supabase"] 
+    profiles: ["local", "supabase", "test"] 
 
 volumes: 
   skillfusion_db:
