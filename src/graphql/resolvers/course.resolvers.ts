@@ -109,20 +109,20 @@ export const courseResolvers = {
 			return category;
 		},
 		updateCategory: async (_parent, { id, input }, { prisma }) => {
-			/* const parsedInput = updateCategorySchema.safeParse(input);
+			// const parsedInput = updateCategorySchema.safeParse(input);
 
-			if (!parsedInput.success) {
-				const errorMessages = parsedInput.error as ZodError;
-				throw new GraphQLError("Invalid input", {
-					extensions: {
-						code: "BAD_USER_INPUT",
-						errors: errorMessages,
-					},
-				});
-			} */
+			// if (!parsedInput.success) {
+			// 	const errorMessages = parsedInput.error as ZodError;
+			// 	throw new GraphQLError("Invalid input", {
+			// 		extensions: {
+			// 			code: "BAD_USER_INPUT",
+			// 			errors: errorMessages,
+			// 		},
+			// 	});
+			// }
 
 			// mettre à jour les informations de la catégorie
-			return await prisma.category.update({ where: { id }, data: parsedInput });
+			return await prisma.category.update({ where: { id }, data: input });
 		},
 		deleteCategory: async (_parent, { id }, { prisma }) => {
 			// supprimer la catégorie
