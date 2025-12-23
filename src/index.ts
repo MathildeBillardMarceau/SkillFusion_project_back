@@ -11,7 +11,7 @@ import { typeDefs } from "./graphql/typeDefs/index.ts";
 
 export async function init() {
 	console.log("config:", config);
-	const { PORT, JWT_SECRET } = config;
+	const { PORT, JWT_SECRET, CORS } = config;
 	const app = express();
 
 	// Apollo Server
@@ -25,7 +25,7 @@ export async function init() {
 	app.use(
 		"/graphql",
 		cors({
-			origin: "http://localhost:3000", // pour le front
+			origin: CORS, // pour le front
 			// credentials: true, // cookies/JWT
 		}),
 		express.json(),
@@ -35,7 +35,7 @@ export async function init() {
 
 				let accessToken = null;
 				if (authHeader.startsWith("Bearer ")) {
-  				accessToken = authHeader.split(" ")[1];
+					accessToken = authHeader.split(" ")[1];
 				}
 
 				let connectedUser = null;

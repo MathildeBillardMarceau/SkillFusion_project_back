@@ -11,6 +11,7 @@ export const config = {
 		process.env.JWT_REFRESH_SECRET,
 		"JWT_REFRESH_SECRET",
 	),
+	CORS: getEnv(process.env.CORS, "CORS") || "http://localhost:3000",
 };
 
 function getEnv(value: string | undefined, variableName: string) {
