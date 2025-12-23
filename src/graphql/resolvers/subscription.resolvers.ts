@@ -20,16 +20,18 @@ export const subscriptionResolvers = {
 			});
 		},
 
-		subscriptionByUserAtCourse: async (_parent, args, { prisma }) => {
+		subscriptionByUserAtCourse: async (_parent, inputs, { prisma }) => {
+			const { courseId, userId } = inputs;
 			return await prisma.CourseHasSubscriber.findMany({
-				where: { courseId: args.courseId, userId: args.userId },
+				where: { courseId, userId },
 				include: { course: true, user: true },
 			});
 		},
 
-		subscriptionByUserAtCourseBySlug: async (_parent, args, { prisma }) => {
+		subscriptionByUserAtCourseBySlug: async (_parent, inputs, { prisma }) => {
+			const { slug, userId } = inputs;
 			return await prisma.CourseHasSubscriber.findMany({
-				where: { userId: args.iserId, course: { slug: args.slug } },
+				where: { userId, course: { slug } },
 				include: { course: true },
 			});
 		},
