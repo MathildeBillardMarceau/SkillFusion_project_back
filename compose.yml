@@ -9,8 +9,8 @@ services:
       POSTGRES_PASSWORD: ${PGPASSWORD}
       POSTGRES_DB: ${PGDATABASE}
       PGDATA: /mydbdata
-    # ports:
-      # - ${PGPORT}:5432 # "left:right" → "l:r" → "local:remote"
+    ports:
+      - ${PGPORT}:5432 # "left:right" → "l:r" → "local:remote"
     volumes:
       - "skillfusion_db:/mydbdata"
     healthcheck:
@@ -20,7 +20,7 @@ services:
       retries: 5
     profiles: ["local", "test"]
 
-  skillfusion-gql-api:
+  skillfusion-gql-api-test:
     container_name: skillfusion-gql-api
     restart: unless-stopped
     build: 
@@ -40,13 +40,44 @@ services:
       PGHOST: ${PGHOST}
       PGPORT: ${PGPORT}
       DIRECT_URL: ${DIRECT_URL}
-      DATABASE_URL: ${DATABASE_URL}
-      # DATABASE_URL: postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}:5432/${PGDATABASE}
+      # DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL: postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}:5432/${PGDATABASE}
+    depends_on:
+      skillfusion-db:
+        condition: service_healthy
+    command: ${CMD}
+    profiles: ["test"] 
+  
+  skillfusion-gql-api:
+    container_name: skillfusion-gql-api
+    restart: unless-stopped
+    build: 
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/app
+      - ~/.pnpm-store:/root/.pnpm-store
+      - /app/node_modules
+    ports: 
+      - ${PORT}:4000
+    env_file:
+      - .env.supabase
+    environment:
+      PORT: ${PORT}
+      PGUSER: ${PGUSER}
+      PGPASSWORD: ${PGPASSWORD}
+      PGDATABASE: ${PGDATABASE}
+      PGHOST: ${PGHOST}
+      PGPORT: ${PGPORT}
+      JWT_SECRET: ${JWT_SECRET}
+      DIRECT_URL: ${DIRECT_URL}
+      # DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL: postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}:5432/${PGDATABASE}
     # depends_on:
     #   skillfusion-db:
     #     condition: service_healthy
     command: ${CMD}
-    profiles: ["local", "supabase", "test"] 
+    profiles: ["local", "supabase"] 
 
 volumes: 
   skillfusion_db:

@@ -16,16 +16,16 @@ RUN pnpm install
 COPY . .
 
 # Générer Prisma (client)
-# RUN pnpm run db:generate
+RUN pnpm run db:generate
 
 # Créer le build de production
-# RUN pnpm run build
+RUN pnpm run build
 
 # Exposer le port de l'API
 EXPOSE 4000
 
 # Lancer l'application en prod
-# CMD ["pnpm", "run", "docker:start"]
+CMD ["pnpm", "run", "docker:start"]
 
 # Lancer l'application en dev
-CMD ["pnpm", "dev"]
+# CMD ["pnpm", "dev"]

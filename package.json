@@ -11,10 +11,8 @@
 		"docker:start": "pnpm run db:migrate:deploy && node dist/src/index.js",
 		"docker:dev:local": "docker compose --env-file .env.local --profile local up",
 		"docker:dev:supabase": "docker compose --env-file .env.supabase --profile supabase up",
-
 		"======= Pour la dev =======": "========================",
 		"dev": "node --env-file=.env ./src/index.ts --watch",
-
 		"======= Pour la BDD =======": "========================",
 		"db:seed": "node --env-file=.env ./src/models/seed.ts",
 		"db:migrate:deploy": "prisma migrate deploy",
@@ -25,11 +23,10 @@
 		"db:sync": "prisma generate && prisma migrate deploy",
 		"db:update": "node scripts/migrate.ts",
 		"db:init": "pnpm db:sync && pnpm run db:seed",
-
 		"======= Pour les tests =======": "========================",
 		"test": "node --test",
 		"test:integration": "NODE_ENV=test node --env-file=.env.test --import ./tests/setup.ts --test tests/**/*.test.ts",
-		"docker:test:integration": "docker compose --env-file .env.test --profile test run --rm -e NODE_ENV=test skillfusion-gql-api pnpm test:integration"
+		"docker:test:integration": "docker compose --env-file .env.test --profile test run --rm -e NODE_ENV=test skillfusion-gql-api-test pnpm test:integration"
 	},
 	"repository": {
 		"type": "git",
@@ -45,6 +42,7 @@
 	"dependencies": {
 		"@apollo/server": "^5.2.0",
 		"@as-integrations/express5": "^1.1.2",
+		"@as-integrations/fastify": "^3.1.0",
 		"@prisma/adapter-pg": "^7.1.0",
 		"@prisma/client": "^7.1.0",
 		"argon2": "^0.44.0",
@@ -54,6 +52,7 @@
 		"graphql-scalars": "^1.25.0",
 		"jsonwebtoken": "^9.0.3",
 		"pg": "^8.16.3",
+		"vercel": "^52.0.0",
 		"zod": "^4.1.13"
 	},
 	"devDependencies": {
