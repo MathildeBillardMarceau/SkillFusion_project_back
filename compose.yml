@@ -9,8 +9,8 @@ services:
       POSTGRES_PASSWORD: ${PGPASSWORD}
       POSTGRES_DB: ${PGDATABASE}
       PGDATA: /mydbdata
-    # ports:
-      # - ${PGPORT}:5432 # "left:right" → "l:r" → "local:remote"
+    ports:
+      - ${PGPORT}:5432 # "left:right" → "l:r" → "local:remote"
     volumes:
       - "skillfusion_db:/mydbdata"
     healthcheck:
@@ -40,8 +40,8 @@ services:
       PGHOST: ${PGHOST}
       PGPORT: ${PGPORT}
       DIRECT_URL: ${DIRECT_URL}
-      DATABASE_URL: ${DATABASE_URL}
-      # DATABASE_URL: postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}:5432/${PGDATABASE}
+      # DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL: postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}:5432/${PGDATABASE}
     depends_on:
       skillfusion-db:
         condition: service_healthy
@@ -60,6 +60,8 @@ services:
       - /app/node_modules
     ports: 
       - ${PORT}:4000
+    env_file:
+      - .env.supabase
     environment:
       PORT: ${PORT}
       PGUSER: ${PGUSER}
@@ -67,9 +69,10 @@ services:
       PGDATABASE: ${PGDATABASE}
       PGHOST: ${PGHOST}
       PGPORT: ${PGPORT}
+      JWT_SECRET: ${JWT_SECRET}
       DIRECT_URL: ${DIRECT_URL}
-      DATABASE_URL: ${DATABASE_URL}
-      # DATABASE_URL: postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}:5432/${PGDATABASE}
+      # DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL: postgres://${PGUSER}:${PGPASSWORD}@${PGHOST}:5432/${PGDATABASE}
     # depends_on:
     #   skillfusion-db:
     #     condition: service_healthy
